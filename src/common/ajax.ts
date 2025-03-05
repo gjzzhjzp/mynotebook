@@ -1,4 +1,5 @@
 import Taro from '@tarojs/taro';
+// import getCsrfToken from './csrf';
 const appconfig = require('../config');
 interface IRequestOptions {
   method?: 'GET' | 'POST';
@@ -20,7 +21,8 @@ const request = (options: IRequestOptions) => {
       data: options.data,
       header: {
         'Content-Type': 'application/json',
-        'Authorization': appconfig.token ? `Bearer ${appconfig.token}` : ''
+        'Authorization': appconfig.token ? `Bearer ${appconfig.token}` : '',
+        'x-csrf-token':appconfig.csrf_token||""
       },
       success: (res: any) => {
         const responseData = res.data as IResponse;

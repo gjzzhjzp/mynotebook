@@ -7,6 +7,7 @@ const App = createApp({
   },
   async onLaunch () {
     let appconfig=await user_dll.login();
+    console.log("1111111111111111",appconfig);
     provide("globalData",appconfig);
   }
   // 入口组件不需要实现 render 方法，即使实现了也会被 taro 所覆盖
