@@ -9,7 +9,6 @@ interface ILoginResponse {
     code: number;
     data: {
         token: string;
-        csrf_token: string;
         userinfo: Iuserinfo;
     };
 }
@@ -21,7 +20,6 @@ export const login = () => {
 
             if (response.code === 200) {
                 ajax.appconfig.token = response.data.token;
-                ajax.appconfig.csrf_token = response.data.csrf_token;
                 ajax.appconfig.userinfo = response.data.userinfo;
                 resolve(ajax.appconfig);
             } else {

@@ -1,59 +1,87 @@
 import Taro from '@tarojs/taro';
 // import getCsrfToken from './csrf';
 const appconfig = require('../config');
+// ... 保留原有导入和配置 ...
+
 interface IRequestOptions {
-  method?: 'GET' | 'POST';
+  method?: 'GET' | 'POST' | 'PUT' | 'DELETE';
   url: string;
   data?: any;
   validateStatus?: (status: number) => boolean;
-}
-interface IResponse {
-  code: number;
-  data: any;
+  timeout?: number;
 }
 
-// 新增基础请求方法
-const request = (options: IRequestOptions) => {
-  return new Promise((resolve, reject) => {
-    Taro.request({
-      url: appconfig.goapi_server + options.url,
+interface IResponse<T = any> {
+  code: number;
+  data: T;
+  message?: string;
+}
+
+const DEFAULT_TIMEOUT = 10000; // 10秒超时
+
+const request = async <T = any>(options: IRequestOptions): Promise<IResponse<T>> => {
+  const globalData = Taro.getStorageSync("globalData");
+  try {
+    const res = await Taro.request({
+      url: globalData.goapi_server + options.url,
       method: options.method || 'GET',
       data: options.data,
       header: {
         'Content-Type': 'application/json',
-        'Authorization': appconfig.token ? `Bearer ${appconfig.token}` : '',
-        'x-csrf-token':appconfig.csrf_token||""
+        'Authorization': globalData.token ? `Bearer ${globalData.token}` : ''
       },
-      success: (res: any) => {
-        const responseData = res.data as IResponse;
-        if (options.validateStatus ? options.validateStatus(responseData.code) : responseData.code === 200) {
-          resolve(responseData);
-        } else {
-          reject(new Error(`请求失败: ${responseData.data || '未知错误'}`));
-        }
-      },
-      fail: (err) => reject(err)
+      timeout: options.timeout || DEFAULT_TIMEOUT
     });
-  });
+
+    const responseData = res.data as IResponse<T>;
+    if (options.validateStatus ? options.validateStatus(responseData.code) : responseData.code === 200) {
+      return responseData;
+    }
+    throw new Error(responseData.message || '请求失败');
+  } catch (error) {
+    throw new Error(`请求失败: ${error.message}`);
+  }
 }
 
-// 新增 GET 封装
-const get = (url: string, data: any) => {
-  return request({
+const get = async <T = any>(url: string, data?: any): Promise<IResponse<T>> => {
+  return request<T>({
     method: 'GET',
-    url: url,
+    url,
     data
   });
 }
 
-// 新增 POST 封装
-const post = (url: string, data: any) => {
-  return request({
+const post = async <T = any>(url: string, data: any): Promise<IResponse<T>> => {
+  const ignoreUrls = ["/login"];
+  if (ignoreUrls.includes(url)) {
+    return request<T>({
+      method: 'POST',
+      url,
+      data
+    });
+  }
+  await checkPost();
+  return request<T>({
     method: 'POST',
     url,
     data
   });
 }
+
+const checkPost = async (): Promise<void> => {
+  return new Promise((resolve) => {
+    const check = () => {
+      const globalData = Taro.getStorageSync("globalData");
+      if (globalData?.token) {
+        resolve();
+      } else {
+        setTimeout(check, 500);
+      }
+    };
+    check();
+  });
+}
+
 export default {
   request,
   get,
