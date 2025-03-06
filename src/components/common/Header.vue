@@ -1,5 +1,5 @@
 <template>
-    <view class="wxc-nav {{isOpacity?'wxc-nav-opactiy':''}}" catchtouchmove='touchmove' :style="wxc_nav_style">
+    <view :class="'wxc-nav'+(isOpacity?'wxc-nav-opactiy':'')" catchtouchmove='touchmove' :style="wxc_nav_style">
         <view class="wxc-nav-left">
             <block v-if="showNavBack">
                 <view v-if="showNavBackSlot" class="wxc-nav-left-back">
@@ -64,7 +64,7 @@ const wxc_nav_style = computed(() => {
         '--navLeftAlign': c_style.value['--navLeftAlign']
     }
 })
-const image_dns = computed(() => app.globalData.image_dns)
+// const image_dns = computed(() => app.globalData.image_dns)
 const emit = defineEmits(['rect', 'back'])
 const bindback = () => {
     if (props.closeAutoBack) {

@@ -7,6 +7,13 @@ export {}
 
 declare module 'vue' {
   export interface GlobalComponents {
-    Header: typeof import('./src/components/Header.vue')['default']
+    Add: typeof import('./src/components/common/add.vue')['default']
+    Header: typeof import('./src/components/common/Header.vue')['default']
+    List: typeof import('./src/components/account/list.vue')['default']
+    NutGrid: typeof import('@nutui/nutui-taro')['Grid']
+    NutGridItem: typeof import('@nutui/nutui-taro')['GridItem']
+    PageScroll: typeof import('./src/components/common/pageScroll.vue')['default']
+    PieChart: typeof import('./src/components/account/pieChart.vue')['default']
+    Statistics: typeof import('./src/components/account/statistics.vue')['default']
   }
 }

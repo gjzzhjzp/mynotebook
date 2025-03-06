@@ -1,3 +1,6 @@
 export default definePageConfig({
-  navigationBarTitleText: ''
+  navigationBarTitleText: '',
+  usingComponents: {
+    'ec-canvas': '../../components/ec-canvas/ec-canvas'
+  }
 })

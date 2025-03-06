@@ -1,0 +1,16 @@
+{
+  "id": "4848967",
+  "name": "橘好记",
+  "font_family": "iconfont",
+  "css_prefix_text": "icon-",
+  "description": "",
+  "glyphs": [
+    {
+      "icon_id": "1048852",
+      "name": "通知",
+      "font_class": "icon_notice",
+      "unicode": "e605",
+      "unicode_decimal": 58885
+    }
+  ]
+}
