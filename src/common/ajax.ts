@@ -18,7 +18,7 @@ interface IResponse<T = any> {
 }
 
 const DEFAULT_TIMEOUT = 10000; // 10秒超时
-
+const ignoreUrls = ["/login"];
 const request = async <T = any>(options: IRequestOptions): Promise<IResponse<T>> => {
   const globalData = Taro.getStorageSync("globalData");
   try {
@@ -44,6 +44,14 @@ const request = async <T = any>(options: IRequestOptions): Promise<IResponse<T>>
 }
 
 const get = async <T = any>(url: string, data?: any): Promise<IResponse<T>> => {
+  if (ignoreUrls.includes(url)) {
+    return request<T>({
+      method: 'GET',
+      url,
+      data
+    });
+  }
+  await checkPost();
   return request<T>({
     method: 'GET',
     url,
@@ -52,7 +60,7 @@ const get = async <T = any>(url: string, data?: any): Promise<IResponse<T>> => {
 }
 
 const post = async <T = any>(url: string, data: any): Promise<IResponse<T>> => {
-  const ignoreUrls = ["/login"];
+ 
   if (ignoreUrls.includes(url)) {
     return request<T>({
       method: 'POST',

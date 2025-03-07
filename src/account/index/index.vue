@@ -6,7 +6,7 @@
       <template #body>
         <view class="p-a-15">
           <view>
-            <statistics></statistics>
+            <!-- <statistics></statistics> -->
           </view>
           <view class="whiteColorB borderRadius10 m-t-20 p-a-15">
             <view class="flex-align-center flex-justify-between">
@@ -18,20 +18,26 @@
             </view>
           </view>
         </view>
-        <add></add>
+        <add @add="add_account()"></add>
+        <addAccount ref="addAccountRef"></addAccount>
       </template>
     </pageScroll>
   </template>
   
   <script setup lang="ts">
-  import { onBeforeMount, onMounted } from 'vue';
+  import { onBeforeMount, onMounted,ref } from 'vue';
   import ajax from '../../common/ajax';
   import Header from '../../components/common/Header.vue';
   import pageScroll from '../../components/common/pageScroll.vue';
   import add from '../../components/common/add.vue';
   import statistics from '../../components/account/statistics.vue';
   import accountList from '../../components/account/list.vue';
-
+  // import Taro from '@tarojs/taro';
+  import addAccount from '../../components/account/add.vue';
+  const addAccountRef=ref();
+  const add_account = () => {
+    addAccountRef.value.open();
+  }
 
   onBeforeMount(() => {
   

@@ -32,7 +32,7 @@ import pieChart from './pieChart.vue';
 .statistics-container {
     /* 组件样式 */
     width: 630rpx;
-    height: 630rpx;
+    height: 700rpx;
     background-color: #fff;
     border-radius: 10rpx;
 }

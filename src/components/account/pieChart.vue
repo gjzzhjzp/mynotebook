@@ -2,7 +2,7 @@
 <template>
   <view class="bar-chart">
     <e-chart ref="vueref0" canvas-id="bar-canvas" />
-    <button @click="refresh">刷新</button>
+    <!-- <button @click="refresh">刷新</button> -->
   </view>
 </template>
 
@@ -53,8 +53,7 @@ export default {
     Taro.nextTick(() => {
       setTimeout(() => {
         this.$refs.vueref0.refresh(this.defaultOption)
-      }, 2000);
-
+      }, 200);
     })
   },
   methods: {
