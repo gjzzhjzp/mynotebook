@@ -1,41 +1,78 @@
+// 柱状图
 <template>
-  <view class="echarts">
-    这里是图表
-    <ec-canvas id="chart-dom-area" canvas-id="chart-area" :ec="ec"></ec-canvas>
+  <view class="bar-chart">
+    <e-chart ref="vueref0" canvas-id="bar-canvas" />
+    <button @click="refresh">刷新</button>
   </view>
 </template>
-<script lang="ts" setup>
-  import { reactive } from 'vue';
-//   import * as echarts from '../ec-canvas/echarts'    
-  import * as echarts from 'echarts';
-  function initChart(canvas: any, width: any, height: any) {
-    // echarts.init初始化
-    const chart = echarts.init(canvas, null, {
-      width,
-      height
-    })
-    canvas.setChart(chart)
-    const option = {
-      xAxis: {
-        type: 'category',
-        boundaryGap: false,
-        data: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']
-      },
-      yAxis: {
-        type: 'value'
-      },
-      series: [
-        {
-          data: [820, 932, 901, 934, 1290, 1330, 1320],
-          type: 'line',
-          areaStyle: {}
-        }
-      ]
+
+<script lang="js">
+import Taro from "@tarojs/taro";
+import { EChart } from 'echarts-taro3-vue'
+
+export default {
+  name: 'Bar',
+  components: { EChart },
+  data() {
+    return {
+      defaultOption: {
+        tooltip: {
+          trigger: 'item'
+        },
+        color:['#5470c6', '#91cc75', '#fac858', '#ee6666', '#73c0de', '#3ba272', '#fc8452', '#9a60b4', '#ea7ccc'],
+        series: [
+          {
+            name: '统计',
+            type: 'pie',
+            radius: ['40%', '70%'],
+            itemStyle: {
+              borderRadius: 10,
+              borderColor: '#fff',
+              borderWidth: 2
+            },
+            emphasis: {
+              label: {
+                show: true,
+                fontSize: 40,
+                fontWeight: 'bold'
+              }
+            },
+            data: [
+              { value: 1048, name: '餐饮' },
+              { value: 735, name: '交通' },
+              { value: 580, name: '购物' },
+              { value: 484, name: '娱乐' },
+              { value: 300, name: '其他' }
+            ]
+          }
+        ]
+      }
     }
-    chart.setOption(option)
-    return chart
+  },
+  mounted() {
+    Taro.nextTick(() => {
+      setTimeout(() => {
+        this.$refs.vueref0.refresh(this.defaultOption)
+      }, 2000);
+
+    })
+  },
+  methods: {
+    refresh(data) {
+      this.$refs.vueref0.refresh(this.defaultOption)
+    }
   }
-  const ec = reactive({
-    onInit: initChart
-  })
+}
 </script>
+
+<style lang="scss">
+.bar-chart {
+  width: 100%;
+  min-height: 500rpx;
+  flex: 1;
+}
+
+.ec-canvas {
+  height: 500rpx;
+}
+</style>

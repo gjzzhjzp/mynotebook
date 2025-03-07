@@ -1,7 +1,7 @@
 <template>
   <pageScroll :refresher_enabled="false">
     <template #nav>
-      <Header title="橘好记" :showNavBack="true" :showNavBackSlot="true">
+      <Header title="测试" :showNavBack="true" :showNavBackSlot="true">
         <template #left>
           <view class="iconfont icon-icon_notice font20 skinColor"></view>
         </template>
@@ -23,7 +23,7 @@
         </nut-grid>
       </view>
      
-      <pieChart></pieChart>
+     
     </template>
   </pageScroll>
 </template>
@@ -34,9 +34,7 @@ import ajax from '../../common/ajax';
 import Header from '../../components/common/Header.vue';
 import pageScroll from '../../components/common/pageScroll.vue';
 import Taro from '@tarojs/taro';
-import pieChart from '../../components/account/pieChart.vue';
 
-// 是否允许post请求
 onBeforeMount(() => {
 
 })
@@ -52,10 +50,10 @@ const tonext = (type) => {
   let url = "";
   switch (type) {
     case 'account':
-      url = "/pages/account/account"
+      url = "/account/index/index"
       break;
     case 'memo':
-      url = "/pages/memo/memo"
+      url = "/memo/index/index"
       break;
   }
   Taro.navigateTo({ url })

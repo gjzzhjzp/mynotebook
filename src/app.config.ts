@@ -1,8 +1,20 @@
 export default defineAppConfig({
   pages: [
-    'pages/index/index',
-    'pages/account/account',
-    'pages/memo/memo'
+    'pages/index/index'
+  ],
+  subpackages:[
+    {
+      "root": "account",
+      "pages": [
+        "index/index"
+      ]
+    },
+    {
+      "root": "memo",
+      "pages": [
+        "index/index"
+      ]
+    }
   ],
   window: {
     backgroundTextStyle: 'light',
@@ -10,18 +22,5 @@ export default defineAppConfig({
     navigationBarTitleText: 'WeChat',
     navigationBarTextStyle: 'black',
     navigationStyle: 'custom'
-  },
-  tabBar:{
-    custom:true,
-    list:[
-      {
-        pagePath: 'pages/index/index',
-        text: '首页',
-      },
-      {
-        pagePath: 'pages/memo/memo',
-        text: '首页',
-      }
-    ]
   }
 })
