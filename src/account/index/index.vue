@@ -6,7 +6,7 @@
       <template #body>
         <view class="p-a-15">
           <view>
-            <!-- <statistics></statistics> -->
+            <statistics></statistics>
           </view>
           <view class="whiteColorB borderRadius10 m-t-20 p-a-15">
             <view class="flex-align-center flex-justify-between">
@@ -14,12 +14,12 @@
               <view class="font14 skinColor">查看全部</view>
             </view>
             <view class="m-t-20">
-              <accountList></accountList>
+              <accountList :list="accounts"></accountList>
             </view>
           </view>
         </view>
-        <add @add="add_account()"></add>
-        <addAccount ref="addAccountRef"></addAccount>
+        <add @add="add_account()" ></add>
+        <addAccount ref="addAccountRef" @success="getAccountList()"></addAccount>
       </template>
     </pageScroll>
   </template>
@@ -38,24 +38,27 @@
   const add_account = () => {
     addAccountRef.value.open();
   }
+  let accounts=ref([]);
 
   onBeforeMount(() => {
   
   })
   onMounted(() => {
-    ajax.post("/user", {
-      username: "123",
-      password: "123"
-    }).then((res: any) => {
-      console.log("res", res);
-    })
+    getAccountList();
   })
-  const handleClick = () => {
-    ajax.get("/getuser", { username: 1 }).then((res: any) => {
-      console.log("res", res);
+  const getAccountList = () => {
+    ajax.get("/account/get", {
+      page: 1,
+      rows: 10
+    }).then((res:any) => {
+      console.log(res);
+      if(res.code == 200){
+        accounts.value=res.data;
+        console.log(accounts.value);
+      }
     })
   }
-  
+
   </script>
   
   <style>
