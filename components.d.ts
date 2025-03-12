@@ -7,18 +7,16 @@ export {}
 
 declare module 'vue' {
   export interface GlobalComponents {
-    Add: typeof import('./src/components/account/add.vue')['default']
+    Add: typeof import('./src/components/common/add.vue')['default']
     Header: typeof import('./src/components/common/Header.vue')['default']
     List: typeof import('./src/components/account/list.vue')['default']
     NutButton: typeof import('@nutui/nutui-taro')['Button']
     NutCalendar: typeof import('@nutui/nutui-taro')['Calendar']
-    NutCol: typeof import('@nutui/nutui-taro')['Col']
     NutDialog: typeof import('@nutui/nutui-taro')['Dialog']
     NutGrid: typeof import('@nutui/nutui-taro')['Grid']
     NutGridItem: typeof import('@nutui/nutui-taro')['GridItem']
     NutInput: typeof import('@nutui/nutui-taro')['Input']
     NutPopup: typeof import('@nutui/nutui-taro')['Popup']
-    NutTag: typeof import('@nutui/nutui-taro')['Tag']
     PageScroll: typeof import('./src/components/common/pageScroll.vue')['default']
     PieChart: typeof import('./src/components/account/pieChart.vue')['default']
     Statistics: typeof import('./src/components/account/statistics.vue')['default']

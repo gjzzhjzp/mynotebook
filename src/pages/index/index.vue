@@ -39,12 +39,7 @@ onBeforeMount(() => {
 
 })
 onMounted(() => {
-  ajax.post("/user", {
-    username: "123",
-    password: "123"
-  }).then((res: any) => {
-    console.log("res", res);
-  })
+
 })
 const tonext = (type) => {
   let url = "";
