@@ -17,7 +17,7 @@
   .add-container{
    width: 112rpx;
    height: 112rpx;
-   position: absolute;
+   position: fixed;
    bottom: 80rpx;
    right: 20rpx;
    border-radius: 50%;

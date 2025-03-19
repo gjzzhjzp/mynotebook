@@ -9,11 +9,13 @@ const App = createApp({
 
   },
   async onLaunch () {
+    // debugger;
     Taro.setStorageSync("globalData", appconfig)
     let globalData=await user_dll.login();
+    Taro.setStorageSync("globalData", globalData)
     let categories=await user_dll.getCategories();
-    console.log("categories",categories);
-    globalData.categories=categories;
+    Object.assign(globalData,categories);
+    console.log("globalData",globalData);
     Taro.setStorageSync("globalData", globalData)
   }
   // 入口组件不需要实现 render 方法，即使实现了也会被 taro 所覆盖

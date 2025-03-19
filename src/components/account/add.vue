@@ -34,8 +34,8 @@
                                 <template #default> -->
                         <view v-for="item in categories" class="m-r-10 m-t-10">
                             <nut-button :type="item.value != checked_category ? 'default' : 'primary'" size="small"
-                                @click="checked_category = item.value"
-                                style="width: 145rpx;">{{ item.title }}</nut-button>
+                                @click="checked_category = item.value" style="width: 145rpx;">{{ item.name
+                                }}</nut-button>
                         </view>
 
                         <!-- </template>
@@ -59,10 +59,10 @@
 <script setup lang="ts">
 import ajax from '../../common/ajax'
 import date_formatter from '../../common/date_formatter'
-import { ref, onMounted, watch,defineEmits } from 'vue'
+import { ref, onMounted, watch, defineEmits } from 'vue'
 import Taro from '@tarojs/taro'
 interface categoriesData {
-    title: string,
+    name: string,
     value: string
 }
 const formData = ref({
@@ -87,7 +87,7 @@ const types = ref([
 watch(checked_type, () => {
     getCategory();
 })
-const emit=defineEmits(['success'])
+const emit = defineEmits(['success'])
 const onOk = () => {
     const params = {
         amount: formData.value.amount,
@@ -107,10 +107,10 @@ const onOk = () => {
                 icon: 'success',
                 duration: 2000
             });
-        }else{
+        } else {
             Taro.showToast({
                 title: res.message as string,
-                icon:'error',
+                icon: 'error',
                 duration: 2000
             });
         }
@@ -119,21 +119,9 @@ const onOk = () => {
     })
 }
 const getCategory = () => {
-    ajax.get('/category/get', {
-        type: checked_type.value == 'expense' ? 0 : 1
-    }).then(res => {
-        console.log("res", res);
-        if (res.code == 200) {
-            categories.value = res.data.map(item => {
-                return {
-                    title: item.name,
-                    value: item.value
-                }
-            })
-            checked_category.value = categories.value[0].value;
-        }
-        console.log("categories", categories.value)
-    })
+    const globalData = Taro.getStorageSync("globalData");
+    categories.value = globalData.categories[checked_type.value == 'expense' ? 0 : 1]
+    checked_category.value = categories.value[0].value;
 }
 onMounted(() => {
     getCategory();

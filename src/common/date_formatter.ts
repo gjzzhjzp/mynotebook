@@ -2,7 +2,7 @@ const getRegExp = (pattern: string, flags?: string): RegExp => {
     return new RegExp(pattern, flags);
 };
 // 传递的value为时间戳
-export function date_formatter(value: string | number, formatStr: string): string {
+export function date_formatter(value: string | number | Date, formatStr: string): string {
     // 处理时间戳
     if ((value + "").length === 10) {
         value = Number(value) * 1000;
@@ -37,5 +37,33 @@ export function date_formatter(value: string | number, formatStr: string): strin
         return str.replace(getRegExp(key, 'g'), String(value));
     }, formatStr);
 }
+function check_one_day(start, end) {
+    let _start = new Date(start);
+    let _end = new Date(end);
+    return _start.getFullYear() === _end.getFullYear() && _start.getMonth() === _end.getMonth() && _start.getDate() === _end.getDate();
+}
+export function formatDate(date) {
+    if (date) {
+        // debugger
+        let _date = Number(date);
+        if ((date + "").length === 10) {
+            _date = Number(date) * 1000;
+        }
+        let __date = new Date(_date);
+        if (check_one_day(_date, new Date())) {
+            if (__date.getHours() < 18) {
+                return date_formatter(__date, "今天 hh:mm");
+            } else {
+                return date_formatter(__date, "今晚 hh:mm");
+            }
+        } else {
+            return date_formatter(__date, "MM月dd日 hh:mm");
+        }
+    } else {
+        return ""
+    }
+
+}
+
 
 export default date_formatter;

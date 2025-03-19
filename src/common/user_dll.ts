@@ -35,6 +35,7 @@ export const getCategories = () => {
         ajax.get('/category/get').then(res => {
             console.log("res", res);
             let categories={};
+            let categories_obj={};
             if (res.code == 200) {
                 categories['0'] = res.data.filter(item => {
                     if(item.type==0){
@@ -46,9 +47,15 @@ export const getCategories = () => {
                         return true;
                     }
                 })
+                
+                res.data.forEach(item => {
+                    categories_obj[item.value] = item.name;
+                });
             }
-            resolve(categories)
+            resolve({
+                categories,
+                categories_obj
+            })
         })
     })
-   
 }

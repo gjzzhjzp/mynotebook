@@ -28,51 +28,51 @@ const scrollTop = ref(0);
 const props = defineProps({
     scrollY: {
         type: Boolean,
-        value: true,
+        default: true,
     },
     eroptions: {
         type: Object,
-        value: {},
+        default: {},
     },
     refresher_enabled: {
         type: Boolean,
-        value: true,
+        default: true,
     },
     loading_enabled: {
         type: Boolean,
-        value: true,
+        default: true,
     },
     refreshering: {
         type: Boolean,
-        value: false,
+        default: false,
     },
     lower_threshold: {
         type: [Number, String],
-        value: 50,
+        default: 50,
     },
     isAbsolute: {
         type: Boolean,
-        value: false,
+        default: false,
     },
     scrollWithAnimation: {
         type: Boolean,
-        value: false,
+        default: false,
     },
     openArrow: {
         type: Boolean,
-        value: false,
+        default: false,
     },
     autoHeight: {
         type: Boolean,
-        value: true,
+        default: true,
     },
     backTop: {
         type: Boolean,
-        value: true,
+        default: true,
     },
     footBottom: {
         type: Number,
-        value: 0
+        default: 0
     }
 })
 console.log("props", props);
