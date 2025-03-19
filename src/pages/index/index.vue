@@ -22,8 +22,6 @@
           </nut-grid-item>
         </nut-grid>
       </view>
-     
-     
     </template>
   </pageScroll>
 </template>

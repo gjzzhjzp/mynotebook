@@ -48,6 +48,7 @@ onMounted(() => {
   const globalData = Taro.getStorageSync("globalData");
   console.log(globalData);
   getAccountList();
+  getStatistics();
 })
 const getAccountList = () => {
   ajax.get("/account/get", {
@@ -64,6 +65,24 @@ const getAccountList = () => {
       });
       console.log(accounts.value);
     }
+  })
+}
+const getStatistics=()=>{
+  ajax.get("/account/getStatisticsByfl", {
+    type:"day",
+    // startDate: '2025-03-01',
+    // endDate: '2025-04-01'
+  }).then((res: any) => { 
+    console.log("getStatisticsByfl", res);
+    // if (res.code == 200) {
+    //   accounts.value = res.data.map((item: any) => {
+    //     return {
+    //       ...item,
+    //       created_at: formatDate(new Date(item.created_at).getTime())
+    //     }
+    //   });
+    //   console.log(accounts.value);
+    // }
   })
 }
 
