@@ -6,10 +6,10 @@
                 <view class="l-account-add p-a-20">
                     <view class="flex-align-center flex-justify-between">
                         <view @click="showCalender = true">{{ formData.accountDate_show }}</view>
-                        <nut-calendar v-model:visible="showCalender" :default-value="formData.accountDate"
-                            start-date="2022-01-11" end-date="2022-11-30" @close="showCalender = false"
-                            @choose="chooseDate">
-                        </nut-calendar>
+                        <nut-popup v-model:visible="showCalender" position="bottom">
+                            <nut-date-picker v-model="accountDate_date" :three-dimensional="false"
+                                @confirm="chooseDate"></nut-date-picker>
+                        </nut-popup>
                         <view class="flex-align-center">
                             <view v-for="item in types" :key="item.title" class="m-r-10"
                                 @click="checked_type = item.value">
@@ -68,12 +68,13 @@ interface categoriesData {
 const formData = ref({
     amount: '',
     description: '',
-    accountDate: date_formatter(new Date().getTime(), 'YYYY-MM-DD'),
+    accountDate: "",
     accountDate_show: date_formatter(new Date().getTime(), 'MM月DD日')
 })
 const categories = ref<categoriesData[]>([]);
 const checked_category = ref("food");
 const checked_type = ref("expense");
+const accountDate_date=ref<Date>(new Date());
 const types = ref([
     {
         title: "支出",
@@ -125,14 +126,17 @@ const getCategory = () => {
 }
 onMounted(() => {
     getCategory();
+    formData.value.accountDate = date_formatter(new Date().getTime(), 'YYYY-MM-DD');
+    console.log("formData", formData.value.accountDate);
 })
 const visible = ref(false)
 const showCalender = ref(false);
 // const accountDate = ref(date_formatter(String(new Date()),'MM月DD日'));
 const chooseDate = (e: any) => {
     console.log("e", e);
-    formData.value.accountDate = e[3];
-    formData.value.accountDate_show = date_formatter(new Date(e[3]).getTime(), 'MM月DD日');
+    formData.value.accountDate = e.selectedValue.join("-");
+    formData.value.accountDate_show = date_formatter(new Date(formData.value.accountDate).getTime(), 'MM月DD日');
+    showCalender.value = false;
 }
 const open = () => {
     visible.value = true;
