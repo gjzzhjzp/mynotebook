@@ -15,6 +15,7 @@
     box-sizing: border-box;
 }
 page {
+    --nut-primary-color:#FF9F5B;
     --pageColor:#FFF9F5;
     /*禁用btn颜色*/
     --disableColor:#EFF0F8;
@@ -57,6 +58,7 @@ page {
     --smallRadius:20rpx;
     --bigRadius:100rpx;
     --font0:24rpx;
+
 }
 /*文字颜色*/
 .skinColor {

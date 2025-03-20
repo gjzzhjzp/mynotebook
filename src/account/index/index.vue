@@ -5,12 +5,15 @@
     </template>
     <template #body>
       <view class="p-a-15">
+        <view class=" font14 blackColor">
+          设置订阅提醒
+        </view>
         <view>
           <statistics></statistics>
         </view>
         <view class="whiteColorB borderRadius10 m-t-20 p-a-15">
           <view class="flex-align-center flex-justify-between">
-            <view class="font18 fontWeight blackColor">近期记录</view>
+            <view class="font16 fontWeight blackColor">近期记录</view>
             <view class="font14 skinColor">查看全部</view>
           </view>
           <view class="m-t-20">
@@ -48,7 +51,7 @@ onMounted(() => {
   const globalData = Taro.getStorageSync("globalData");
   console.log(globalData);
   getAccountList();
-  getStatistics();
+
 })
 const getAccountList = () => {
   ajax.get("/account/get", {
@@ -67,25 +70,6 @@ const getAccountList = () => {
     }
   })
 }
-const getStatistics=()=>{
-  ajax.get("/account/getStatisticsByfl", {
-    type:"day",
-    // startDate: '2025-03-01',
-    // endDate: '2025-04-01'
-  }).then((res: any) => { 
-    console.log("getStatisticsByfl", res);
-    // if (res.code == 200) {
-    //   accounts.value = res.data.map((item: any) => {
-    //     return {
-    //       ...item,
-    //       created_at: formatDate(new Date(item.created_at).getTime())
-    //     }
-    //   });
-    //   console.log(accounts.value);
-    // }
-  })
-}
-
 </script>
 
 <style>
