@@ -5,7 +5,7 @@
     </template>
     <template #body>
       <view class="p-a-15">
-        <view class=" font14 blackColor">
+        <view class=" font14 blackColor text-right m-b-15">
           设置订阅提醒
         </view>
         <view>
@@ -14,7 +14,7 @@
         <view class="whiteColorB borderRadius10 m-t-20 p-a-15">
           <view class="flex-align-center flex-justify-between">
             <view class="font16 fontWeight blackColor">近期记录</view>
-            <view class="font14 skinColor">查看全部</view>
+            <!-- <view class="font14 skinColor">查看全部</view> -->
           </view>
           <view class="m-t-20">
             <accountList :list="accounts"></accountList>
