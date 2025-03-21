@@ -5,7 +5,7 @@
     </template>
     <template #body>
       <view class="p-a-15">
-        <view class=" font14 blackColor text-right m-b-15">
+        <view class=" font14 blackColor text-right m-b-15" @click="openSubscribe()">
           设置订阅提醒
         </view>
         <view>
@@ -30,6 +30,7 @@
 <script setup lang="ts">
 import { onBeforeMount, onMounted, ref } from 'vue';
 import ajax from '../../common/ajax';
+import basedll from '../../common/basedll';
 import Header from '../../components/common/Header.vue';
 import pageScroll from '../../components/common/pageScroll.vue';
 import add from '../../components/common/add.vue';
@@ -37,8 +38,9 @@ import statistics from '../../components/account/statistics.vue';
 import accountList from '../../components/account/list.vue';
 import Taro from '@tarojs/taro';
 import addAccount from '../../components/account/add.vue';
-import {formatDate} from '../../common/date_formatter'
+import { formatDate } from '../../common/date_formatter'
 const addAccountRef = ref();
+const globalData = ref();
 const add_account = () => {
   addAccountRef.value.open();
 }
@@ -48,7 +50,7 @@ onBeforeMount(() => {
 
 })
 onMounted(() => {
-  const globalData = Taro.getStorageSync("globalData");
+  globalData.value = Taro.getStorageSync("globalData");
   console.log(globalData);
   getAccountList();
 
@@ -70,8 +72,20 @@ const getAccountList = () => {
     }
   })
 }
-</script>
+// 打开订阅消息
+const openSubscribe = () => {
+  basedll.requestSubscribeMessage([globalData.value.tmplIds.overspend,globalData.value.tmplIds.daily]);
 
+  // 测试新增限额
+  ajax.post("/userLimit/addOrUpdate", {
+    "daily_limit": 1000.00,
+    "monthly_limit": 30000.00,
+    "yearly_limit": 360000.00
+  }).then((res: any) => {
+    console.log("测试新增限额", res);
+  })
+}
+</script>
 <style>
 .demo {
   height: 100%;
