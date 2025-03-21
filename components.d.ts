@@ -7,7 +7,7 @@ export {}
 
 declare module 'vue' {
   export interface GlobalComponents {
-    Add: typeof import('./src/components/common/add.vue')['default']
+    Add: typeof import('./src/components/account/add.vue')['default']
     Header: typeof import('./src/components/common/Header.vue')['default']
     List: typeof import('./src/components/account/list.vue')['default']
     NutButton: typeof import('@nutui/nutui-taro')['Button']
