@@ -7,19 +7,23 @@ export {}
 
 declare module 'vue' {
   export interface GlobalComponents {
-    Add: typeof import('./src/components/account/add.vue')['default']
+    Add: typeof import('./src/components/common/add.vue')['default']
     Header: typeof import('./src/components/common/Header.vue')['default']
     List: typeof import('./src/components/account/list.vue')['default']
     NutButton: typeof import('@nutui/nutui-taro')['Button']
     NutDatePicker: typeof import('@nutui/nutui-taro')['DatePicker']
     NutDialog: typeof import('@nutui/nutui-taro')['Dialog']
     NutDivider: typeof import('@nutui/nutui-taro')['Divider']
+    NutForm: typeof import('@nutui/nutui-taro')['Form']
+    NutFormItem: typeof import('@nutui/nutui-taro')['FormItem']
     NutGrid: typeof import('@nutui/nutui-taro')['Grid']
     NutGridItem: typeof import('@nutui/nutui-taro')['GridItem']
     NutInput: typeof import('@nutui/nutui-taro')['Input']
     NutPopup: typeof import('@nutui/nutui-taro')['Popup']
+    NutSwitch: typeof import('@nutui/nutui-taro')['Switch']
     PageScroll: typeof import('./src/components/common/pageScroll.vue')['default']
     PieChart: typeof import('./src/components/account/pieChart.vue')['default']
+    Reminder: typeof import('./src/components/account/reminder.vue')['default']
     Statistics: typeof import('./src/components/account/statistics.vue')['default']
   }
 }

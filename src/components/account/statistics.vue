@@ -80,6 +80,9 @@ const getStatistics=()=>{
     }
   })
 }
+defineExpose({
+    getStatistics
+})
 </script>
 
 <style lang="scss">
