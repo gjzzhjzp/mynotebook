@@ -2,11 +2,12 @@ export default defineAppConfig({
   pages: [
     'pages/index/index'
   ],
-  subpackages:[
+  subpackages: [
     {
       "root": "account",
       "pages": [
         "index/index",
+        "statistics/statistics",
         "add/add"
       ]
     },

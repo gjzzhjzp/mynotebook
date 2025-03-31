@@ -25,5 +25,6 @@ declare module 'vue' {
     PieChart: typeof import('./src/components/account/pieChart.vue')['default']
     Reminder: typeof import('./src/components/account/reminder.vue')['default']
     Statistics: typeof import('./src/components/account/statistics.vue')['default']
+    StatisticsByMonth: typeof import('./src/components/account/statisticsByMonth.vue')['default']
   }
 }

@@ -4,7 +4,7 @@
             <!-- 组件内容 -->
             <view class="statistics-row1 flex-align-center flex-justify-between">
                 <view class="font16 blackColor fontWeight">今日账单</view>
-                <view class="font14 skinColor">查看统计</view>
+                <view class="font14 skinColor" @click="toStatistics()">查看统计</view>
             </view>
             <view class="statistics-row2 flex-align-center flex-justify-between m-t-20">
                 <view>
@@ -41,44 +41,44 @@
 
 <script setup lang="ts">
 // 引入需要的依赖
-import { ref, computed, onMounted } from 'vue';
-import pieChart from './pieChart.vue';
+import { ref, onMounted } from 'vue';
 import date_formatter from '../../common/date_formatter'
 import ajax from '../../common/ajax';
-const today=ref({
-    expense:0,
-    income:0,
-    date:date_formatter(new Date().getTime(),"yyyy-mm-dd")
-})
-const thismonth=ref({
-    expense:0,
-    income:0,
-    date:date_formatter(new Date().getTime(),"yyyy年mm月")
+import Taro from '@tarojs/taro'
+const today = ref({
+    expense: 0,
+    income: 0,
+    date: date_formatter(new Date().getTime(), "yyyy-mm-dd")
 })
 onMounted(() => {
     getStatisticsByfl();
     getStatistics();
 })
-const getStatisticsByfl=()=>{
-  ajax.get("/account/getStatisticsByfl", {
-    type:"day"
-  }).then((res: any) => { 
-    console.log("getStatisticsByfl", res);
-  })
+const toStatistics = () => {
+    Taro.navigateTo({
+        url: '/account/statistics/statistics'
+    })
 }
-const getStatistics=()=>{
-  ajax.get("/account/getStatistics").then((res: any) => { 
-    console.log("getStatistics", res);
-      if (res.code == 200) {
-        res.data.forEach((item)=>{
-            if(item.type==0){
-                today.value.expense=item.total_amount;
-            }else{
-                today.value.income=item.total_amount;
-            }
-        })
-    }
-  })
+const getStatisticsByfl = () => {
+    ajax.get("/account/getStatisticsByfl", {
+        type: "day"
+    }).then((res: any) => {
+        console.log("getStatisticsByfl", res);
+    })
+}
+const getStatistics = () => {
+    ajax.get("/account/getStatistics").then((res: any) => {
+        console.log("getStatistics", res);
+        if (res.code == 200) {
+            res.data.forEach((item) => {
+                if (item.type == 0) {
+                    today.value.expense = item.total_amount;
+                } else {
+                    today.value.income = item.total_amount;
+                }
+            })
+        }
+    })
 }
 defineExpose({
     getStatistics
@@ -93,7 +93,8 @@ defineExpose({
     background-color: #fff;
     border-radius: 10rpx;
 }
-.statistics-container-1{
+
+.statistics-container-1 {
     width: 630rpx;
     background-color: #fff;
     border-radius: 10rpx;

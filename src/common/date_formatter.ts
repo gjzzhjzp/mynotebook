@@ -3,6 +3,7 @@ const getRegExp = (pattern: string, flags?: string): RegExp => {
 };
 // 传递的value为时间戳
 export function date_formatter(value: string | number | Date, formatStr: string): string {
+    // debugger;
     // 处理时间戳
     if ((value + "").length === 10) {
         value = Number(value) * 1000;

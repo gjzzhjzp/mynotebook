@@ -15,16 +15,38 @@ export default {
   components: { EChart },
   data() {
     return {
-      defaultOption: {
+      defaultOption: {}
+    }
+  },
+  props: {
+    list: {
+      type: Array,
+      default: () => []
+    }
+  },
+  watch: {
+    list() {
+      this.defaultOption = {
         tooltip: {
           trigger: 'item'
         },
-        color:['#5470c6', '#91cc75', '#fac858', '#ee6666', '#73c0de', '#3ba272', '#fc8452', '#9a60b4', '#ea7ccc'],
+        color: ['#5470c6', '#91cc75', '#fac858', '#ee6666', '#73c0de', '#3ba272', '#fc8452', '#9a60b4', '#ea7ccc'],
         series: [
           {
             name: '统计',
             type: 'pie',
             radius: ['40%', '70%'],
+            label: {  // 新增标签配置
+              show: true,
+              formatter: '{b}: {d}%',  // 显示名称和百分比
+              color: '#333',
+              fontSize: 12
+            },
+            labelLine: {  // 标签引导线配置
+              show: true,
+              length: 10,
+              length2: 15
+            },
             itemStyle: {
               borderRadius: 10,
               borderColor: '#fff',
@@ -33,28 +55,25 @@ export default {
             emphasis: {
               label: {
                 show: true,
-                fontSize: 40,
+                fontSize: 14,
                 fontWeight: 'bold'
               }
             },
-            data: [
-              { value: 1048, name: '餐饮' },
-              { value: 735, name: '交通' },
-              { value: 580, name: '购物' },
-              { value: 484, name: '娱乐' },
-              { value: 300, name: '其他' }
-            ]
+            data: this.list
           }
         ]
       }
-    }
-  },
-  mounted() {
-    Taro.nextTick(() => {
       setTimeout(() => {
         this.$refs.vueref0.refresh(this.defaultOption)
       }, 200);
-    })
+    }
+  },
+  mounted() {
+    // Taro.nextTick(() => {
+    //   setTimeout(() => {
+    //     this.$refs.vueref0.refresh(this.defaultOption)
+    //   }, 200);
+    // })
   },
   methods: {
     refresh(data) {

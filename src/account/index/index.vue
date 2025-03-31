@@ -46,12 +46,12 @@ interface StatisticsComponent {
 }
 const addAccountRef = ref();
 // const globalData = inject('globalData');
-const reminderRef=ref();
+const reminderRef = ref();
 const add_account = () => {
   addAccountRef.value.open();
 }
 let accounts = ref([]);
-let statisticsRef=ref<StatisticsComponent|null>(null)
+let statisticsRef = ref<StatisticsComponent | null>(null)
 
 onBeforeMount(() => {
 
@@ -61,8 +61,8 @@ onMounted(() => {
   // console.log(globalData);
   // console.log("....____________________",inject('globalData'));
   getAccountList();
- 
-  
+
+
 })
 const getAccountList = () => {
   ajax.get("/account/get", {
@@ -81,7 +81,7 @@ const getAccountList = () => {
     }
   })
 }
-const successAccount=()=>{
+const successAccount = () => {
   getAccountList();
   statisticsRef.value?.getStatistics();
 
