@@ -28,10 +28,14 @@
                 <pieChart :list="pieChartList"></pieChart>
             </view>
             <view class="m-t-20">
-                <view v-for="item in pieChartList">
-                    <view>{{ item.name }}：</view>
-                    <view>
-                        <nut-progress :percentage="Number(item.percentage)" />
+                <view v-for="item in pieChartList" class="flex-align-center m-b-10">
+                    <view>{{ item.name }}</view>
+                    <view style="flex:1">
+                        <nut-progress :percentage="Number(item.percentage)" status="icon">
+                            <template #icon-name>
+                                ￥{{ item.value }}
+                            </template>
+                        </nut-progress>
                     </view>
                 </view>
             </view>
