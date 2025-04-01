@@ -2,7 +2,11 @@
     <view>
         <view class="statistics-container p-a-15">
             <view class="statistics-row1 flex-align-center flex-justify-between">
-                <view class="font16 blackColor fontWeight">{{ thismonth.date }}</view>
+                <view class="font16 blackColor fontWeight" @click="showCalender = true">{{ thismonth.date }}</view>
+                <nut-popup v-model:visible="showCalender" position="bottom">
+                    <nut-date-picker type="year-month" v-model="thismonth.monthdate" :three-dimensional="false"
+                        @confirm="chooseDate"></nut-date-picker>
+                </nut-popup>
                 <view class="font14 tagColor flex-align-center">
                     <view v-for="item in types" :key="item.title" class="m-r-10" @click="checked_type = item.value">
                         <nut-button :type="item.value != checked_type ? 'default' : 'primary'" size="small">{{
@@ -23,6 +27,14 @@
             <view class="m-t-20">
                 <pieChart :list="pieChartList"></pieChart>
             </view>
+            <view class="m-t-20">
+                <view v-for="item in pieChartList">
+                    <view>{{ item.name }}：</view>
+                    <view>
+                        <nut-progress :percentage="Number(item.percentage)" />
+                    </view>
+                </view>
+            </view>
         </view>
     </view>
 </template>
@@ -33,7 +45,6 @@ import { ref, onMounted, watch, inject } from 'vue';
 import pieChart from './pieChart.vue';
 import date_formatter from '../../common/date_formatter'
 import ajax from '../../common/ajax';
-import Taro from '@tarojs/taro'
 interface StatisticsItem {
     type: number;
     category: string;
@@ -44,9 +55,13 @@ const thismonth = ref({
     income: 0,
     expenseList: [] as StatisticsItem[],
     incomeList: [] as StatisticsItem[],
-    date: date_formatter(new Date().getTime(), "yyyy年MM月")
+    date: date_formatter(new Date().getTime(), "yyyy年MM月"),
+    monthdate: ref<Date>(new Date())
 })
+const currentMonthFirstDay = ref("");
+const nextMonthFirstDay = ref("");
 const checked_type = ref("expense");
+const showCalender = ref(false);
 const types = ref([
     {
         title: "支出",
@@ -58,26 +73,50 @@ const types = ref([
     }
 ])
 const globalData = inject('globalData') as any;
-let pieChartList = ref([{ value: 0, name: "" }])
+let pieChartList = ref([{ value: 0, name: "", percentage: "0" }])
 onMounted(() => {
+    getCurrentMonthDates(new Date().getFullYear(), new Date().getMonth() + 1);
     getStatistics();
     getStatisticsByfl();
     console.log("globalData", globalData.value);
 })
 watch(checked_type, () => {
+    getpieChartList();
+})
+// 获取图表数据
+const getpieChartList = () => {
     let rows = checked_type.value == "expense" ? thismonth.value.expenseList : thismonth.value.incomeList;
+    // 找到最大 total_amount
+    const maxAmount = Math.max(...rows.map(item => item.total_amount));
     pieChartList.value = rows.map((item: StatisticsItem) => {
+        const percentage = maxAmount > 0 ? (item.total_amount / maxAmount) * 100 : 0;
         return {
             value: item.total_amount,
             name: globalData.value.categories_obj[item.category] as string,
+            percentage: percentage.toFixed(2) // 保留两位小数
         }
     });
-})
+}
+const chooseDate = (e: any) => {
+    console.log("e", e);
+    thismonth.value.date = `${e.selectedValue[0]}年${e.selectedValue[1]}月`;
+    getCurrentMonthDates(e.selectedValue[0], e.selectedValue[1]);
+    getStatistics();
+    getStatisticsByfl();
+    showCalender.value = false;
+}
+const getCurrentMonthDates = (year: number, month: number) => {
+    // 使用 UTC 时间避免时区问题
+    const currentMonthFirstDay1 = new Date(Date.UTC(year, month - 1, 1));
+    const nextMonthFirstDay1 = new Date(Date.UTC(year, month, 1));
+    currentMonthFirstDay.value = currentMonthFirstDay1.toISOString().split('T')[0];
+    nextMonthFirstDay.value = nextMonthFirstDay1.toISOString().split('T')[0];
+};
 const getStatisticsByfl = () => {
     ajax.get("/account/getStatisticsByfl", {
         type: "month",
-        startDate: "2025-03-01",
-        endDate: "2025-04-01",
+        startDate: currentMonthFirstDay.value,
+        endDate: nextMonthFirstDay.value
     }).then((res: any) => {
 
         if (res.code == 200) {
@@ -88,31 +127,32 @@ const getStatisticsByfl = () => {
             thismonth.value.incomeList = rows.filter((item) => {
                 return item.type == 1;
             });
-            pieChartList.value = thismonth.value.expenseList.map((item: StatisticsItem) => {
-                return {
-                    value: item.total_amount,
-                    name: globalData.value.categories_obj[item.category] as string,
-                }
-            });
+            getpieChartList();
         }
         console.log("getStatisticsByfl", thismonth.value.expenseList, thismonth.value.incomeList, pieChartList.value);
     })
 }
 const getStatistics = () => {
+    console.log("currentMonthFirstDay", currentMonthFirstDay.value, nextMonthFirstDay.value);
     ajax.get("/account/getStatistics", {
-        startDate: "2025-03-01",
-        endDate: "2025-04-01"
+        startDate: currentMonthFirstDay.value,
+        endDate: nextMonthFirstDay.value
     }).then((res: any) => {
         console.log("getStatistics", res);
         if (res.code == 200) {
-            res.data.forEach((item) => {
-                if (item.type == 0) {
-                    thismonth.value.expense = item.total_amount;
+            if (res.data && res.data.length > 0) {
+                res.data.forEach((item) => {
+                    if (item.type == 0) {
+                        thismonth.value.expense = item.total_amount;
 
-                } else {
-                    thismonth.value.income = item.total_amount;
-                }
-            })
+                    } else {
+                        thismonth.value.income = item.total_amount;
+                    }
+                })
+            } else {
+                thismonth.value.expense = 0;
+                thismonth.value.income = 0;
+            }
         }
     })
 }

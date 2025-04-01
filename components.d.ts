@@ -7,7 +7,7 @@ export {}
 
 declare module 'vue' {
   export interface GlobalComponents {
-    Add: typeof import('./src/components/common/add.vue')['default']
+    Add: typeof import('./src/components/account/add.vue')['default']
     Header: typeof import('./src/components/common/Header.vue')['default']
     List: typeof import('./src/components/account/list.vue')['default']
     NutButton: typeof import('@nutui/nutui-taro')['Button']
@@ -20,6 +20,7 @@ declare module 'vue' {
     NutGridItem: typeof import('@nutui/nutui-taro')['GridItem']
     NutInput: typeof import('@nutui/nutui-taro')['Input']
     NutPopup: typeof import('@nutui/nutui-taro')['Popup']
+    NutProgress: typeof import('@nutui/nutui-taro')['Progress']
     NutSwitch: typeof import('@nutui/nutui-taro')['Switch']
     PageScroll: typeof import('./src/components/common/pageScroll.vue')['default']
     PieChart: typeof import('./src/components/account/pieChart.vue')['default']
