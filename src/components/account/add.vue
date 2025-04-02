@@ -66,6 +66,7 @@ interface categoriesData {
     value: string
 }
 const formData = ref({
+    id:"",
     amount: '',
     description: '',
     accountDate: "",
@@ -74,7 +75,7 @@ const formData = ref({
 const categories = ref<categoriesData[]>([]);
 const checked_category = ref("food");
 const checked_type = ref("expense");
-const accountDate_date=ref<Date>(new Date());
+const accountDate_date = ref<Date>(new Date());
 const types = ref([
     {
         title: "支出",
@@ -85,6 +86,7 @@ const types = ref([
         value: "income"
     }
 ])
+const isedit=ref(false);
 watch(checked_type, () => {
     getCategory();
 })
@@ -98,13 +100,16 @@ const onOk = () => {
         date: formData.value.accountDate
     }
     console.log("params", params);
-    // return;
-    // 调用接口
-    ajax.post('/account/add', params).then(res => {
+    let url='/account/add';
+    if(isedit.value){
+        url='/account/update';
+        params.id=formData.value.id;
+    }
+    ajax.post(url, params).then(res => {
         console.log("res", res);
         if (res.code == 200) {
             Taro.showToast({
-                title: '添加成功',
+                title: (isedit.value?'编辑':'添加')+'成功',
                 icon: 'success',
                 duration: 2000
             });
@@ -138,7 +143,21 @@ const chooseDate = (e: any) => {
     formData.value.accountDate_show = date_formatter(new Date(formData.value.accountDate).getTime(), 'MM月DD日');
     showCalender.value = false;
 }
-const open = () => {
+const open = (item) => {
+    console.log("item111111111111", item);
+    if (item) {
+        isedit.value=true;
+        formData.value = {
+            id:item.id,
+            amount: item.amount,
+            description: item.description,
+            accountDate: item.date,
+            accountDate_show: date_formatter(new Date(item.date).getTime(), 'MM月DD日')
+        }
+        accountDate_date.value = new Date(item.date);
+        checked_category.value = item.category;
+        checked_type.value = item.type == 0? 'expense' : 'income';
+    }
     visible.value = true;
 }
 const close = () => {

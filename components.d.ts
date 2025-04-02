@@ -7,9 +7,11 @@ export {}
 
 declare module 'vue' {
   export interface GlobalComponents {
+    ActionSheet: typeof import('./src/components/common/actionSheet.vue')['default']
     Add: typeof import('./src/components/account/add.vue')['default']
     Header: typeof import('./src/components/common/Header.vue')['default']
     List: typeof import('./src/components/account/list.vue')['default']
+    NutActionSheet: typeof import('@nutui/nutui-taro')['ActionSheet']
     NutButton: typeof import('@nutui/nutui-taro')['Button']
     NutDatePicker: typeof import('@nutui/nutui-taro')['DatePicker']
     NutDialog: typeof import('@nutui/nutui-taro')['Dialog']

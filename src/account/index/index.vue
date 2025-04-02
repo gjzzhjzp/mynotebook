@@ -17,7 +17,7 @@
             <!-- <view class="font14 skinColor">查看全部</view> -->
           </view>
           <view class="m-t-20">
-            <accountList :list="accounts"></accountList>
+            <accountList :list="accounts" @delete="successAccount" @update="update_account"></accountList>
           </view>
         </view>
       </view>
@@ -49,6 +49,9 @@ const addAccountRef = ref();
 const reminderRef = ref();
 const add_account = () => {
   addAccountRef.value.open();
+}
+const update_account = (item) => {
+  addAccountRef.value.open(item);
 }
 let accounts = ref([]);
 let statisticsRef = ref<StatisticsComponent | null>(null)
@@ -89,16 +92,6 @@ const successAccount = () => {
 // 打开订阅消息
 const openReminder = () => {
   reminderRef.value.open();
-  // basedll.requestSubscribeMessage([globalData.value.tmplIds.overspend,globalData.value.tmplIds.daily]);
-
-  // // 测试新增限额
-  // ajax.post("/userLimit/addOrUpdate", {
-  //   "daily_limit": 1000.00,
-  //   "monthly_limit": 30000.00,
-  //   "yearly_limit": 360000.00
-  // }).then((res: any) => {
-  //   console.log("测试新增限额", res);
-  // })
 }
 </script>
 <style>
