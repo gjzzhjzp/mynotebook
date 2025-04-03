@@ -1,6 +1,6 @@
 <template>
     <view class="account-list">
-        <view v-for="(item, index) in list" :key="item.id" class=" m-t-15" @clicK="itemClick(item, index)">
+        <view v-for="(item) in list" :key="item.id" class=" m-t-15" @clicK="itemClick(item)">
             <view class="flex-align-center flex-justify-between">
                 <view class="flex-align-center">
                     <view>
@@ -25,32 +25,44 @@
 
 <script setup lang="ts">
 // 引入需要的依赖
-import { ref, computed, onMounted } from 'vue';
+import { ref, onMounted } from 'vue';
 import Taro from '@tarojs/taro';
 import ajax from '../../common/ajax';
 import actionSheet from "../common/actionSheet.vue"
+interface AccountItem {
+  id: string;
+  category: string;
+  created_at: string;
+  description: string;
+  type: number;
+  amount: string;
+}
+
+interface CategoriesObj {
+  [key: string]: string;
+}
 defineProps({
     // props
     list: {
-        type: Array,
+        type: Array as () => AccountItem[],
         default: () => []
     }
 });
-const categories_obj = ref({});
+const categories_obj = ref<CategoriesObj>({});
 const actionSheetRef = ref();
-const currentItem = ref();
+const currentItem = ref<AccountItem>();
 const emits = defineEmits(['update', 'delete'])
 onMounted(() => {
     categories_obj.value = Taro.getStorageSync("globalData").categories_obj;
 })
-const itemClick = (item, index) => {
+const itemClick = (item:AccountItem) => {
     actionSheetRef.value.open();
     currentItem.value = item;
 }
 const deleteAccount = () => {
     ajax.post("/account/delete", {
-        id: currentItem.value.id
-    }).then((res) => {
+        id: currentItem.value?.id
+    }).then(() => {
         // console.log("删除成功", res);
         Taro.showToast({
             title: "删除成功",
@@ -61,14 +73,12 @@ const deleteAccount = () => {
     })
 }
 const updateAccount = () => {
-    emits('update',currentItem.value)
+    if (currentItem.value) {
+    emits('update', currentItem.value);
+  }
 }
 </script>
 
 <style scoped>
-.account-list {
-    /* 组件样式 */
-    /* –-nut-divider-text-color: "transparent"; */
-    /* --nut-grid-item-content-padding: "0px 0px 0px 0px"; */
-}
+
 </style>

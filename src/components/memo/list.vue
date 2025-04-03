@@ -20,7 +20,7 @@
 
 <script setup lang="ts">
 // 引入需要的依赖
-import { ref, computed, onMounted } from 'vue';
+import { ref, onMounted } from 'vue';
 import Taro from '@tarojs/taro';
 import ajax from '../../common/ajax';
 import actionSheet from "../common/actionSheet.vue"
