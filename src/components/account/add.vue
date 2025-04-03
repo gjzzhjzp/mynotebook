@@ -65,8 +65,24 @@ interface categoriesData {
     name: string,
     value: string
 }
-const formData = ref({
-    id:"",
+interface AccountFormData {
+    id?: string;
+    amount: string;
+    description: string;
+    accountDate: string;
+    accountDate_show: string;
+}
+
+interface AccountItem {
+    id: string;
+    amount: string;
+    description: string;
+    date: string;
+    category: string;
+    type: number;
+}
+const formData = ref<AccountFormData>({
+    id: "",
     amount: '',
     description: '',
     accountDate: "",
@@ -86,44 +102,43 @@ const types = ref([
         value: "income"
     }
 ])
-const isedit=ref(false);
+const isedit = ref(false);
 watch(checked_type, () => {
     getCategory();
 })
 const emit = defineEmits(['success'])
-const onOk = () => {
+const onOk = async () => {
     const params = {
+        id: isedit.value ? formData.value.id : undefined,
         amount: formData.value.amount,
         description: formData.value.description,
         category: checked_category.value,
         type: checked_type.value == 'expense' ? 0 : 1,
         date: formData.value.accountDate
-    }
-    console.log("params", params);
-    let url='/account/add';
-    if(isedit.value){
-        url='/account/update';
-        params.id=formData.value.id;
-    }
-    ajax.post(url, params).then(res => {
-        console.log("res", res);
+    };
+
+    try {
+        const url = isedit.value ? '/account/update' : '/account/add';
+        const res = await ajax.post(url, params);
         if (res.code == 200) {
             Taro.showToast({
-                title: (isedit.value?'编辑':'添加')+'成功',
+                title: `${isedit.value ? '编辑' : '添加'}成功`,
                 icon: 'success',
                 duration: 2000
             });
-        } else {
-            Taro.showToast({
-                title: res.message as string,
-                icon: 'error',
-                duration: 2000
-            });
+
+            emit('success');
         }
-        emit('success');
         close();
-    })
-}
+    } catch (error) {
+        Taro.showToast({
+            title: error.message || '操作失败',
+            icon: 'error',
+            duration: 2000
+        });
+    }
+};
+
 const getCategory = () => {
     const globalData = Taro.getStorageSync("globalData");
     categories.value = globalData.categories[checked_type.value == 'expense' ? 0 : 1]
@@ -143,12 +158,12 @@ const chooseDate = (e: any) => {
     formData.value.accountDate_show = date_formatter(new Date(formData.value.accountDate).getTime(), 'MM月DD日');
     showCalender.value = false;
 }
-const open = (item) => {
+const open = (item?: AccountItem) => {
     console.log("item111111111111", item);
     if (item) {
-        isedit.value=true;
+        isedit.value = true;
         formData.value = {
-            id:item.id,
+            id: item.id,
             amount: item.amount,
             description: item.description,
             accountDate: item.date,
@@ -156,7 +171,17 @@ const open = (item) => {
         }
         accountDate_date.value = new Date(item.date);
         checked_category.value = item.category;
-        checked_type.value = item.type == 0? 'expense' : 'income';
+        checked_type.value = item.type == 0 ? 'expense' : 'income';
+    } else {
+        // 重置表单数据
+        formData.value = {
+            id: "",
+            amount: '',
+            description: '',
+            accountDate: date_formatter(new Date().getTime(), 'YYYY-MM-DD'),
+            accountDate_show: date_formatter(new Date().getTime(), 'MM月DD日')
+        };
+        isedit.value = false;
     }
     visible.value = true;
 }

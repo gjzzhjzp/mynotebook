@@ -8,9 +8,9 @@ export {}
 declare module 'vue' {
   export interface GlobalComponents {
     ActionSheet: typeof import('./src/components/common/actionSheet.vue')['default']
-    Add: typeof import('./src/components/account/add.vue')['default']
+    Add: typeof import('./src/components/common/add.vue')['default']
     Header: typeof import('./src/components/common/Header.vue')['default']
-    List: typeof import('./src/components/account/list.vue')['default']
+    List: typeof import('./src/components/memo/list.vue')['default']
     NutActionSheet: typeof import('@nutui/nutui-taro')['ActionSheet']
     NutButton: typeof import('@nutui/nutui-taro')['Button']
     NutDatePicker: typeof import('@nutui/nutui-taro')['DatePicker']
@@ -24,6 +24,7 @@ declare module 'vue' {
     NutPopup: typeof import('@nutui/nutui-taro')['Popup']
     NutProgress: typeof import('@nutui/nutui-taro')['Progress']
     NutSwitch: typeof import('@nutui/nutui-taro')['Switch']
+    NutTextarea: typeof import('@nutui/nutui-taro')['Textarea']
     PageScroll: typeof import('./src/components/common/pageScroll.vue')['default']
     PieChart: typeof import('./src/components/account/pieChart.vue')['default']
     Reminder: typeof import('./src/components/account/reminder.vue')['default']

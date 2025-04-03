@@ -37,7 +37,7 @@ import pageScroll from '../../components/common/pageScroll.vue';
 import add from '../../components/common/add.vue';
 import statistics from '../../components/account/statistics.vue';
 import accountList from '../../components/account/list.vue';
-import Taro from '@tarojs/taro';
+// import Taro from '@tarojs/taro';
 import addAccount from '../../components/account/add.vue';
 import reminder from '../../components/account/reminder.vue';
 import { formatDate } from '../../common/date_formatter'

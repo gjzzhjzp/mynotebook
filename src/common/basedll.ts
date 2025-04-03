@@ -29,22 +29,24 @@ const wx_getSetting = (ids) => {
         });
     });
 }
-const requestSubscribeMessage = (tmplIds: string[]): Promise<Taro.requestSubscribeMessage.SuccessCallbackResult> => {
-    return new Promise((resolve, reject) => {
-      Taro.requestSubscribeMessage({
-        tmplIds: tmplIds,
-        entityIds:[],
-        success(res) {
-          console.log('开启成功', res, tmplIds);
-          resolve(res);
-        },
-        fail(res) {
-          console.log('开启失败', res);
-          reject(res);
-        },
-      });
+const requestSubscribeMessage = (tmplIds: string[]): Promise<Boolean> => {
+    return new Promise((resolve) => {
+        Taro.requestSubscribeMessage({
+            tmplIds: tmplIds,
+            entityIds: [],
+            success(res) {
+                console.log('开启成功', res, tmplIds);
+                // 检查每个模板ID的状态
+                const allAccepted = tmplIds.every(id => res[id] === 'accept');
+                resolve(allAccepted);
+            },
+            fail(res) {
+                console.log('开启失败', res);
+                resolve(false);
+            },
+        });
     });
-  }
+}
 export default {
     wx_getSetting,
     requestSubscribeMessage

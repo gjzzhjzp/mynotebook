@@ -20,17 +20,14 @@ import pageScroll from '../../components/common/pageScroll.vue';
 import memoList from '../../components/memo/list.vue';
 import addmemo from '../../components/memo/add.vue';
 import { formatDate } from '../../common/date_formatter'
-// 是否允许post请求
+
 onBeforeMount(() => {
 
 })
 onMounted(() => {
-  // debugger;
-  // addMemos();
   getList();
-  // deleteMemos();
-  // updateMemos();
 })
+const addmemoRef = ref();
 const add_memo = () => {
   addmemoRef.value.open();
 }
@@ -38,14 +35,7 @@ const update_memo = (item) => {
   addmemoRef.value.open(item);
 }
 let memos = ref([]);
-const addMemos=()=>{
-  ajax.post("/memos/add", {
-  title:"这是标题",
-  content:"这是内容"
-  }).then((res) => {
-    console.log("添加成功", res);
-  })
-}
+
 const getList=()=>{
   ajax.get("/memos/list", {
    page:1,
@@ -64,22 +54,6 @@ const getList=()=>{
 }
 const successmemo=()=>{
   getList();
-}
-const deleteMemos=()=>{
-  ajax.post("/memos/delete", {
-  id:1
-  }).then((res) => {
-    console.log("删除成功", res);
-  })
-}
-const updateMemos=()=>{
-  ajax.post("/memos/update", {
-  id:2,
-  title:"这是标题22222",
-  content:"这是内容22222"
-  }).then((res) => {
-    console.log("删除成功", res);
-  })
 }
 
 </script>
