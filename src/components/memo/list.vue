@@ -1,13 +1,17 @@
 <template>
     <view class="memo-list">
-        <view v-for="(item, index) in list" :key="item.id" class="memo-item" @clicK="itemClick(item, index)">
-            <view class="memo-header">
-                <view class="memo-title fontWeight">{{ item.title }}</view>
-                <view class="memo-date">{{ item.created_at }}</view>
+        <template v-if="list.length > 0">
+            <view v-for="(item, index) in list" :key="item.id" class="memo-item" @clicK="itemClick(item, index)">
+                <view class="memo-header">
+                    <view class="memo-title fontWeight">{{ item.title }}</view>
+                    <view class="memo-date">{{ item.created_at }}</view>
+                </view>
+                <view class="memo-content">{{ item.content }}</view>
             </view>
-            <view class="memo-content">{{ item.content }}</view>
-        </view>
-       
+        </template>
+        <template v-else>
+            <emptyData></emptyData>
+        </template>
     </view>
 </template>
 
@@ -15,6 +19,7 @@
 // 引入需要的依赖
 import { ref, onMounted } from 'vue';
 import Taro from '@tarojs/taro';
+import emptyData from "../common/emptyData.vue"
 interface MemoItem {
     id: number;
     title: string;
@@ -37,8 +42,8 @@ onMounted(() => {
     categories_obj.value = Taro.getStorageSync("globalData").categories_obj;
 })
 const itemClick = (item: MemoItem, index: number) => {
-    
-   
+
+
     emits('click', item, index);
 }
 

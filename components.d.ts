@@ -9,6 +9,7 @@ declare module 'vue' {
   export interface GlobalComponents {
     ActionSheet: typeof import('./src/components/common/actionSheet.vue')['default']
     Add: typeof import('./src/components/account/add.vue')['default']
+    EmptyData: typeof import('./src/components/common/emptyData.vue')['default']
     Header: typeof import('./src/components/common/Header.vue')['default']
     List: typeof import('./src/components/account/list.vue')['default']
     NutActionSheet: typeof import('@nutui/nutui-taro')['ActionSheet']

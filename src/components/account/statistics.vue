@@ -4,7 +4,10 @@
             <!-- 组件内容 -->
             <view class="statistics-row1 flex-align-center flex-justify-between">
                 <view class="font16 blackColor fontWeight">今日账单</view>
-                <view class="font14  fontWeight" @click="toStatistics()">查看统计></view>
+                <view class="font14  fontWeight flex-align-center" @click="toStatistics()">
+                    <view>查看统计</view>
+                    <view class="iconfont icon-you font14"></view>
+                </view>
             </view>
             <view class="statistics-row2 flex-align-center flex-justify-between m-t-20">
                 <view>

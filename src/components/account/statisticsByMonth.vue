@@ -14,31 +14,36 @@
                     </view>
                 </view>
             </view>
-            <view class="statistics-row2 flex-align-center flex-justify-between m-t-20">
-                <view v-if="checked_type == 'expense'">
-                    <view class="font14">总支出</view>
-                    <view class="skinColor font20 m-t-5">￥{{ thismonth.expense }}</view>
-                </view>
-                <view v-else>
-                    <view class="font14">总收入</view>
-                    <view class="skinColor font20 m-t-5">￥{{ thismonth.income }}</view>
-                </view>
-            </view>
-            <view class="m-t-20">
-                <pieChart :list="pieChartList"></pieChart>
-            </view>
-            <view class="m-t-20">
-                <view v-for="item in pieChartList" class="flex-align-center m-b-10">
-                    <view>{{ item.name }}</view>
-                    <view style="flex:1">
-                        <nut-progress :percentage="Number(item.percentage)" status="icon">
-                            <template #icon-name>
-                                ￥{{ item.value }}
-                            </template>
-                        </nut-progress>
+            <template v-if="pieChartList.length > 0">
+                <view class="statistics-row2 flex-align-center flex-justify-between m-t-20">
+                    <view v-if="checked_type == 'expense'">
+                        <view class="font14">总支出</view>
+                        <view class="skinColor font30 m-t-5">￥{{ thismonth.expense }}</view>
+                    </view>
+                    <view v-else>
+                        <view class="font14">总收入</view>
+                        <view class="skinColor font30 m-t-5">￥{{ thismonth.income }}</view>
                     </view>
                 </view>
-            </view>
+                <view class="m-t-20">
+                    <pieChart :list="pieChartList"></pieChart>
+                </view>
+                <view class="m-t-20">
+                    <view v-for="item in pieChartList" class="flex-align-center m-b-10">
+                        <view>{{ item.name }}</view>
+                        <view style="flex:1;" class="m-l-5">
+                            <nut-progress :percentage="Number(item.percentage)" status="icon">
+                                <template #icon-name>
+                                    ￥{{ item.value }}
+                                </template>
+                            </nut-progress>
+                        </view>
+                    </view>
+                </view>
+            </template>
+            <template v-else>
+                <emptyData></emptyData>
+            </template>
         </view>
     </view>
 </template>
@@ -49,6 +54,7 @@ import { ref, onMounted, watch, inject } from 'vue';
 import pieChart from './pieChart.vue';
 import date_formatter from '../../common/date_formatter'
 import ajax from '../../common/ajax';
+import emptyData from "../common/emptyData.vue"
 interface StatisticsItem {
     type: number;
     category: string;
@@ -100,6 +106,7 @@ const getpieChartList = () => {
             percentage: percentage.toFixed(2) // 保留两位小数
         }
     });
+    console.log("pieChartList", pieChartList.value);
 }
 const chooseDate = (e: any) => {
     console.log("e", e);
@@ -133,11 +140,11 @@ const getStatisticsByfl = () => {
             });
             getpieChartList();
         }
-        console.log("getStatisticsByfl", thismonth.value.expenseList, thismonth.value.incomeList, pieChartList.value);
+        // console.log("getStatisticsByfl", thismonth.value.expenseList, thismonth.value.incomeList, pieChartList.value);
     })
 }
 const getStatistics = () => {
-    console.log("currentMonthFirstDay", currentMonthFirstDay.value, nextMonthFirstDay.value);
+    // console.log("currentMonthFirstDay", currentMonthFirstDay.value, nextMonthFirstDay.value);
     ajax.get("/account/getStatistics", {
         startDate: currentMonthFirstDay.value,
         endDate: nextMonthFirstDay.value
