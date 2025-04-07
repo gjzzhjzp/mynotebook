@@ -1,8 +1,8 @@
 @font-face {
   font-family: "iconfont"; /* Project id 4848967 */
-  src: url('iconfont.woff2?t=1741254344770') format('woff2'),
-       url('iconfont.woff?t=1741254344770') format('woff'),
-       url('iconfont.ttf?t=1741254344770') format('truetype');
+  src: url('iconfont.woff2?t=1744009009971') format('woff2'),
+       url('iconfont.woff?t=1744009009971') format('woff'),
+       url('iconfont.ttf?t=1744009009971') format('truetype');
 }
 
 .iconfont {
@@ -11,6 +11,50 @@
   font-style: normal;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+}
+
+.icon-zuo:before {
+  content: "\e622";
+}
+
+.icon-icon_arrow_left:before {
+  content: "\e62e";
+}
+
+.icon-shouru:before {
+  content: "\e65c";
+}
+
+.icon-zhichu:before {
+  content: "\e666";
+}
+
+.icon-juzi:before {
+  content: "\e604";
+}
+
+.icon-juzi1:before {
+  content: "\e60e";
+}
+
+.icon-juzi2:before {
+  content: "\e601";
+}
+
+.icon-tubiaozhizuomoban-:before {
+  content: "\e60a";
+}
+
+.icon-jizhangben:before {
+  content: "\e61c";
+}
+
+.icon-tianjia:before {
+  content: "\e607";
+}
+
+.icon-beiwanglu:before {
+  content: "\e877";
 }
 
 .icon-icon_notice:before {

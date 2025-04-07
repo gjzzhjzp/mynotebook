@@ -1,16 +1,25 @@
 <template>
     <view class="memo-list">
-        <view v-for="(item, index) in list" :key="item.id" class="memo-item" @clicK="itemClick(item, index)">
-            <view class="memo-header">
-                <view class="memo-title fontWeight">{{ item.title }}</view>
-                <view class="memo-date">{{ item.created_at }}</view>
+        <view v-for="(item, index) in list" :key="item.id" class=" m-t-15" @clicK="itemClick(item, index)">
+            <view class="flex-align-center flex-justify-between">
+                <view class="flex-align-center">
+                   
+                    <view class="flex-column-left m-l-5">
+                        <view class="font14 fontWeight blackColor">{{ item.title }}</view>
+                        <view class="font12 m-t-5">  {{ item.content }}</view>
+                    </view>
+                    
+                </view>
+                <view class="font12">
+                        {{ item.created_at }}
+                    </view>
             </view>
-            <view class="memo-content">{{ item.content }}</view>
+            <nut-divider
+                :style="{ color: '#ededf3', borderColor: '#ededf3', paddingLeft: '0px', margin: '10px 0' }"></nut-divider>
         </view>
         <action-sheet ref="actionSheetRef" @update="updatememo" @delete="deletememo" type="memo"></action-sheet>
     </view>
 </template>
-
 <script setup lang="ts">
 // 引入需要的依赖
 import { ref, onMounted } from 'vue';
@@ -18,10 +27,10 @@ import Taro from '@tarojs/taro';
 import ajax from '../../common/ajax';
 import actionSheet from "../common/actionSheet.vue"
 interface MemoItem {
-    id: number;
-    title: string;
-    created_at: string;
-    content: string;
+  id: number;
+  title: string;
+  created_at: string;
+  content: string;
 }
 defineProps({
     // props
@@ -37,7 +46,7 @@ const emits = defineEmits(['update', 'delete'])
 onMounted(() => {
     categories_obj.value = Taro.getStorageSync("globalData").categories_obj;
 })
-const itemClick = (item: MemoItem, index: number) => {
+const itemClick = (item:MemoItem, index:number) => {
     actionSheetRef.value.open();
     currentItem.value = item;
 }
@@ -55,48 +64,11 @@ const deletememo = () => {
     })
 }
 const updatememo = () => {
-    emits('update', currentItem.value)
+    emits('update',currentItem.value)
 }
 </script>
 
-<style>
+<style scoped>
 .memo-list {
-    padding: 20rpx;
-}
-
-.memo-item {
-    padding: 20rpx;
-    margin-bottom: 20rpx;
-    background: #fff;
-    border-radius: 12rpx;
-    box-shadow: 0 2rpx 8rpx rgba(0, 0, 0, 0.05);
-}
-
-.memo-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 10rpx;
-}
-
-.memo-title {
-    font-size: 28rpx;
-    color: #333;
-}
-
-.memo-date {
-    font-size: 24rpx;
-    color: #999;
-}
-
-.memo-content {
-    font-size: 26rpx;
-    color: #666;
-    line-height: 1.6;
-}
-
-.nut-divider {
-    margin: 20rpx 0;
-    background-color: #f5f5f5;
 }
 </style>

@@ -1,12 +1,13 @@
 <template>
-  <pageScroll :refresher_enabled="false">
+  <pageScroll :refresher_enabled="true" @lower="lower" @refresh="refresh" @refreshering="refreshering">
     <template #nav>
       <Header title="记账"></Header>
     </template>
     <template #body>
       <view class="p-a-15">
-        <view class=" font14 blackColor text-right m-b-15" @click="openReminder()">
-          设置订阅提醒
+        <view class=" font14 blackColor text-right m-b-15 flex-align-center flex-justify-end" @click="openReminder()">
+          <view class="iconfont icon-icon_notice font16 skinColor"></view>
+          <view class="skinColor">设置订阅提醒</view>
         </view>
         <view>
           <statistics ref="statisticsRef"></statistics>
@@ -21,9 +22,12 @@
           </view>
         </view>
       </view>
-      <add @add="add_account()"></add>
+      
       <addAccount ref="addAccountRef" @success="successAccount()"></addAccount>
       <reminder ref="reminderRef"></reminder>
+    </template>
+    <template #footer>
+      <add @add="add_account()"></add>
     </template>
   </pageScroll>
 </template>
@@ -53,6 +57,9 @@ const add_account = () => {
 const update_account = (item) => {
   addAccountRef.value.open(item);
 }
+let page = ref<number>(1);
+let total = ref<number>(0);
+let refreshering = ref<boolean>(false);
 let accounts = ref([]);
 let statisticsRef = ref<StatisticsComponent | null>(null)
 
@@ -69,17 +76,29 @@ onMounted(() => {
 })
 const getAccountList = () => {
   ajax.get("/account/get", {
-    page: 1,
+    page: page.value,
     rows: 10
   }).then((res: any) => {
     console.log("getAccountList", res);
+
     if (res.code == 200) {
-      accounts.value = res.data.map((item: any) => {
-        return {
-          ...item,
-          created_at: formatDate(new Date(item.created_at).getTime())
-        }
-      });
+      total.value = res.total as number;
+      refreshering.value = false;
+      if (page.value == 1) {
+        accounts.value = res.data.map((item: any) => {
+          return {
+            ...item,
+            created_at: formatDate(new Date(item.created_at).getTime())
+          }
+        });
+      } else {
+        accounts.value = [...accounts.value, ...res.data.map((item: any) => {
+          return {
+            ...item,
+            created_at: formatDate(new Date(item.created_at).getTime())
+          }
+        })] as any;
+      }
       console.log(accounts.value);
     }
   })
@@ -92,6 +111,19 @@ const successAccount = () => {
 // 打开订阅消息
 const openReminder = () => {
   reminderRef.value.open();
+}
+// 上拉到最底部加载
+const lower = () => {
+  if (accounts.value.length >= total.value) {
+    return;
+  }
+  page.value++;
+  getAccountList();
+}
+const refresh = () => {
+  refreshering.value = true;
+  page.value = 1;
+  getAccountList();
 }
 </script>
 <style>

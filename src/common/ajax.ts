@@ -15,6 +15,7 @@ interface IResponse<T = any> {
   code: number;
   data: T;
   message?: string;
+  total?: number;
 }
 
 const DEFAULT_TIMEOUT = 10000; // 10秒超时

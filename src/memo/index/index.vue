@@ -1,12 +1,18 @@
 <template>
-  <pageScroll :refresher_enabled="false">
+  <pageScroll :refresher_enabled="true" @lower="lower" @refresh="refresh" @refreshering="refreshering">
     <template #nav>
       <Header title="备忘录"></Header>
     </template>
     <template #body>
-      <memo-list :list="memos" @delete="successmemo" @update="update_memo"></memo-list>
-      <add @add="add_memo()"></add>
+      <!-- p-a-10 m-a-10 whiteColorB borderRadius10 -->
+      <view class="">
+        <memo-list :list="memos" @delete="successmemo" @update="update_memo"></memo-list>
+      </view>
+     
       <addmemo ref="addmemoRef" @success="successmemo()"></addmemo>
+    </template>
+    <template #footer>
+      <add @add="add_memo()"></add>
     </template>
   </pageScroll>
 </template>
@@ -27,6 +33,9 @@ onBeforeMount(() => {
 onMounted(() => {
   getList();
 })
+let page=ref<number>(1);
+let total=ref<number>(0);
+let refreshering=ref<boolean>(false);
 const addmemoRef = ref();
 const add_memo = () => {
   addmemoRef.value.open();
@@ -38,21 +47,46 @@ let memos = ref([]);
 
 const getList=()=>{
   ajax.get("/memos/list", {
-   page:1,
+   page:page.value,
    rows:20
   }).then((res) => {
     if (res.code == 200) {
-      memos.value = res.data.map((item: any) => {
+      total.value = res.total as number;
+      refreshering.value=false;
+      if(page.value==1){
+        memos.value = res.data.map((item: any) => {
         return {
           ...item,
           created_at: formatDate(new Date(item.created_at).getTime())
         }
       });
+      }else{
+        memos.value = [...memos.value,...res.data.map((item: any) => {
+          return {
+           ...item,
+            created_at: formatDate(new Date(item.created_at).getTime())
+          }
+        })] as any;
+      }
+     
       console.log(memos.value);
     }
   })
 }
 const successmemo=()=>{
+  getList();
+}
+// 上拉到最底部加载
+const lower=()=>{
+  if(memos.value.length>=total.value){
+    return;
+  }
+  page.value++;
+  getList();
+}
+const refresh=()=>{
+  refreshering.value=true;
+  page.value=1;
   getList();
 }
 

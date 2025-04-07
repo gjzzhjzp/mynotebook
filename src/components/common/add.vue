@@ -1,6 +1,7 @@
 <template>
     <div class="add-container skinColorB whiteColor flex-center-center" @click="clickAdd">
-      添加
+      <!-- 添加 -->
+      <view class="iconfont icon-tianjia font30 "></view>
     </div>
   </template>
   

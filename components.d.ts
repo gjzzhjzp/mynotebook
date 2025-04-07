@@ -8,9 +8,10 @@ export {}
 declare module 'vue' {
   export interface GlobalComponents {
     ActionSheet: typeof import('./src/components/common/actionSheet.vue')['default']
-    Add: typeof import('./src/components/common/add.vue')['default']
+    Add: typeof import('./src/components/account/add.vue')['default']
     Header: typeof import('./src/components/common/Header.vue')['default']
-    List: typeof import('./src/components/memo/list.vue')['default']
+    List: typeof import('./src/components/account/list.vue')['default']
+    'List copy': typeof import('./src/components/common/list copy.vue')['default']
     NutActionSheet: typeof import('@nutui/nutui-taro')['ActionSheet']
     NutButton: typeof import('@nutui/nutui-taro')['Button']
     NutDatePicker: typeof import('@nutui/nutui-taro')['DatePicker']

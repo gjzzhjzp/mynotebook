@@ -1,12 +1,12 @@
 <template>
-    <view :class="'wxc-nav'+(isOpacity?'wxc-nav-opactiy':'')" catchtouchmove='touchmove' :style="wxc_nav_style">
+    <view :class="'wxc-nav'+(isOpacity?'wxc-nav-opactiy':'')" @touchmove='touchmove' :style="wxc_nav_style">
         <view class="wxc-nav-left">
             <block v-if="showNavBack">
                 <view v-if="showNavBackSlot" class="wxc-nav-left-back">
                     <slot name="left"></slot>
                 </view>
                 <view v-else class="wxc-nav-left-back flex-align-center" @click="bindback">
-                    <IconFont :name="icon"></IconFont>
+                    <view class="iconfont icon-icon_arrow_left font24 "></view>
                 </view>
             </block>
             <view v-if="showTitleSlot" class="wxc-nav-center">
@@ -19,11 +19,10 @@
 </template>
 
 <script setup lang="ts">
-import { IconFont } from '@nutui/icons-vue-taro'
 import { withDefaults, defineProps, ref, computed } from 'vue';
 import { useReady, useDidShow } from '@tarojs/taro';
 import Taro from '@tarojs/taro'
-const app = Taro.getApp();
+// const app = Taro.getApp();
 interface Props {
     title: string;
     titleAlign: string;

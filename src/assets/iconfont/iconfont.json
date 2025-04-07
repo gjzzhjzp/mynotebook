@@ -6,6 +6,83 @@
   "description": "",
   "glyphs": [
     {
+      "icon_id": "5901135",
+      "name": "左",
+      "font_class": "zuo",
+      "unicode": "e622",
+      "unicode_decimal": 58914
+    },
+    {
+      "icon_id": "18418399",
+      "name": "icon_arrow_left",
+      "font_class": "icon_arrow_left",
+      "unicode": "e62e",
+      "unicode_decimal": 58926
+    },
+    {
+      "icon_id": "1133824",
+      "name": "收入",
+      "font_class": "shouru",
+      "unicode": "e65c",
+      "unicode_decimal": 58972
+    },
+    {
+      "icon_id": "1133834",
+      "name": "支出",
+      "font_class": "zhichu",
+      "unicode": "e666",
+      "unicode_decimal": 58982
+    },
+    {
+      "icon_id": "3900533",
+      "name": "橘子",
+      "font_class": "juzi",
+      "unicode": "e604",
+      "unicode_decimal": 58884
+    },
+    {
+      "icon_id": "5026722",
+      "name": "橘子",
+      "font_class": "juzi1",
+      "unicode": "e60e",
+      "unicode_decimal": 58894
+    },
+    {
+      "icon_id": "5087563",
+      "name": "橘子",
+      "font_class": "juzi2",
+      "unicode": "e601",
+      "unicode_decimal": 58881
+    },
+    {
+      "icon_id": "5122917",
+      "name": "橘子",
+      "font_class": "tubiaozhizuomoban-",
+      "unicode": "e60a",
+      "unicode_decimal": 58890
+    },
+    {
+      "icon_id": "1079472",
+      "name": "记账本",
+      "font_class": "jizhangben",
+      "unicode": "e61c",
+      "unicode_decimal": 58908
+    },
+    {
+      "icon_id": "4880426",
+      "name": "添加",
+      "font_class": "tianjia",
+      "unicode": "e607",
+      "unicode_decimal": 58887
+    },
+    {
+      "icon_id": "34220279",
+      "name": "备忘录",
+      "font_class": "beiwanglu",
+      "unicode": "e877",
+      "unicode_decimal": 59511
+    },
+    {
       "icon_id": "1048852",
       "name": "通知",
       "font_class": "icon_notice",

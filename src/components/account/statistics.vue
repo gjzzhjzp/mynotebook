@@ -4,16 +4,16 @@
             <!-- 组件内容 -->
             <view class="statistics-row1 flex-align-center flex-justify-between">
                 <view class="font16 blackColor fontWeight">今日账单</view>
-                <view class="font14 skinColor" @click="toStatistics()">查看统计</view>
+                <view class="font14  fontWeight" @click="toStatistics()">查看统计>></view>
             </view>
             <view class="statistics-row2 flex-align-center flex-justify-between m-t-20">
                 <view>
                     <view class="font14">总支出</view>
-                    <view class="skinColor font20 m-t-5">￥{{ today.expense }}</view>
+                    <view class="skinColor font24 m-t-5">￥{{ today.expense }}</view>
                 </view>
                 <view>
                     <view class="font14">总收入</view>
-                    <view class="skinColor font20 m-t-5">￥{{ today.income }}</view>
+                    <view class="skinColor font24 m-t-5">￥{{ today.income }}</view>
                 </view>
             </view>
         </view>

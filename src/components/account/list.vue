@@ -4,7 +4,9 @@
             <view class="flex-align-center flex-justify-between">
                 <view class="flex-align-center">
                     <view>
-                        <view style="width: 80rpx;height: 80rpx;opacity: 0.1;" class="borderRadiusMax skinColorB">
+                        <view style="" class="borderRadiusMax flex-center-center account-list-leftIcon">
+                            <view v-if="item.type == 0" class="iconfont icon-zhichu font35 successColor"></view>
+                            <view v-else class="iconfont icon-shouru font35 errorColor"></view>
                         </view>
                     </view>
                     <view class="flex-column-left m-l-5">
@@ -80,5 +82,9 @@ const updateAccount = () => {
 </script>
 
 <style scoped>
-
+.account-list-leftIcon{
+    width: 80rpx;
+    height: 80rpx;
+    
+}
 </style>

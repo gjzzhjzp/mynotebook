@@ -3,21 +3,23 @@
     <template #nav>
       <Header title="测试" :showNavBack="true" :showNavBackSlot="true">
         <template #left>
-          <view class="iconfont icon-icon_notice font20 skinColor"></view>
+          <!-- <view class="iconfont icon-icon_notice font20 skinColor"></view> -->
         </template>
       </Header>
     </template>
     <template #body>
       <view class="m-t-20">
-        <nut-grid :gutter="15" :column-num="3" :border="false">
+        <nut-grid :gutter="30" :column-num="2" :border="false">
           <nut-grid-item @click="tonext('account')">
-            <view>
-              记账
+            <view class="borderRadius10 flex-column-center flex-justify-center">
+              <view class="iconfont icon-jizhangben font30 skinColor"></view>
+              <view class="m-t-10 font16 blackColor">记账</view>
             </view>
           </nut-grid-item>
           <nut-grid-item @click="tonext('memo')">
-            <view>
-              备忘录
+            <view class="borderRadius10 flex-column-center flex-justify-center">
+              <view class="iconfont icon-beiwanglu font30 skinColor"></view>
+              <view class="m-t-10 font16 blackColor">备忘录</view>
             </view>
           </nut-grid-item>
         </nut-grid>
@@ -28,7 +30,7 @@
 
 <script setup lang="ts">
 import { onBeforeMount, onMounted } from 'vue';
-import ajax from '../../common/ajax';
+// import ajax from '../../common/ajax';
 import Header from '../../components/common/Header.vue';
 import pageScroll from '../../components/common/pageScroll.vue';
 import Taro from '@tarojs/taro';
