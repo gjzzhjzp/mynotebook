@@ -5,7 +5,7 @@
 
                 <view class="l-account-add p-a-20">
                     <nut-input v-model="formData.title" />
-                    <nut-textarea v-model="formData.content" />
+                    <nut-textarea v-model="formData.content" placeholder=" "/>
                 </view>
                 <view class="m-t-20 p-a-20">
                     <view class="flex-align-center flex-justify-between m-b-20">

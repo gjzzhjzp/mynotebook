@@ -1,7 +1,15 @@
 <template>
-    <view class="common-actionSheet">
-        <nut-action-sheet v-model:visible="show" :menu-items="menuItems" @choose="choose" />
-    </view>
+        <view class="common-actionSheet">
+            <nut-popup v-model:visible="show" position="bottom"  :round="true">
+                <view class="p-t-10 m-b-20">
+                    <view class="p-a-10 flex-center-center font14 blackColor" v-for="(item) in menuItems" :key="item.val" @click="choose(item)">  
+                    {{ item.name }}
+                </view>
+                </view>
+            </nut-popup>
+            <!-- <nut-action-sheet v-model:visible="show" :menu-items="menuItems" @choose="choose" /> -->
+        </view>
+
 
 </template>
 <script setup lang="ts">
@@ -15,6 +23,7 @@ const props = defineProps({
         default: "account"
     }
 })
+
 const menuItems = [
     {
         name: '编辑' + (props.type == "account" ? "账单" : "备忘录"),
@@ -28,6 +37,9 @@ const menuItems = [
 const emits = defineEmits(['update', 'delete'])
 const open = () => {
     show.value = true
+}
+const close = () => {
+    show.value = false
 }
 const choose = (item) => {
     if (item.val == "update") {
@@ -50,10 +62,9 @@ const choose = (item) => {
 }
 defineExpose({
     open,
+    close
 })
 </script>
 <style>
-.common-actionSheet {
-    --nut-actionsheet-item-line-height: 40px;
-}
+
 </style>

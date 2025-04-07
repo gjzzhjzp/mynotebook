@@ -2,6 +2,7 @@ import { createApp,provide,ref } from 'vue'
 import './assets/iconfont/iconfont.css'
 import './app.scss'
 const user_dll = require('./common/user_dll');
+import { ConfigProvider } from '@nutui/nutui-taro'
 import Taro from '@tarojs/taro'
 const appconfig = require('./config');
 // 创建全局数据引用
@@ -25,6 +26,7 @@ const App = createApp({
 })
 // 在应用实例创建后立即提供全局数据
 App.provide('globalData', globalData);
+App.use(ConfigProvider);
 export default App
 
 

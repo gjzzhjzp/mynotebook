@@ -21,7 +21,7 @@
             <nut-divider
                 :style="{ color: '#ededf3', borderColor: '#ededf3', paddingLeft: '50px', margin: '10px 0' }"></nut-divider>
         </view>
-        <action-sheet ref="actionSheetRef" @update="updateAccount" @delete="deleteAccount"></action-sheet>
+       
     </view>
 </template>
 
@@ -29,8 +29,7 @@
 // 引入需要的依赖
 import { ref, onMounted } from 'vue';
 import Taro from '@tarojs/taro';
-import ajax from '../../common/ajax';
-import actionSheet from "../common/actionSheet.vue"
+
 interface AccountItem {
   id: string;
   category: string;
@@ -51,33 +50,14 @@ defineProps({
     }
 });
 const categories_obj = ref<CategoriesObj>({});
-const actionSheetRef = ref();
-const currentItem = ref<AccountItem>();
-const emits = defineEmits(['update', 'delete'])
+
+
+const emits = defineEmits(['click'])
 onMounted(() => {
     categories_obj.value = Taro.getStorageSync("globalData").categories_obj;
 })
 const itemClick = (item:AccountItem) => {
-    actionSheetRef.value.open();
-    currentItem.value = item;
-}
-const deleteAccount = () => {
-    ajax.post("/account/delete", {
-        id: currentItem.value?.id
-    }).then(() => {
-        // console.log("删除成功", res);
-        Taro.showToast({
-            title: "删除成功",
-            icon: "none"
-        })
-        emits('delete')
-
-    })
-}
-const updateAccount = () => {
-    if (currentItem.value) {
-    emits('update', currentItem.value);
-  }
+    emits('click', item);
 }
 </script>
 

@@ -1,7 +1,7 @@
 <template>
   <pageScroll :refresher_enabled="false">
     <template #nav>
-      <Header title="测试" :showNavBack="true" :showNavBackSlot="true">
+      <Header title="橘好记" :showNavBack="true" :showNavBackSlot="true">
         <template #left>
           <!-- <view class="iconfont icon-icon_notice font20 skinColor"></view> -->
         </template>

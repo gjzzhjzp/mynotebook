@@ -7,7 +7,7 @@
             </view>
             <view class="memo-content">{{ item.content }}</view>
         </view>
-        <action-sheet ref="actionSheetRef" @update="updatememo" @delete="deletememo" type="memo"></action-sheet>
+       
     </view>
 </template>
 
@@ -15,8 +15,6 @@
 // 引入需要的依赖
 import { ref, onMounted } from 'vue';
 import Taro from '@tarojs/taro';
-import ajax from '../../common/ajax';
-import actionSheet from "../common/actionSheet.vue"
 interface MemoItem {
     id: number;
     title: string;
@@ -31,32 +29,19 @@ defineProps({
     }
 });
 const categories_obj = ref({});
-const actionSheetRef = ref();
-const currentItem = ref();
-const emits = defineEmits(['update', 'delete'])
+
+
+// const emits = defineEmits(['update', 'delete'])
+const emits = defineEmits(['click'])
 onMounted(() => {
     categories_obj.value = Taro.getStorageSync("globalData").categories_obj;
 })
 const itemClick = (item: MemoItem, index: number) => {
-    actionSheetRef.value.open();
-    currentItem.value = item;
+    
+   
+    emits('click', item, index);
 }
-const deletememo = () => {
-    ajax.post("/memos/delete", {
-        id: currentItem.value.id
-    }).then((res) => {
-        // console.log("删除成功", res);
-        Taro.showToast({
-            title: "删除成功",
-            icon: "none"
-        })
-        emits('delete')
 
-    })
-}
-const updatememo = () => {
-    emits('update', currentItem.value)
-}
 </script>
 
 <style>

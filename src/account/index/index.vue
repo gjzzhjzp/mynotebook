@@ -18,16 +18,16 @@
             <!-- <view class="font14 skinColor">查看全部</view> -->
           </view>
           <view class="m-t-20">
-            <accountList :list="accounts" @delete="successAccount" @update="update_account"></accountList>
+            <accountList :list="accounts" @click="openActionSheet"></accountList>
           </view>
         </view>
       </view>
-      
-      <addAccount ref="addAccountRef" @success="successAccount()"></addAccount>
-      <reminder ref="reminderRef"></reminder>
     </template>
     <template #footer>
       <add @add="add_account()"></add>
+      <addAccount ref="addAccountRef" @success="successAccount()"></addAccount>
+      <reminder ref="reminderRef"></reminder>
+      <action-sheet ref="actionSheetRef" @update="update_account" @delete="deleteAccount"></action-sheet>
     </template>
   </pageScroll>
 </template>
@@ -41,21 +41,29 @@ import pageScroll from '../../components/common/pageScroll.vue';
 import add from '../../components/common/add.vue';
 import statistics from '../../components/account/statistics.vue';
 import accountList from '../../components/account/list.vue';
-// import Taro from '@tarojs/taro';
+import Taro from '@tarojs/taro';
 import addAccount from '../../components/account/add.vue';
 import reminder from '../../components/account/reminder.vue';
 import { formatDate } from '../../common/date_formatter'
+import actionSheet from "../../components/common/actionSheet.vue"
 interface StatisticsComponent {
   getStatistics: () => void;
 }
 const addAccountRef = ref();
 // const globalData = inject('globalData');
 const reminderRef = ref();
+const actionSheetRef = ref();
+const currentItem = ref();
 const add_account = () => {
   addAccountRef.value.open();
 }
-const update_account = (item) => {
-  addAccountRef.value.open(item);
+const update_account = () => {
+  addAccountRef.value.open(currentItem.value);
+  actionSheetRef.value.close();
+}
+const openActionSheet = (item) => {
+  actionSheetRef.value.open();
+  currentItem.value = item;
 }
 let page = ref<number>(1);
 let total = ref<number>(0);
@@ -124,6 +132,20 @@ const refresh = () => {
   refreshering.value = true;
   page.value = 1;
   getAccountList();
+}
+const deleteAccount = () => {
+    ajax.post("/account/delete", {
+        id: currentItem.value?.id
+    }).then(() => {
+        // console.log("删除成功", res);
+        Taro.showToast({
+            title: "删除成功",
+            icon: "none"
+        })
+        getAccountList();
+        actionSheetRef.value.close();
+
+    })
 }
 </script>
 <style>
