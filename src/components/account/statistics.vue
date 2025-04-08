@@ -4,7 +4,7 @@
             <!-- 组件内容 -->
             <view class="statistics-row1 flex-align-center flex-justify-between">
                 <view class="font16 blackColor fontWeight">今日账单</view>
-                <view class="font14  fontWeight flex-align-center" @click="toStatistics()">
+                <view class="font14  skinColor flex-align-center" @click="toStatistics()">
                     <view>查看统计</view>
                     <view class="iconfont icon-you font14"></view>
                 </view>
@@ -12,33 +12,14 @@
             <view class="statistics-row2 flex-align-center flex-justify-between m-t-20">
                 <view>
                     <view class="font14">总支出</view>
-                    <view class="skinColor font24 m-t-5">￥{{ today.expense }}</view>
+                    <view class="blackColor font24 m-t-5">￥{{ today.expense }}</view>
                 </view>
                 <view>
                     <view class="font14">总收入</view>
-                    <view class="skinColor font24 m-t-5">￥{{ today.income }}</view>
+                    <view class="blackColor font24 m-t-5">￥{{ today.income }}</view>
                 </view>
             </view>
         </view>
-        <!-- <view class="statistics-container p-a-15">
-            <view class="statistics-row1 flex-align-center flex-justify-between">
-                <view class="font16 blackColor fontWeight">本月总览</view>
-                <view class="font14 tagColor">{{thismonth.date}}</view>
-            </view>
-            <view class="statistics-row2 flex-align-center flex-justify-between m-t-20">
-                <view>
-                    <view class="font14">总支出</view>
-                    <view class="skinColor font20 m-t-5">￥{{ thismonth.expense }}</view>
-                </view>
-                <view>
-                    <view class="font14">总收入</view>
-                    <view class="skinColor font20 m-t-5">￥{{ thismonth.income }}</view>
-                </view>
-            </view>
-            <view class="m-t-20">
-                <pieChart></pieChart>
-            </view>
-        </view> -->
     </view>
 </template>
 

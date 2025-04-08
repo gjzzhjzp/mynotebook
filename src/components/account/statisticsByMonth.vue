@@ -1,6 +1,6 @@
 <template>
     <view>
-        <view class="statistics-container p-a-15">
+        <view class="statistics-container p-a-15" v-if="!ishome">
             <view class="statistics-row1 flex-align-center flex-justify-between">
                 <view class="font16 blackColor fontWeight" @click="showCalender = true">{{ thismonth.date }}</view>
                 <nut-popup v-model:visible="showCalender" position="bottom">
@@ -10,7 +10,7 @@
                 <view class="font14 tagColor flex-align-center">
                     <view v-for="item in types" :key="item.title" class="m-r-10" @click="checked_type = item.value">
                         <nut-button :type="item.value != checked_type ? 'default' : 'primary'" size="small">{{
-                    item.title }}</nut-button>
+            item.title }}</nut-button>
                     </view>
                 </view>
             </view>
@@ -45,6 +45,24 @@
                 <emptyData></emptyData>
             </template>
         </view>
+        <view v-else>
+            <view class="statistics-row1 flex-align-center flex-justify-between">
+                <view class="font16 blackColor fontWeight">本月收支</view>
+            </view>
+            <view class="statistics-row2 flex-align-center flex-justify-between m-t-20 p-0-20">
+                <view class="flex-column-center">
+                    <view class="font14">总支出</view>
+                    <view class="skinColor font24 m-t-5">￥{{ thismonth.expense }}</view>
+                </view>
+                <view class="flex-column-center">
+                    <view class="font14">总收入</view>
+                    <view class="skinColor font24 m-t-5">￥{{ thismonth.income }}</view>
+                </view>
+            </view>
+            <view class="m-t-20">
+                <pieChart :list="pieChartList"></pieChart>
+            </view>
+        </view>
     </view>
 </template>
 
@@ -67,6 +85,12 @@ const thismonth = ref({
     incomeList: [] as StatisticsItem[],
     date: date_formatter(new Date().getTime(), "yyyy年MM月"),
     monthdate: ref<Date>(new Date())
+})
+defineProps({
+    ishome: {
+        type: Boolean,
+        default: false
+    }
 })
 const currentMonthFirstDay = ref("");
 const nextMonthFirstDay = ref("");

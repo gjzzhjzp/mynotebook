@@ -67,7 +67,8 @@ export default {
           ]
         }
         setTimeout(() => {
-          this.$refs.vueref0.refresh(this.defaultOption)
+          if (this.$refs.vueref0)
+            this.$refs.vueref0.refresh(this.defaultOption)
         }, 200);
 
       }

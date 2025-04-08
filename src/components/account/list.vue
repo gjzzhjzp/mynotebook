@@ -6,17 +6,19 @@
                     <view class="flex-align-center">
                         <view>
                             <view style="" class="borderRadiusMax flex-center-center account-list-leftIcon">
-                                <view v-if="item.type == 0" class="iconfont icon-zhichu font35 successColor"></view>
-                                <view v-else class="iconfont icon-shouru font35 errorColor"></view>
+                                <view v-if="item.type == 0"
+                                    :class="'iconfont  font20 skinColor ' + categories_icon[item.category]"></view>
+                                <view v-else :class="'iconfont font20 errorColor ' + categories_icon[item.category]">
+                                </view>
                             </view>
                         </view>
-                        <view class="flex-column-left m-l-5">
+                        <view class="flex-column-left m-l-10">
                             <view class="font14 fontWeight blackColor">{{ categories_obj[item.category] }}</view>
                             <view class="font12 m-t-5">{{ item.created_at }} <text class="m-l-5 m-r-5"
                                     v-if="item.description">|</text> {{ item.description }}</view>
                         </view>
                     </view>
-                    <view :class="item.type == 1 ? 'skinColor' : 'blackColor'">{{ item.type == 0 ? '-' : '+' }}￥{{
+                    <view :class="item.type == 1 ? 'skinColor' : 'errorColor'">{{ item.type == 0 ? '-' : '+' }}￥{{
             item.amount
         }}</view>
                 </view>
@@ -56,21 +58,23 @@ defineProps({
     }
 });
 const categories_obj = ref<CategoriesObj>({});
-
+const categories_icon = ref<CategoriesObj>({});
 
 const emits = defineEmits(['click'])
 onMounted(() => {
     categories_obj.value = Taro.getStorageSync("globalData").categories_obj;
+    categories_icon.value = Taro.getStorageSync("globalData").categories_icon;
 })
 const itemClick = (item: AccountItem) => {
     emits('click', item);
 }
 </script>
 
-<style scoped>
+<style>
 .account-list-leftIcon {
     width: 80rpx;
     height: 80rpx;
+    background-color: #FFF0E6;
 
 }
 </style>

@@ -4,11 +4,22 @@
       <Header title="记账"></Header>
     </template>
     <template #body>
+      <!-- <nut-noticebar text="设置订阅提醒" background="#FFF7ED" color="#EA580C" :left-icon="true" /> -->
+      <view class="account-index-tips flex-align-center flex-justify-between p-a-15">
+        <view class="flex-align-center">
+          <view class="iconfont icon-icon_notice font16 "></view>
+          <view class="m-l-5">设置订阅提醒</view>
+        </view>
+        <view>
+          <view class="iconfont icon-you font20"></view>
+        </view>
+      </view>
       <view class="p-a-15">
-        <view class=" font14 blackColor text-right m-b-15 flex-align-center flex-justify-end" @click="openReminder()">
+
+        <!-- <view class=" font14 blackColor text-right m-b-15 flex-align-center flex-justify-end" @click="openReminder()">
           <view class="iconfont icon-icon_notice font16 skinColor"></view>
           <view class="skinColor">设置订阅提醒</view>
-        </view>
+        </view> -->
         <view>
           <statistics ref="statisticsRef"></statistics>
         </view>
@@ -134,26 +145,24 @@ const refresh = () => {
   getAccountList();
 }
 const deleteAccount = () => {
-    ajax.post("/account/delete", {
-        id: currentItem.value?.id
-    }).then(() => {
-        // console.log("删除成功", res);
-        Taro.showToast({
-            title: "删除成功",
-            icon: "none"
-        })
-        getAccountList();
-        actionSheetRef.value.close();
-
+  ajax.post("/account/delete", {
+    id: currentItem.value?.id
+  }).then(() => {
+    // console.log("删除成功", res);
+    Taro.showToast({
+      title: "删除成功",
+      icon: "none"
     })
+    getAccountList();
+    actionSheetRef.value.close();
+
+  })
 }
 </script>
 <style>
-.demo {
-  height: 100%;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
+.account-index-tips {
+  background-color: #FFF7ED;
+  color: #EA580C;
+  box-shadow: 0px 4px 6px 0px rgba(0, 0, 0, 0.05);
 }
 </style>

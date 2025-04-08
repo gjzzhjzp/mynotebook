@@ -1,8 +1,8 @@
 @font-face {
   font-family: "iconfont"; /* Project id 4848967 */
-  src: url('iconfont.woff2?t=1744018082558') format('woff2'),
-       url('iconfont.woff?t=1744018082558') format('woff'),
-       url('iconfont.ttf?t=1744018082558') format('truetype');
+  src: url('iconfont.woff2?t=1744119310686') format('woff2'),
+       url('iconfont.woff?t=1744119310686') format('woff'),
+       url('iconfont.ttf?t=1744119310686') format('truetype');
 }
 
 .iconfont {
@@ -11,6 +11,66 @@
   font-style: normal;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+}
+
+.icon-shenghuojiaofei:before {
+  content: "\e63f";
+}
+
+.icon-lianai:before {
+  content: "\e64c";
+}
+
+.icon-lvhang:before {
+  content: "\e7eb";
+}
+
+.icon-gongzi:before {
+  content: "\e7e9";
+}
+
+.icon-touzi:before {
+  content: "\e7ea";
+}
+
+.icon-jiangjin:before {
+  content: "\e7e0";
+}
+
+.icon-qita:before {
+  content: "\e619";
+}
+
+.icon-jiaoyu:before {
+  content: "\e624";
+}
+
+.icon-canyin:before {
+  content: "\e940";
+}
+
+.icon-gouwu:before {
+  content: "\e608";
+}
+
+.icon-jiaotong:before {
+  content: "\e7ed";
+}
+
+.icon-gouwu1:before {
+  content: "\e7ee";
+}
+
+.icon-yiliao:before {
+  content: "\e7f1";
+}
+
+.icon-yule:before {
+  content: "\e7f2";
+}
+
+.icon-zhufang:before {
+  content: "\e7f3";
 }
 
 .icon-you:before {

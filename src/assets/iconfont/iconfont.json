@@ -6,6 +6,111 @@
   "description": "",
   "glyphs": [
     {
+      "icon_id": "1284296",
+      "name": "生活缴费",
+      "font_class": "shenghuojiaofei",
+      "unicode": "e63f",
+      "unicode_decimal": 58943
+    },
+    {
+      "icon_id": "4623986",
+      "name": "恋爱",
+      "font_class": "lianai",
+      "unicode": "e64c",
+      "unicode_decimal": 58956
+    },
+    {
+      "icon_id": "7791001",
+      "name": "旅行",
+      "font_class": "lvhang",
+      "unicode": "e7eb",
+      "unicode_decimal": 59371
+    },
+    {
+      "icon_id": "7790995",
+      "name": "工资",
+      "font_class": "gongzi",
+      "unicode": "e7e9",
+      "unicode_decimal": 59369
+    },
+    {
+      "icon_id": "7790998",
+      "name": "投资",
+      "font_class": "touzi",
+      "unicode": "e7ea",
+      "unicode_decimal": 59370
+    },
+    {
+      "icon_id": "43414649",
+      "name": "奖金",
+      "font_class": "jiangjin",
+      "unicode": "e7e0",
+      "unicode_decimal": 59360
+    },
+    {
+      "icon_id": "924702",
+      "name": "其他",
+      "font_class": "qita",
+      "unicode": "e619",
+      "unicode_decimal": 58905
+    },
+    {
+      "icon_id": "1354923",
+      "name": "教育",
+      "font_class": "jiaoyu",
+      "unicode": "e624",
+      "unicode_decimal": 58916
+    },
+    {
+      "icon_id": "5604595",
+      "name": "餐饮",
+      "font_class": "canyin",
+      "unicode": "e940",
+      "unicode_decimal": 59712
+    },
+    {
+      "icon_id": "6865334",
+      "name": "购物",
+      "font_class": "gouwu",
+      "unicode": "e608",
+      "unicode_decimal": 58888
+    },
+    {
+      "icon_id": "7791011",
+      "name": "交通",
+      "font_class": "jiaotong",
+      "unicode": "e7ed",
+      "unicode_decimal": 59373
+    },
+    {
+      "icon_id": "7791013",
+      "name": "购物",
+      "font_class": "gouwu1",
+      "unicode": "e7ee",
+      "unicode_decimal": 59374
+    },
+    {
+      "icon_id": "7791032",
+      "name": "医疗",
+      "font_class": "yiliao",
+      "unicode": "e7f1",
+      "unicode_decimal": 59377
+    },
+    {
+      "icon_id": "7791035",
+      "name": "娱乐",
+      "font_class": "yule",
+      "unicode": "e7f2",
+      "unicode_decimal": 59378
+    },
+    {
+      "icon_id": "7791038",
+      "name": "住房",
+      "font_class": "zhufang",
+      "unicode": "e7f3",
+      "unicode_decimal": 59379
+    },
+    {
       "icon_id": "1418245",
       "name": "右",
       "font_class": "you",

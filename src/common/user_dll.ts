@@ -34,27 +34,30 @@ export const getCategories = () => {
     return new Promise(async (resolve, reject) => {
         ajax.get('/category/get').then(res => {
             console.log("res", res);
-            let categories={};
-            let categories_obj={};
+            let categories = {};
+            let categories_obj = {};
+            let categories_icon = {};
             if (res.code == 200) {
                 categories['0'] = res.data.filter(item => {
-                    if(item.type==0){
+                    if (item.type == 0) {
                         return true;
                     }
                 })
                 categories['1'] = res.data.filter(item => {
-                    if(item.type==1){
+                    if (item.type == 1) {
                         return true;
                     }
                 })
-                
+
                 res.data.forEach(item => {
                     categories_obj[item.value] = item.name;
+                    categories_icon[item.value] = item.icon;
                 });
             }
             resolve({
                 categories,
-                categories_obj
+                categories_obj,
+                categories_icon
             })
         })
     })
