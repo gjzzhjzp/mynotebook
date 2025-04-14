@@ -14,7 +14,8 @@ export default defineAppConfig({
     {
       "root": "memo",
       "pages": [
-        "index/index"
+        "index/index",
+        "add/add"
       ]
     }
   ],

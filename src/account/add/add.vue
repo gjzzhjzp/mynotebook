@@ -1,55 +1,110 @@
 <template>
-    <nut-dialog title="基础弹框" v-model:visible="visible1" @cancel="onCancel" @ok="onOk">
-        <template #default>
-            <view class="l-account-add">
-                <view class="flex-align-center flex-justify-between">
-                    <view>3月7日</view>
-                    <view>
-                        <view v-for="item in types" :key="item.title">
-                            {{ item.title }}
+    <pageScroll :refresher_enabled="false" style="background-color: #fff">
+        <template #nav>
+            <Header title="记一笔"></Header>
+        </template>
+        <template #body>
+            <view class=" account-add-container flex-column-left flex-justify-between" style="height: 100%;">
+
+                <view class="l-account-add p-a-20">
+                    <view class="flex-align-center flex-justify-between">
+                        <view @click="showCalender = true">{{ formData.accountDate_show }}</view>
+                        <nut-popup v-model:visible="showCalender" position="bottom">
+                            <nut-date-picker v-model="accountDate_date" :three-dimensional="false"
+                                @confirm="chooseDate"></nut-date-picker>
+                        </nut-popup>
+                        <view class="flex-align-center">
+                            <view v-for="item in types" :key="item.title" class="m-r-10"
+                                @click="checked_type = item.value">
+                                <nut-button :type="item.value != checked_type ? 'default' : 'primary'" size="small">{{
+        item.title }}</nut-button>
+                            </view>
                         </view>
                     </view>
+                    <view class="m-t-10">
+                        <nut-input v-model="formData.amount" placeholder="0.00" clearable>
+                            <template #left>
+                                <view class="fontWeight blackColor">￥</view>
+                            </template>
+                        </nut-input>
+                    </view>
+                    <view class="m-t-10">
+                        <nut-input v-model="formData.description" placeholder="添加备注..." />
+                    </view>
+                    <view class="flex-align-center flex-wrap m-t-10">
+                        <!-- <nut-grid :column-num="5" :gutter="10" :border="false">
+            <nut-grid-item  v-for="item in categories" :key="item.value">
+                <template #default> -->
+                        <view v-for="item in categories" class="m-r-10 m-t-10">
+                            <nut-button :type="item.value != checked_category ? 'default' : 'primary'" size="small"
+                                @click="checked_category = item.value" style="width: 145rpx;">{{ item.name
+                                }}</nut-button>
+                        </view>
+
+                        <!-- </template>
+            </nut-grid-item>
+        </nut-grid> -->
+                    </view>
+
                 </view>
-                <view>
-                    <nut-input v-model="formData.age" placeholder="0.00" clearable>
-                        <template #left>
-                            ￥
-                        </template>
-                    </nut-input>
-                </view>
-                <view class="m-t-10">
-                    <nut-input v-model="formData.age" placeholder="添加备注" />
-                </view>
-                <view v-for="item in categories" :key="item.title">
-                    {{ item.title }}
-                </view>
+
             </view>
         </template>
-    </nut-dialog>
+        <template #footer>
+            <view class="m-t-20">
+                <view class="flex-align-center flex-justify-between m-t-20 p-a-20">
+                    <nut-button type="primary" class="m-t-10" @click="onOk" style="width: 300rpx;">
+                        确定
+                    </nut-button>
+                    <nut-button type="default" class="m-t-10" @click="close" style="width: 300rpx;">
+                        取消
+                    </nut-button>
+                </view>
+            </view>
+
+        </template>
+    </pageScroll>
 </template>
-<script setup>
-import { ref } from 'vue'
-const formData = ref({
-    name: '',
-    age: '',
-    tel: '',
-    type: '',
-    info: ''
+
+<script setup lang="ts">
+import { onMounted, ref, inject, watch } from 'vue';
+import ajax from '../../common/ajax';
+import Header from '../../components/common/Header.vue';
+import basedll from '../../common/basedll';
+import pageScroll from '../../components/common/pageScroll.vue';
+import date_formatter from '../../common/date_formatter'
+import Taro from '@tarojs/taro';
+interface categoriesData {
+    name: string,
+    value: string
+}
+interface AccountFormData {
+    id?: string;
+    amount: string;
+    description: string;
+    accountDate: string;
+    accountDate_show: string;
+}
+
+interface AccountItem {
+    id: string;
+    amount: string;
+    description: string;
+    date: string;
+    category: string;
+    type: number;
+}
+const formData = ref<AccountFormData>({
+    id: "",
+    amount: '',
+    description: '',
+    accountDate: "",
+    accountDate_show: date_formatter(new Date().getTime(), 'MM月DD日')
 })
-const categories = ref([
-    {
-        title: "餐饮"
-    },
-    {
-        title: "交通"
-    },
-    {
-        title: "购物"
-    },
-    {
-        title: "娱乐"
-    }
-])
+const categories = ref<categoriesData[]>([]);
+const checked_category = ref("food");
+const checked_type = ref("expense");
+const accountDate_date = ref<Date>(new Date());
 const types = ref([
     {
         title: "支出",
@@ -60,4 +115,109 @@ const types = ref([
         value: "income"
     }
 ])
+const isedit = ref(false);
+watch(checked_type, () => {
+    getCategory();
+})
+const emit = defineEmits(['success'])
+const onOk = async () => {
+    const params = {
+        id: isedit.value ? formData.value.id : undefined,
+        amount: formData.value.amount,
+        description: formData.value.description,
+        category: checked_category.value,
+        type: checked_type.value == 'expense' ? 0 : 1,
+        date: formData.value.accountDate
+    };
+
+    try {
+        const url = isedit.value ? '/account/update' : '/account/add';
+        const res = await ajax.post(url, params);
+        if (res.code == 200) {
+            Taro.showToast({
+                title: `${isedit.value ? '编辑' : '添加'}成功`,
+                icon: 'success',
+                duration: 2000
+            });
+
+            emit('success');
+        }
+        close();
+    } catch (error) {
+        Taro.showToast({
+            title: error.message || '操作失败',
+            icon: 'error',
+            duration: 2000
+        });
+    }
+};
+
+const getCategory = () => {
+    const globalData = Taro.getStorageSync("globalData");
+    categories.value = globalData.categories[checked_type.value == 'expense' ? 0 : 1]
+    checked_category.value = categories.value[0].value;
+}
+onMounted(() => {
+    const params = Taro.getCurrentInstance().router?.params;
+    console.log('路由参数', params);
+    if (params?.id) {
+        getAccountList(params.id); // 根据实际接口需求调整参数结构
+    }
+    getCategory();
+    formData.value.accountDate = date_formatter(new Date().getTime(), 'YYYY-MM-DD');
+    console.log("formData", formData.value.accountDate);
+})
+const visible = ref(false)
+const showCalender = ref(false);
+const getAccountList = (id) => {
+    ajax.get("/account/get", {
+        id,
+        page: page.value,
+        rows: 10
+    }).then((res: any) => {
+        if (res.code == 200) {
+            let currentItem = res.data[0];
+            open(currentItem);
+        }
+    })
+}
+// const accountDate = ref(date_formatter(String(new Date()),'MM月DD日'));
+const chooseDate = (e: any) => {
+    console.log("e", e);
+    formData.value.accountDate = e.selectedValue.join("-");
+    formData.value.accountDate_show = date_formatter(new Date(formData.value.accountDate).getTime(), 'MM月DD日');
+    showCalender.value = false;
+}
+const open = (item?: AccountItem) => {
+    console.log("item111111111111", item);
+    if (item) {
+        isedit.value = true;
+        formData.value = {
+            id: item.id,
+            amount: item.amount,
+            description: item.description,
+            accountDate: item.date,
+            accountDate_show: date_formatter(new Date(item.date).getTime(), 'MM月DD日')
+        }
+        accountDate_date.value = new Date(item.date);
+        checked_category.value = item.category;
+        checked_type.value = item.type == 0 ? 'expense' : 'income';
+    } else {
+        // 重置表单数据
+        formData.value = {
+            id: "",
+            amount: '',
+            description: '',
+            accountDate: date_formatter(new Date().getTime(), 'YYYY-MM-DD'),
+            accountDate_show: date_formatter(new Date().getTime(), 'MM月DD日')
+        };
+        isedit.value = false;
+    }
+    visible.value = true;
+}
+const close = () => {
+    visible.value = false;
+}
 </script>
+
+<style></style>

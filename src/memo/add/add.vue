@@ -1,45 +1,54 @@
 <template>
-    <nut-popup v-model:visible="visible" position="bottom" round :style="{ height: '80%' }">
-        <template #default>
+    <pageScroll :refresher_enabled="false" style="background-color: #fff">
+        <template #nav>
+            <Header title="新建备忘录"></Header>
+        </template>
+        <template #body>
             <view class=" account-add-container flex-column-left flex-justify-between" style="height: 100%;">
-
-                <view class="l-account-add p-a-20">
-                    <nut-input v-model="formData.title" />
-                    <nut-textarea v-model="formData.content" placeholder=" " />
-                </view>
-                <view class="m-t-20 p-a-20">
-                    <view class="flex-align-center flex-justify-between m-b-20">
-                        <view style="width: 200rpx;">
-                            提醒时间
-                        </view>
-                        <view>
-                            <view @click="showCalender = true">{{ formData.reminder_time_show || "无提醒" }}</view>
-                            <nut-popup v-model:visible="showCalender" position="bottom">
-                                <nut-date-picker v-model="formData.reminder_time" type="datetime" :min-date="minDate"
-                                    :three-dimensional="false" @confirm="chooseDate"></nut-date-picker>
-                            </nut-popup>
-
-                        </view>
-                    </view>
-                    <view class="flex-align-center flex-justify-between ">
-                        <nut-button type="primary" class="m-t-10" @click="onOk" style="width: 300rpx;">
-                            确定
-                        </nut-button>
-                        <nut-button type="default" class="m-t-10" @click="close" style="width: 300rpx;">
-                            取消
-                        </nut-button>
-                    </view>
+                <view class="l-account-add p-a-20" style="height: 100%;">
+                    <nut-input v-model="formData.title" placeholder="标题" />
+                    <nut-textarea v-model="formData.content" placeholder="开始输入内容..." />
                 </view>
             </view>
         </template>
-    </nut-popup>
+        <template #footer>
+            <view class="m-t-20 p-a-20">
+                <view class="flex-align-center flex-justify-between m-b-40">
+                    <view style="width: 200rpx;">
+                        提醒时间
+                    </view>
+                    <view>
+                        <view class="skinColor" @click="showCalender = true">{{ formData.reminder_time_show || "选择时间" }}
+                        </view>
+                        <nut-popup v-model:visible="showCalender" position="bottom">
+                            <nut-date-picker v-model="formData.reminder_time" type="datetime" :min-date="minDate"
+                                :three-dimensional="false" @confirm="chooseDate"></nut-date-picker>
+                        </nut-popup>
+
+                    </view>
+                </view>
+                <view class="flex-align-center flex-justify-between ">
+                    <nut-button type="primary" class="m-t-10" @click="onOk" style="width: 300rpx;">
+                        确定
+                    </nut-button>
+                    <nut-button type="default" class="m-t-10" @click="close" style="width: 300rpx;">
+                        取消
+                    </nut-button>
+                </view>
+            </view>
+
+        </template>
+    </pageScroll>
 </template>
+
 <script setup lang="ts">
-import ajax from '../../common/ajax'
+import { onMounted, ref, inject } from 'vue';
+import ajax from '../../common/ajax';
+import Header from '../../components/common/Header.vue';
 import basedll from '../../common/basedll';
+import pageScroll from '../../components/common/pageScroll.vue';
 import date_formatter from '../../common/date_formatter'
-import { ref, onMounted, defineEmits, inject } from 'vue'
-import Taro from '@tarojs/taro'
+import Taro from '@tarojs/taro';
 interface FormData {
     id?: number | string,
     title: string,
@@ -121,10 +130,26 @@ const onOk = async () => {
 }
 
 onMounted(() => {
+    const params = Taro.getCurrentInstance().router?.params;
+    console.log('路由参数', params);
+    if (params?.id) {
+        getList(params.id); // 根据实际接口需求调整参数结构
+    }
 
 })
 const visible = ref(false)
-
+const getList = (id) => {
+    ajax.get("/memos/list", {
+        id: id,
+        page: 1,
+        rows: 1
+    }).then((res) => {
+        if (res.code == 200) {
+            let currentItem = res.data[0];
+            open(currentItem);
+        }
+    })
+}
 const open = (item) => {
     console.log("item111111111111", item);
     if (item) {
@@ -133,8 +158,8 @@ const open = (item) => {
             id: item.id,
             title: item.title,
             content: item.content,
-            reminder_time: item.reminder_time,
-            reminder_time_show: date_formatter(item.reminder_time, 'yyyy-MM-dd hh:mm')
+            reminder_time: item.reminder_time || "",
+            reminder_time_show: item.reminder_time ? date_formatter(item.reminder_time, 'yyyy-MM-dd hh:mm') : ""
         }
     } else {
         isedit.value = false;
@@ -150,15 +175,10 @@ const open = (item) => {
 }
 const close = () => {
     // visible.value = false;
-    Taro.navigateBack();
+    Taro.navigateBack({
+        delta: 1,
+    });
 }
-defineExpose({
-    open,
-    close
-})
 </script>
-<style>
-.account-add-container {
-    --nut-grid-item-content-padding: "0px 0px 0px 0px";
-}
-</style>
+
+<style></style>

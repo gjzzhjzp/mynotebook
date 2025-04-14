@@ -26,7 +26,7 @@
                         </nut-input>
                     </view>
                     <view class="m-t-10">
-                        <nut-input v-model="formData.description" placeholder="添加备注" />
+                        <nut-input v-model="formData.description" placeholder="添加备注..." />
                     </view>
                     <view class="flex-align-center flex-wrap m-t-10">
                         <!-- <nut-grid :column-num="5" :gutter="10" :border="false">

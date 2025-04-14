@@ -1,14 +1,15 @@
 <template>
-        <view class="common-actionSheet">
-            <nut-popup v-model:visible="show" position="bottom"  :round="true">
-                <view class="p-t-10 m-b-20">
-                    <view class="p-a-10 flex-center-center font14 blackColor" v-for="(item) in menuItems" :key="item.val" @click="choose(item)">  
+    <view class="common-actionSheet">
+        <nut-popup v-model:visible="show" position="bottom" :round="true">
+            <view class="p-t-10 m-b-20">
+                <view class="p-a-15 flex-center-center font16 blackColor" v-for="(item) in menuItems" :key="item.val"
+                    @click="choose(item)">
                     {{ item.name }}
                 </view>
-                </view>
-            </nut-popup>
-            <!-- <nut-action-sheet v-model:visible="show" :menu-items="menuItems" @choose="choose" /> -->
-        </view>
+            </view>
+        </nut-popup>
+        <!-- <nut-action-sheet v-model:visible="show" :menu-items="menuItems" @choose="choose" /> -->
+    </view>
 
 
 </template>
@@ -65,6 +66,4 @@ defineExpose({
     close
 })
 </script>
-<style>
-
-</style>
+<style></style>

@@ -43,11 +43,13 @@ let memos = ref([]);
 const actionSheetRef = ref();
 const currentItem = ref();
 const add_memo = () => {
-  addmemoRef.value.open();
+  // addmemoRef.value.open();
+  Taro.navigateTo({ url: "/memo/add/add" })
 }
 const update_memo = () => {
-  console.log("currentItem.value",currentItem.value);
-  addmemoRef.value.open(currentItem.value);
+  console.log("currentItem.value", currentItem.value);
+  // addmemoRef.value.open(currentItem.value);
+  Taro.navigateTo({ url: "/memo/add/add?id=" + currentItem.value.id })
   actionSheetRef.value.close();
 }
 

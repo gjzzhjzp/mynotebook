@@ -55,8 +55,8 @@ const itemClick = (item: MemoItem, index: number) => {
 }
 
 .memo-item {
-    padding: 20rpx;
-    margin-bottom: 20rpx;
+    padding: 30rpx;
+    margin-bottom: 30rpx;
     background: #fff;
     border-radius: 12rpx;
     box-shadow: 0 2rpx 8rpx rgba(0, 0, 0, 0.05);

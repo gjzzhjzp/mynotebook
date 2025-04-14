@@ -2,34 +2,44 @@
     <nut-popup v-model:visible="visible" position="bottom" round>
         <template #default>
             <view class="reminder-title font16 fontWeight blackColor p-a-10 text-center">设置订阅提醒</view>
-            <view class=" account-add-container flex-column-left flex-justify-between" style="height: 100%;">
+            <view class=" account-add-container flex-column-left flex-justify-between p-a-5" style="height: 100%;">
                 <nut-form ref="formRef" :model-value="formData" :rules="formRules">
                     <nut-form-item label="记账日报">
-                        <nut-switch v-model="formData.open_daily"></nut-switch>
+                        <view style="margin-left:300rpx">
+                            <nut-switch v-model="formData.open_daily"></nut-switch>
+                        </view>
                     </nut-form-item>
-                    <nut-form-item label="每日额度" prop="daily_limit">
-                        <nut-input v-model="formData.daily_limit" placeholder="请输入每日额度" type="number"
-                            @blur="validateField('daily_limit')" :rules="[{ required: true, message: '请输入每日额度' }]">
-                            <template #left>
-                                ￥
-                            </template>
-                        </nut-input>
+                    <nut-form-item label="每日额度" prop="daily_limit" body-align="right">
+                        <view style="margin-left:300rpx">
+                            <nut-input v-model="formData.daily_limit" placeholder="请输入每日额度" type="number"
+                                @blur="validateField('daily_limit')" :rules="[{ required: true, message: '请输入每日额度' }]">
+                                <template #left>
+                                    ￥
+                                </template>
+                            </nut-input>
+                        </view>
                     </nut-form-item>
-                    <nut-form-item label="每月额度" prop="monthly_limit">
-                        <nut-input v-model="formData.monthly_limit" placeholder="请输入每月额度" type="number"
-                            @blur="validateField('monthly_limit')" :rules="[{ required: true, message: '请输入每月额度' }]">
-                            <template #left>
-                                ￥
-                            </template>
-                        </nut-input>
+                    <nut-form-item label="每月额度" prop="monthly_limit" body-align="right">
+                        <view style="margin-left:300rpx">
+                            <nut-input v-model="formData.monthly_limit" placeholder="请输入每月额度" type="number"
+                                @blur="validateField('monthly_limit')"
+                                :rules="[{ required: true, message: '请输入每月额度' }]">
+                                <template #left>
+                                    ￥
+                                </template>
+                            </nut-input>
+                        </view>
                     </nut-form-item>
-                    <nut-form-item label="每年额度" prop="yearly_limit">
-                        <nut-input v-model="formData.yearly_limit" placeholder="请输入每年额度" type="number"
-                            @blur="validateField('yearly_limit')" :rules="[{ required: true, message: '请输入每年额度' }]">
-                            <template #left>
-                                ￥
-                            </template>
-                        </nut-input>
+                    <nut-form-item label="每年额度" prop="yearly_limit" body-align="right">
+                        <view style="margin-left:300rpx">
+                            <nut-input v-model="formData.yearly_limit" placeholder="请输入每年额度" type="number"
+                                @blur="validateField('yearly_limit')" :rules="[{ required: true, message: '请输入每年额度' }]">
+                                <template #left>
+                                    ￥
+                                </template>
+                            </nut-input>
+                        </view>
+
                     </nut-form-item>
                 </nut-form>
                 <view class="flex-align-center flex-justify-between m-t-20 p-a-20">

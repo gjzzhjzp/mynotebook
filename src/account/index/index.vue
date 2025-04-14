@@ -5,7 +5,7 @@
     </template>
     <template #body>
       <!-- <nut-noticebar text="设置订阅提醒" background="#FFF7ED" color="#EA580C" :left-icon="true" /> -->
-      <view class="account-index-tips flex-align-center flex-justify-between p-a-15">
+      <view class="account-index-tips flex-align-center flex-justify-between p-a-15" @click="openReminder()">
         <view class="flex-align-center">
           <view class="iconfont icon-icon_notice font16 "></view>
           <view class="m-l-5">设置订阅提醒</view>
@@ -69,7 +69,10 @@ const add_account = () => {
   addAccountRef.value.open();
 }
 const update_account = () => {
-  addAccountRef.value.open(currentItem.value);
+  // addAccountRef.value.open(currentItem.value);
+  Taro.navigateTo({
+    url: `/account/add/add?id=${currentItem.value?.id}`
+  })
   actionSheetRef.value.close();
 }
 const openActionSheet = (item) => {

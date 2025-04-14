@@ -15,7 +15,8 @@
             <slot name="footer"></slot>
         </view>
         <view :class="['er-page-scroll-back', autoHeight ? '' : 'page-no-auto-height']">
-            <view class="er-page-scroll-backicon" v-if="showarrow" @click="goTop"><mp-icon icon="arrow"></mp-icon>
+            <view class="er-page-scroll-backicon" v-if="showarrow" @click="goTop">
+                <!-- <mp-icon icon="arrow"></mp-icon> -->
             </view>
         </view>
     </view>
@@ -126,28 +127,31 @@ defineExpose({
 })
 </script>
 <style lang="scss">
-.er-page-scroll{
+.er-page-scroll {
     display: flex;
     flex-direction: column;
     height: 100%;
     overflow: hidden;
 }
 
-.er-page-scroll, .er-page-scroll-view{
+.er-page-scroll,
+.er-page-scroll-view {
     flex: 1;
-    position:relative;
+    position: relative;
     overflow: hidden;
 }
-.er-page-scroll-back{
-    position:absolute;
-    bottom:0;
-    right:0;
-    margin-right:40rpx;
-    margin-bottom:80rpx;
+
+.er-page-scroll-back {
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    margin-right: 40rpx;
+    margin-bottom: 80rpx;
 }
-.er-page-scroll-backicon{
-    background:rgba(255,255,255,0.5);
-    box-shadow:-8rpx 0 20rpx rgba(0,0,0,0.16);
+
+.er-page-scroll-backicon {
+    background: rgba(255, 255, 255, 0.5);
+    box-shadow: -8rpx 0 20rpx rgba(0, 0, 0, 0.16);
     width: 80rpx;
     height: 80rpx;
     border-radius: 50%;
@@ -156,16 +160,17 @@ defineExpose({
     text-align: center;
 }
 
-.er-page-scroll-absolute .er-page-scroll-nav{
+.er-page-scroll-absolute .er-page-scroll-nav {
     position: sticky;
-    left:0;
-    top:0;
-    right:0;
+    left: 0;
+    top: 0;
+    right: 0;
     z-index: 10;
 }
-.er-page-scroll-footer.er-page-auto-footer{
+
+.er-page-scroll-footer.er-page-auto-footer {
     position: sticky;
-    bottom:0;
+    bottom: 0;
     z-index: 99;
 }
 </style>
