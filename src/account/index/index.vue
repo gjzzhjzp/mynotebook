@@ -52,6 +52,7 @@ import pageScroll from '../../components/common/pageScroll.vue';
 import add from '../../components/common/add.vue';
 import statistics from '../../components/account/statistics.vue';
 import accountList from '../../components/account/list.vue';
+import { useDidShow } from '@tarojs/taro';
 import Taro from '@tarojs/taro';
 import addAccount from '../../components/account/add.vue';
 import reminder from '../../components/account/reminder.vue';
@@ -66,7 +67,10 @@ const reminderRef = ref();
 const actionSheetRef = ref();
 const currentItem = ref();
 const add_account = () => {
-  addAccountRef.value.open();
+  Taro.navigateTo({
+    url: "/account/add/add"
+  })
+  // addAccountRef.value.open();
 }
 const update_account = () => {
   // addAccountRef.value.open(currentItem.value);
@@ -88,14 +92,13 @@ let statisticsRef = ref<StatisticsComponent | null>(null)
 onBeforeMount(() => {
 
 })
-onMounted(() => {
-  // globalData.value = Taro.getStorageSync("globalData");
-  // console.log(globalData);
-  // console.log("....____________________",inject('globalData'));
-  getAccountList();
-
-
+useDidShow(() => {
+  successAccount();
 })
+onMounted(() => {
+  // getAccountList();
+})
+
 const getAccountList = () => {
   ajax.get("/account/get", {
     page: page.value,

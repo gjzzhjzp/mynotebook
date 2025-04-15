@@ -44,9 +44,10 @@
             </view>
           </view>
         </view>
-        <view class="whiteColorB borderRadius10 m-t-20 p-a-15">
-         <statisticsByMonth :ishome="true"></statisticsByMonth>
-        </view>
+        <!--  <view class="whiteColorB borderRadius10 m-t-20 p-a-15">
+
+         <statisticsByMonth ref="statisticsByMonth" :ishome="true"></statisticsByMonth>
+        </view> -->
       </view>
     </template>
   </pageScroll>
@@ -57,7 +58,7 @@ import { onBeforeMount, onMounted, ref } from 'vue';
 // import ajax from '../../common/ajax';
 import Header from '../../components/common/Header.vue';
 import pageScroll from '../../components/common/pageScroll.vue';
-import statisticsByMonth from "../../components/account/statisticsByMonth.vue"
+// import statisticsByMonth from "../../components/account/statisticsByMonth.vue"
 import Taro from '@tarojs/taro';
 
 onBeforeMount(() => {

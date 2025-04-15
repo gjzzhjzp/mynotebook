@@ -21,16 +21,19 @@
                             </view>
                         </view>
                     </view>
-                    <view class="m-t-10">
-                        <nut-input v-model="formData.amount" placeholder="0.00" clearable>
-                            <template #left>
-                                <view class="fontWeight blackColor">￥</view>
-                            </template>
-                        </nut-input>
-                    </view>
+                    <nut-config-provider :theme-vars="themeVars">
+                        <view class="m-t-10">
+                            <nut-input type="digit" v-model="formData.amount" placeholder="0.00" clearable>
+                                <template #left>
+                                    <view class="fontWeight blackColor font14">￥</view>
+                                </template>
+                            </nut-input>
+                        </view>
+                    </nut-config-provider>
                     <view class="m-t-10">
                         <nut-input v-model="formData.description" placeholder="添加备注..." />
                     </view>
+
                     <view class="flex-align-center flex-wrap m-t-10">
                         <!-- <nut-grid :column-num="5" :gutter="10" :border="false">
             <nut-grid-item  v-for="item in categories" :key="item.value">
@@ -51,7 +54,7 @@
             </view>
         </template>
         <template #footer>
-            <view class="m-t-20">
+            <view class="m-t-20 m-b-40">
                 <view class="flex-align-center flex-justify-between m-t-20 p-a-20">
                     <nut-button type="primary" class="m-t-10" @click="onOk" style="width: 300rpx;">
                         确定
@@ -67,10 +70,10 @@
 </template>
 
 <script setup lang="ts">
-import { onMounted, ref, inject, watch } from 'vue';
+import { onMounted, ref, watch } from 'vue';
 import ajax from '../../common/ajax';
 import Header from '../../components/common/Header.vue';
-import basedll from '../../common/basedll';
+// import basedll from '../../common/basedll';
 import pageScroll from '../../components/common/pageScroll.vue';
 import date_formatter from '../../common/date_formatter'
 import Taro from '@tarojs/taro';
@@ -101,6 +104,11 @@ const formData = ref<AccountFormData>({
     accountDate: "",
     accountDate_show: date_formatter(new Date().getTime(), 'MM月DD日')
 })
+// 添加 ConfigProvider 主题配置
+const themeVars = ref({
+    'textarea-font': '36rpx',  // 字体大小
+    'input-font-size': '40rpx'
+});
 const categories = ref<categoriesData[]>([]);
 const checked_category = ref("food");
 const checked_type = ref("expense");
@@ -121,6 +129,14 @@ watch(checked_type, () => {
 })
 const emit = defineEmits(['success'])
 const onOk = async () => {
+    if (!formData.value.amount) {
+        Taro.showToast({
+            title: '请输入金额',
+            icon: 'error',
+            duration: 2000
+        });
+        return;
+    }
     const params = {
         id: isedit.value ? formData.value.id : undefined,
         amount: formData.value.amount,
@@ -140,7 +156,10 @@ const onOk = async () => {
                 duration: 2000
             });
 
-            emit('success');
+            // emit('success');
+            Taro.navigateBack({
+                delta: 1,
+            });
         }
         close();
     } catch (error) {

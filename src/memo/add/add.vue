@@ -7,21 +7,16 @@
         <template #body>
             <nut-config-provider :theme-vars="themeVars">
                 <view class=" account-add-container flex-column-left flex-justify-between" style="height: 100%;">
-                    <view class="l-account-add p-a-20" style="height: 100%;">
+                    <view class="l-account-add" style="height: 100%;">
                         <nut-input v-model="formData.title" placeholder="标题" />
-                        <nut-textarea v-model="formData.content" class="custom-textarea" placeholder="开始输入内容..." :style="{
-        // '--nut-textarea-font': '40rpx',
-        // '--nutui-textarea-focus-border-color': '#f00'
-        // '--nut-textarea-font':'40rpx',
-        // '--nut-font-size-2': '60rpx'  // 修正变量名
-    }" />
+                        <nut-textarea v-model="formData.content" class="custom-textarea" placeholder="开始输入内容..." />
                     </view>
                 </view>
 
             </nut-config-provider>
         </template>
         <template #footer>
-            <view class="m-t-20 p-a-20">
+            <view class="m-t-20 p-a-20 m-b-40">
                 <view class="flex-align-center flex-justify-between m-b-40">
                     <view style="width: 200rpx;">
                         提醒时间
@@ -76,8 +71,8 @@ const formData = ref<FormData>({
 })
 // 添加 ConfigProvider 主题配置
 const themeVars = ref({
-    'textarea-font': '40rpx',  // 字体大小
-    'textarea-text-color':'red'
+    'textarea-font': '36rpx',  // 字体大小
+    'input-font-size': '40rpx'
 });
 const globalData = inject('globalData') as any;
 const showCalender = ref(false);

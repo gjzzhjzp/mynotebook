@@ -73,6 +73,7 @@ import pieChart from './pieChart.vue';
 import date_formatter from '../../common/date_formatter'
 import ajax from '../../common/ajax';
 import emptyData from "../common/emptyData.vue"
+import { useDidShow } from "@tarojs/taro";
 interface StatisticsItem {
     type: number;
     category: string;
@@ -108,10 +109,14 @@ const types = ref([
 ])
 const globalData = inject('globalData') as any;
 let pieChartList = ref([{ value: 0, name: "", percentage: "0" }])
-onMounted(() => {
+useDidShow(() => {
+    console.log('页面显示');
     getCurrentMonthDates(new Date().getFullYear(), new Date().getMonth() + 1);
     getStatistics();
     getStatisticsByfl();
+})
+onMounted(() => {
+
     console.log("globalData", globalData.value);
 })
 watch(checked_type, () => {
