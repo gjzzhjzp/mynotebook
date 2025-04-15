@@ -22,7 +22,7 @@
     </view>
 </template>
 <script setup lang="ts">
-import { ref } from 'vue';
+import { ref,getCurrentInstance } from 'vue';
 import Taro from '@tarojs/taro';
 const showarrow = ref(false);
 const scrollTop = ref(0);
@@ -98,14 +98,17 @@ const bindscroll = (e) => {
     emit("scroll", e.detail);
 }
 const dragging = (e) => {
+    if (!e || !e.detail) return;
     if (!props.openArrow) return;
     if (!props.loading_enabled) return;
     const stop = e.detail.scrollTop;
-    const query = Taro.createSelectorQuery()
+    const instance = getCurrentInstance();
+    if (!instance) return;  // 添加空值检查
+    const query = Taro.createSelectorQuery().in(instance)
     query.select('.er-page-scroll').boundingClientRect()
     // query.selectViewport().scrollOffset()
     query.exec(function (res) {
-        if (stop >= res.height) {
+        if (stop >= res[0]?.height) {
             showarrow.value = true;
 
         } else {

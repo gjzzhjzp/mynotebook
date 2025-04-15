@@ -19,7 +19,7 @@
 </template>
 
 <script setup lang="ts">
-import { withDefaults, defineProps, ref, computed } from 'vue';
+import { withDefaults, defineProps, ref, computed,getCurrentInstance } from 'vue';
 import { useReady, useDidShow } from '@tarojs/taro';
 import Taro from '@tarojs/taro'
 // const app = Taro.getApp();
@@ -101,7 +101,13 @@ useReady(() => {
         '--navLeftAlign': props.leftAlign
     }
     // console.log("c_style",c_style.value);
-    const query = Taro.createSelectorQuery().in(this); // 自定义组件需要绑定this;
+     // 使用 getCurrentInstance() 获取当前组件实例
+     const instance = getCurrentInstance();
+     if (!instance) {
+        console.warn('Component instance is null');
+        return;
+    }
+    const query = Taro.createSelectorQuery().in(instance); // 自定义组件需要绑定this;
     query.select('.wxc-nav').boundingClientRect();
     query.selectViewport().scrollOffset();
     query.exec(function (res) {

@@ -1,15 +1,24 @@
 <template>
+
     <pageScroll :refresher_enabled="false" style="background-color: #fff">
         <template #nav>
             <Header title="新建备忘录"></Header>
         </template>
         <template #body>
-            <view class=" account-add-container flex-column-left flex-justify-between" style="height: 100%;">
-                <view class="l-account-add p-a-20" style="height: 100%;">
-                    <nut-input v-model="formData.title" placeholder="标题" />
-                    <nut-textarea v-model="formData.content" placeholder="开始输入内容..." />
+            <nut-config-provider :theme-vars="themeVars">
+                <view class=" account-add-container flex-column-left flex-justify-between" style="height: 100%;">
+                    <view class="l-account-add p-a-20" style="height: 100%;">
+                        <nut-input v-model="formData.title" placeholder="标题" />
+                        <nut-textarea v-model="formData.content" class="custom-textarea" placeholder="开始输入内容..." :style="{
+        // '--nut-textarea-font': '40rpx',
+        // '--nutui-textarea-focus-border-color': '#f00'
+        // '--nut-textarea-font':'40rpx',
+        // '--nut-font-size-2': '60rpx'  // 修正变量名
+    }" />
+                    </view>
                 </view>
-            </view>
+
+            </nut-config-provider>
         </template>
         <template #footer>
             <view class="m-t-20 p-a-20">
@@ -18,7 +27,8 @@
                         提醒时间
                     </view>
                     <view>
-                        <view class="skinColor" @click="showCalender = true">{{ formData.reminder_time_show || "选择时间" }}
+                        <view class="skinColor" @click="showCalender = true">{{ formData.reminder_time_show ||
+        "选择时间" }}
                         </view>
                         <nut-popup v-model:visible="showCalender" position="bottom">
                             <nut-date-picker v-model="formData.reminder_time" type="datetime" :min-date="minDate"
@@ -39,6 +49,7 @@
 
         </template>
     </pageScroll>
+
 </template>
 
 <script setup lang="ts">
@@ -63,6 +74,11 @@ const formData = ref<FormData>({
     reminder_time: "",
     reminder_time_show: ""
 })
+// 添加 ConfigProvider 主题配置
+const themeVars = ref({
+    'textarea-font': '40rpx',  // 字体大小
+    'textarea-text-color':'red'
+});
 const globalData = inject('globalData') as any;
 const showCalender = ref(false);
 const minDate = new Date();
@@ -181,4 +197,11 @@ const close = () => {
 }
 </script>
 
-<style></style>
+<style>
+/* .custom-textarea.nut-textarea__textarea {
+    font-size: var(--nut-textarea-font, var(--nut-font-size-2, 14rpx));
+    line-height: 1.6;
+    padding: 20rpx;
+    min-height: 400rpx;
+  } */
+</style>

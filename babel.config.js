@@ -4,7 +4,9 @@ module.exports = {
   presets: [
     ['taro', {
       framework: 'vue3',
-      ts: true
+      ts: true,
+      sourceMap: true,  // 添加这一行禁用 source map
+      vueJsx: true  // 添加这一行
     }]
   ]
 }

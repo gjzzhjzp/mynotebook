@@ -5,7 +5,10 @@
 
                 <view class="l-account-add p-a-20">
                     <nut-input v-model="formData.title" />
-                    <nut-textarea v-model="formData.content" placeholder=" " />
+                    <nut-textarea v-model="formData.content" placeholder=" " :style="{
+        '--nut-textarea-font': '40rpx',
+        '--nutui-textarea-focus-border-color': '#f00'
+    }" />
                 </view>
                 <view class="m-t-20 p-a-20">
                     <view class="flex-align-center flex-justify-between m-b-20">
