@@ -1,6 +1,16 @@
 <template>
-    <nut-dialog title="意见反馈" v-model:visible="visible1" @cancel="onCancel" @ok="onOk">
+    <nut-dialog custom-class="addFeedBackDialog" title="意见反馈" v-model:visible="visible1" @cancel="onCancel" @ok="onOk">
         <nut-textarea v-model="content" placeholder="请留下您的宝贵意见..." />
+        <!-- <template #footer>
+            <view class="flex-align-center flex-justify-between m-t-20 p-a-20">
+                <nut-button type="default" class="m-t-10" @click="onCancel" style="width: 300rpx;">
+                    取消
+                </nut-button>
+                <nut-button type="primary" class="m-t-10" @click="onOk" style="width: 300rpx;">
+                    确定
+                </nut-button>
+            </view>
+        </template> -->
     </nut-dialog>
 </template>
 <script setup lang="ts">
@@ -48,3 +58,8 @@ defineExpose({
     close
 });
 </script>
+<style>
+.addFeedBackDialog .nut-textarea {
+    padding: 0px !important;
+}
+</style>

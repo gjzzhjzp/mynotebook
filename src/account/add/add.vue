@@ -40,19 +40,14 @@
                                 class="borderRadius20 flex-column-center flex-justify-center m-b-20"
                                 @click="checked_category = item.value">
                                 <view
-                                    :class="['account_add_item', 'flex-center-center', item.value == checked_category ? 'skinColorB borderRadiusMax p-a-5' : '']">
+                                    :class="['account_add_item', 'flex-center-center', 'borderRadiusMax', 'p-a-10', item.value == checked_category ? 'skinColorB' : 'tagColorB']">
                                     <view
-                                        :class="'iconfont   ' + item.icon + ' ' + (item.value == checked_category ? 'whiteColor font16' : 'skinColor font24')">
+                                        :class="'iconfont  font24 ' + item.icon + ' ' + (item.value == checked_category ? 'whiteColor ' : 'lightColor ')">
                                     </view>
                                 </view>
-                                <view class="m-t-10 font16 blackColor">{{ item.name }}</view>
+                                <view class="m-t-10 font14 blackColor">{{ item.name }}</view>
                             </view>
                         </view>
-                        <!-- <view v-for="item in categories" class="m-r-10 m-t-10">
-                            <nut-button :type="item.value != checked_category ? 'default' : 'primary'" size="small"
-                                @click="checked_category = item.value" style="width: 145rpx;">{{ item.name
-                                }}</nut-button>
-                        </view> -->
                     </view>
 
                 </view>
@@ -247,4 +242,9 @@ const close = () => {
 }
 </script>
 
-<style></style>
+<style>
+.account_add_item {
+    height: 60rpx;
+    width: 60rpx;
+}
+</style>

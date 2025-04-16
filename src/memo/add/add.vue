@@ -7,7 +7,7 @@
         <template #body>
             <nut-config-provider :theme-vars="themeVars">
                 <view class=" account-add-container flex-column-left flex-justify-between" style="height: 100%;">
-                    <view class="l-account-add" style="height: 100%;">
+                    <view class="l-account-add m-t-20" style="height: 100%;">
                         <nut-input v-model="formData.title" placeholder="标题" />
                         <nut-textarea v-model="formData.content" class="custom-textarea" placeholder="开始输入内容..." />
                     </view>
@@ -19,7 +19,7 @@
             <view class="m-t-20 p-a-20 m-b-40">
                 <view class="flex-align-center flex-justify-between m-b-40">
                     <view class="flex-align-center" style="width: 200rpx;">
-                        <view class="font16 iconfont icon-shijian m-r-5"></view>
+                        <view class="font16 iconfont icon-shijian m-r-5 skinColor"></view>
                         <view>提醒时间</view>
                     </view>
                     <view>

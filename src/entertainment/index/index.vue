@@ -22,7 +22,7 @@ import Header from '../../components/common/Header.vue';
 import pageScroll from '../../components/common/pageScroll.vue';
 import feedbackList from '../../components/feedback/list.vue';
 import { formatDate } from '../../common/date_formatter';
-import Taro from '@tarojs/taro';
+
 onBeforeMount(() => {
 
 })
@@ -33,8 +33,6 @@ let page = ref<number>(1);
 let total = ref<number>(0);
 let refreshering = ref<boolean>(false);
 let feedbacks = ref([]);
-const actionSheetRef = ref();
-const currentItem = ref();
 
 const getList = () => {
   ajax.get("/feedbacks/list", {
@@ -75,19 +73,6 @@ const refresh = () => {
   refreshering.value = true;
   page.value = 1;
   getList();
-}
-const deletefeedback = () => {
-  ajax.post("/feedbacks/delete", {
-    id: currentItem.value.id
-  }).then(() => {
-    // console.log("删除成功", res);
-    Taro.showToast({
-      title: "删除成功",
-      icon: "none"
-    })
-    actionSheetRef.value.close();
-    getList();
-  })
 }
 
 </script>

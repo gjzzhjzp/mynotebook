@@ -162,4 +162,8 @@ defineExpose({
 .account-add-container {
     --nut-grid-item-content-padding: "0px 0px 0px 0px";
 }
+
+.nut-cell-group__wrap {
+    box-shadow: 0px !important;
+}
 </style>

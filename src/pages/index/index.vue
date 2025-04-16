@@ -51,6 +51,7 @@
       </view>
       <addfeedback ref="addfeedbackRef"></addfeedback>
       <reminder ref="reminderRef"></reminder>
+      <view class="back_icon skinColor iconfont icon-juzi2 font40"></view>
     </template>
   </pageScroll>
 </template>
@@ -64,6 +65,7 @@ import addfeedback from "../../components/feedback/add.vue"
 import reminder from "../../components/account/reminder.vue"
 // import statisticsByMonth from "../../components/account/statisticsByMonth.vue"
 import Taro from '@tarojs/taro';
+import { useShareAppMessage } from "@tarojs/taro"
 interface KjTabs {
   name: string;
   icon: string;
@@ -97,10 +99,14 @@ const getKjTabs = () => {
   ajax.get('/quick_actions/get', {}).then(res => {
     if (res.code == 200) {
       console.log(res.data);
-      kjtabs.value = res.data;
-      // kjtabs.value = res.data.filter((item) => {
-      //   return item.status == 1;
-      // });
+      const globalData = Taro.getStorageSync("globalData");
+      if (globalData.userinfo.openid == "o5DNf7Kcd5UqkNq_5pj7lb1Hc7Mw") {
+        kjtabs.value = res.data;
+      } else {
+        kjtabs.value = res.data.filter((item) => {
+          return item.status == 1;
+        });
+      }
     }
   })
 }
@@ -115,15 +121,25 @@ const tonextPath = (item) => {
     }
   }
 }
+useShareAppMessage(() => {
+  return {
+    title: '橘好记 - 简单好用的记账备忘录', // 分享标题
+    path: '/pages/index/index', // 分享路径
+    // imageUrl: 'https://example.com/share.jpg' // 分享图片（可选）
+  }
+})
+
 </script>
 
 <style>
-.demo {
-  height: 100%;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
+.back_icon {
+  /* z-index: -1; */
+  opacity: 0.15;
+  font-size: 400rpx;
+  margin-top: -200rpx;
+  margin-left: 520rpx;
+  display: inline-block;
+  position: absolute;
 }
 
 .mynotebook_body_item {
