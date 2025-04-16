@@ -4,9 +4,7 @@
         <Header title="意见反馈"></Header>
       </template>
       <template #body>
-        <!-- p-a-10 m-a-10 whiteColorB borderRadius10 -->
         <view class="">
-          <!-- @delete="successfeedback" @update="update_feedback" -->
           <feedback-list :list="feedbacks" ></feedback-list>
         </view>
       </template>
@@ -37,7 +35,7 @@
   const currentItem = ref();
   
   const getList = () => {
-    ajax.get("/feedbacks/list", {
+    ajax.get("/feedback/get", {
       page: page.value,
       rows: 20
     }).then((res) => {
