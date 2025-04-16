@@ -18,8 +18,9 @@
         <template #footer>
             <view class="m-t-20 p-a-20 m-b-40">
                 <view class="flex-align-center flex-justify-between m-b-40">
-                    <view style="width: 200rpx;">
-                        提醒时间
+                    <view class="flex-align-center" style="width: 200rpx;">
+                        <view class="font16 iconfont icon-shijian m-r-5"></view>
+                        <view>提醒时间</view>
                     </view>
                     <view>
                         <view class="skinColor" @click="showCalender = true">{{ formData.reminder_time_show ||
@@ -33,12 +34,13 @@
                     </view>
                 </view>
                 <view class="flex-align-center flex-justify-between ">
-                    <nut-button type="primary" class="m-t-10" @click="onOk" style="width: 300rpx;">
-                        确定
-                    </nut-button>
                     <nut-button type="default" class="m-t-10" @click="close" style="width: 300rpx;">
                         取消
                     </nut-button>
+                    <nut-button type="primary" class="m-t-10" @click="onOk" style="width: 300rpx;">
+                        确定
+                    </nut-button>
+
                 </view>
             </view>
 
@@ -71,8 +73,8 @@ const formData = ref<FormData>({
 })
 // 添加 ConfigProvider 主题配置
 const themeVars = ref({
-    'textarea-font': '36rpx',  // 字体大小
-    'input-font-size': '40rpx'
+    'textarea-font': '32rpx',  // 字体大小
+    'input-font-size': '36rpx'
 });
 const globalData = inject('globalData') as any;
 const showCalender = ref(false);

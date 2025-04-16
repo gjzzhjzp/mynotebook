@@ -34,9 +34,9 @@
             <view class="font16 fontWeight blackColor">快捷功能</view>
             <!-- <view class="font14 skinColor">查看全部</view> -->
           </view>
-          <view class="m-t-20 flex-align-center grid-4">
+          <view class="m-t-20 grid-4">
             <view v-for="item in kjtabs" @click="tonextPath(item)"
-              class="borderRadius20 flex-column-center flex-justify-center">
+              class="borderRadius20 flex-column-center flex-justify-center m-b-20">
               <view class="mynotebook_body_item flex-center-center">
                 <view :class="'iconfont font45 skinColor ' + item.icon"></view>
               </view>
@@ -80,19 +80,6 @@ onBeforeMount(() => {
 onMounted(() => {
   getKjTabs();
 })
-// {
-//   name: "记一笔",
-//   icon: "icon-jizhangben",
-//   path: "/account/add/add"
-// }, {
-//   name: "收支统计",
-//   icon: "icon-jizhangben",
-//   path: "/account/statistics/statistics"
-// }, {
-//   name: "快速备忘",
-//   icon: "icon-beiwanglu",
-//   path: "/memo/add/add"
-// }
 const kjtabs = ref<KjTabs[]>([]);
 const tonext = (type) => {
   let url = "";
@@ -110,9 +97,10 @@ const getKjTabs = () => {
   ajax.get('/quick_actions/get', {}).then(res => {
     if (res.code == 200) {
       console.log(res.data);
-      kjtabs.value = res.data.filter((item) => {
-        return item.status == 1;
-      });
+      kjtabs.value = res.data;
+      // kjtabs.value = res.data.filter((item) => {
+      //   return item.status == 1;
+      // });
     }
   })
 }

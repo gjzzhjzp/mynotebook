@@ -1,21 +1,21 @@
 <template>
     <nut-dialog v-model:visible="visible" @cancel="close" @ok="onOk">
         <template #header>
-            <view class="flex-align-center">
-                <view>设置订阅提醒</view>
-                <view class="iconfont icon-yiwen font14" @click="openHelp()"></view>
+            <view class="flex-center-center">
+                <view class="fontWeight font16">设置订阅提醒</view>
+                <view class="iconfont icon-yiwen  skinColor font16 m-l-5" @click="openHelp()"></view>
             </view>
         </template>
         <template #default>
-            <view class="account-add-container flex-column-left flex-justify-between p-a-5" style="height: 100%;">
+            <view class="account-add-container flex-column-left flex-justify-between " style="height: 100%;">
                 <nut-form ref="formRef" :model-value="formData" :rules="formRules">
-                    <nut-form-item label="记账日报">
-                        <view style="margin-left:300rpx">
+                    <nut-form-item label="记账日报" prop="open_daily">
+                        <view>
                             <nut-switch v-model="formData.open_daily"></nut-switch>
                         </view>
                     </nut-form-item>
                     <nut-form-item label="每日额度" prop="daily_limit" body-align="right">
-                        <view style="margin-left:300rpx">
+                        <view>
                             <nut-input v-model="formData.daily_limit" placeholder="请输入每日额度" type="number"
                                 @blur="validateField('daily_limit')" :rules="[{ required: true, message: '请输入每日额度' }]">
                                 <template #left>
@@ -25,7 +25,7 @@
                         </view>
                     </nut-form-item>
                     <nut-form-item label="每月额度" prop="monthly_limit" body-align="right">
-                        <view style="margin-left:300rpx">
+                        <view>
                             <nut-input v-model="formData.monthly_limit" placeholder="请输入每月额度" type="number"
                                 @blur="validateField('monthly_limit')"
                                 :rules="[{ required: true, message: '请输入每月额度' }]">
@@ -36,7 +36,7 @@
                         </view>
                     </nut-form-item>
                     <nut-form-item label="每年额度" prop="yearly_limit" body-align="right">
-                        <view style="margin-left:300rpx">
+                        <view>
                             <nut-input v-model="formData.yearly_limit" placeholder="请输入每年额度" type="number"
                                 @blur="validateField('yearly_limit')" :rules="[{ required: true, message: '请输入每年额度' }]">
                                 <template #left>
@@ -44,24 +44,26 @@
                                 </template>
                             </nut-input>
                         </view>
-
                     </nut-form-item>
                 </nut-form>
             </view>
             <help ref="helpRef" title="订阅提醒">
                 <template #default>
-                    <view>
-                        记账日报：每天10点推送昨日账单
+                    <view class="font14">
+                        <view class="text-left m-b-10">
+                            记账日报：每天10点推送昨日账单
+                        </view>
+                        <view class="text-left m-b-10">
+                            每日额度：设置每日花费上限，超支提醒
+                        </view>
+                        <view class="text-left m-b-10">
+                            每月额度：设置每月花费上限，超支提醒
+                        </view>
+                        <view class="text-left m-b-10">
+                            每年额度：设置每年花费上限，超支提醒
+                        </view>
                     </view>
-                    <view>
-                        每日额度：设置每日花费上限，超支提醒
-                    </view>
-                    <view>
-                        每月额度：设置每月花费上限，超支提醒
-                    </view>
-                    <view>
-                        每年额度：设置每年花费上限，超支提醒
-                    </view>
+
                 </template>
             </help>
         </template>
@@ -107,7 +109,7 @@ const validateField = async (prop: string) => {
 };
 const globalData = inject('globalData') as any;
 onMounted(() => {
-    console.log("globalData-------------------", globalData.value.tmplIds.overspend);
+    // console.log("globalData-------------------", globalData.value.tmplIds.overspend);
     get_userLimit();
 })
 const visible = ref(false)

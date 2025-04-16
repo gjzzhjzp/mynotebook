@@ -1,6 +1,6 @@
 <template>
     <nut-dialog title="意见反馈" v-model:visible="visible1" @cancel="onCancel" @ok="onOk">
-        <nut-textarea v-model="content" />
+        <nut-textarea v-model="content" placeholder="请留下您的宝贵意见..." />
     </nut-dialog>
 </template>
 <script setup lang="ts">
@@ -19,12 +19,12 @@ const close = () => {
 const onCancel = () => {
     console.log('event cancel');
 };
-const  onOk =async () => {
+const onOk = async () => {
     const params = {
         content: content.value
     };
     try {
-        const url ="/feedback/add";
+        const url = "/feedback/add";
         const res = await ajax.post(url, params);
         if (res.code == 200) {
             Taro.showToast({

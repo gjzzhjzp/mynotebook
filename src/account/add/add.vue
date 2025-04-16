@@ -35,18 +35,24 @@
                     </view>
 
                     <view class="flex-align-center flex-wrap m-t-10">
-                        <!-- <nut-grid :column-num="5" :gutter="10" :border="false">
-            <nut-grid-item  v-for="item in categories" :key="item.value">
-                <template #default> -->
-                        <view v-for="item in categories" class="m-r-10 m-t-10">
+                        <view class="m-t-20 grid-4">
+                            <view v-for="item in categories"
+                                class="borderRadius20 flex-column-center flex-justify-center m-b-20"
+                                @click="checked_category = item.value">
+                                <view
+                                    :class="['account_add_item', 'flex-center-center', item.value == checked_category ? 'skinColorB borderRadiusMax p-a-5' : '']">
+                                    <view
+                                        :class="'iconfont   ' + item.icon + ' ' + (item.value == checked_category ? 'whiteColor font16' : 'skinColor font24')">
+                                    </view>
+                                </view>
+                                <view class="m-t-10 font16 blackColor">{{ item.name }}</view>
+                            </view>
+                        </view>
+                        <!-- <view v-for="item in categories" class="m-r-10 m-t-10">
                             <nut-button :type="item.value != checked_category ? 'default' : 'primary'" size="small"
                                 @click="checked_category = item.value" style="width: 145rpx;">{{ item.name
                                 }}</nut-button>
-                        </view>
-
-                        <!-- </template>
-            </nut-grid-item>
-        </nut-grid> -->
+                        </view> -->
                     </view>
 
                 </view>
@@ -56,12 +62,13 @@
         <template #footer>
             <view class="m-t-20 m-b-40">
                 <view class="flex-align-center flex-justify-between m-t-20 p-a-20">
-                    <nut-button type="primary" class="m-t-10" @click="onOk" style="width: 300rpx;">
-                        确定
-                    </nut-button>
                     <nut-button type="default" class="m-t-10" @click="close" style="width: 300rpx;">
                         取消
                     </nut-button>
+                    <nut-button type="primary" class="m-t-10" @click="onOk" style="width: 300rpx;">
+                        确定
+                    </nut-button>
+
                 </view>
             </view>
 
@@ -79,7 +86,8 @@ import date_formatter from '../../common/date_formatter'
 import Taro from '@tarojs/taro';
 interface categoriesData {
     name: string,
-    value: string
+    value: string,
+    icon?: string
 }
 interface AccountFormData {
     id?: string;
@@ -191,7 +199,7 @@ const showCalender = ref(false);
 const getAccountList = (id) => {
     ajax.get("/account/get", {
         id,
-        page: page.value,
+        page: 1,
         rows: 10
     }).then((res: any) => {
         if (res.code == 200) {
