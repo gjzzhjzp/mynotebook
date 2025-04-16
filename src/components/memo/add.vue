@@ -12,8 +12,8 @@
                 </view>
                 <view class="m-t-20 p-a-20">
                     <view class="flex-align-center flex-justify-between m-b-20">
-                        <view style="width: 200rpx;">
-                            提醒时间
+                        <view class="flex-align-center" style="width: 200rpx;">
+                            <view class="font14 iconfont icon-shijian"></view><view>提醒时间</view>
                         </view>
                         <view>
                             <view @click="showCalender = true">{{ formData.reminder_time_show || "无提醒" }}</view>
@@ -21,7 +21,6 @@
                                 <nut-date-picker v-model="formData.reminder_time" type="datetime" :min-date="minDate"
                                     :three-dimensional="false" @confirm="chooseDate"></nut-date-picker>
                             </nut-popup>
-
                         </view>
                     </view>
                     <view class="flex-align-center flex-justify-between ">

@@ -116,13 +116,3 @@ const deletememo = () => {
 }
 
 </script>
-
-<style>
-.demo {
-  height: 100%;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-}
-</style>

@@ -1,13 +1,8 @@
 <template>
-    <nut-dialog v-model:visible="visible" @cancel="close" @ok="onOk">
-        <template #header>
-            <view class="flex-align-center">
-                <view>设置订阅提醒</view>
-                <view class="iconfont icon-yiwen font14" @click="openHelp()"></view>
-            </view>
-        </template>
+    <nut-popup v-model:visible="visible" position="bottom" round>
         <template #default>
-            <view class="account-add-container flex-column-left flex-justify-between p-a-5" style="height: 100%;">
+            <view class="reminder-title font16 fontWeight blackColor p-a-10 text-center">设置订阅提醒</view>
+            <view class=" account-add-container flex-column-left flex-justify-between p-a-5" style="height: 100%;">
                 <nut-form ref="formRef" :model-value="formData" :rules="formRules">
                     <nut-form-item label="记账日报">
                         <view style="margin-left:300rpx">
@@ -47,32 +42,23 @@
 
                     </nut-form-item>
                 </nut-form>
+                <view class="flex-align-center flex-justify-between m-t-20 p-a-20">
+                    <nut-button type="primary" class="m-t-10" @click="onOk" style="width: 300rpx;">
+                        确定
+                    </nut-button>
+                    <nut-button type="default" class="m-t-10" @click="close" style="width: 300rpx;">
+                        取消
+                    </nut-button>
+                </view>
             </view>
-            <help ref="helpRef" title="订阅提醒">
-                <template #default>
-                    <view>
-                        记账日报：每天10点推送昨日账单
-                    </view>
-                    <view>
-                        每日额度：设置每日花费上限，超支提醒
-                    </view>
-                    <view>
-                        每月额度：设置每月花费上限，超支提醒
-                    </view>
-                    <view>
-                        每年额度：设置每年花费上限，超支提醒
-                    </view>
-                </template>
-            </help>
         </template>
-    </nut-dialog>
+    </nut-popup>
 </template>
 <script setup lang="ts">
 import ajax from '../../common/ajax'
 import { ref, onMounted, defineEmits, inject } from 'vue'
 import type { FormInstance } from '@nutui/nutui-taro';
 import basedll from '../../common/basedll';
-import help from '../common/help.vue'
 interface FormData {
     open_daily: boolean;
     daily_limit: string;
@@ -93,11 +79,7 @@ const formRules = {
     yearly_limit: [{ required: true, message: '请输入每年额度' }]
 };
 const formRef = ref<FormInstance | null>(null)
-const helpRef = ref();
 const emit = defineEmits(['submit'])
-const openHelp = () => {
-    helpRef.value.open();
-}
 const validateField = async (prop: string) => {
     try {
         await formRef.value?.validate(prop);

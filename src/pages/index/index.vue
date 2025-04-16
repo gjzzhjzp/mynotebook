@@ -34,13 +34,13 @@
             <view class="font16 fontWeight blackColor">快捷功能</view>
             <!-- <view class="font14 skinColor">查看全部</view> -->
           </view>
-          <view class="m-t-20 flex-align-center">
-            <view v-for="item in kjtabs" @click="tonextPath(item.path)"
-              class="borderRadius20 flex-column-center flex-justify-center m-r-20">
+          <view class="m-t-20 flex-align-center grid-4">
+            <view v-for="item in kjtabs" @click="tonextPath(item)"
+              class="borderRadius20 flex-column-center flex-justify-center">
               <view class="mynotebook_body_item flex-center-center">
                 <view :class="'iconfont font45 skinColor ' + item.icon"></view>
               </view>
-              <view class="m-t-10 font16 blackColor">{{ item.name }}</view>
+              <view class="m-t-10 font16 blackColor">{{ item.cn_name }}</view>
             </view>
           </view>
         </view>
@@ -49,37 +49,51 @@
          <statisticsByMonth ref="statisticsByMonth" :ishome="true"></statisticsByMonth>
         </view> -->
       </view>
+      <addfeedback ref="addfeedbackRef"></addfeedback>
+      <reminder ref="reminderRef"></reminder>
     </template>
   </pageScroll>
 </template>
 
 <script setup lang="ts">
 import { onBeforeMount, onMounted, ref } from 'vue';
-// import ajax from '../../common/ajax';
+import ajax from '../../common/ajax';
 import Header from '../../components/common/Header.vue';
 import pageScroll from '../../components/common/pageScroll.vue';
+import addfeedback from "../../components/feedback/add.vue"
+import reminder from "../../components/account/reminder.vue"
 // import statisticsByMonth from "../../components/account/statisticsByMonth.vue"
 import Taro from '@tarojs/taro';
-
+interface KjTabs {
+  name: string;
+  icon: string;
+  path: string;
+  cn_name?: string;
+  status?: number;
+  sort_order?: number;
+}
+const addfeedbackRef = ref();
+const reminderRef = ref();
 onBeforeMount(() => {
 
 })
 onMounted(() => {
-
+  getKjTabs();
 })
-const kjtabs = ref([{
-  name: "记一笔",
-  icon: "icon-jizhangben",
-  path: "/account/add/add"
-}, {
-  name: "收支统计",
-  icon: "icon-jizhangben",
-  path: "/account/statistics/statistics"
-}, {
-  name: "快速备忘",
-  icon: "icon-beiwanglu",
-  path: "/memo/add/add"
-}]);
+// {
+//   name: "记一笔",
+//   icon: "icon-jizhangben",
+//   path: "/account/add/add"
+// }, {
+//   name: "收支统计",
+//   icon: "icon-jizhangben",
+//   path: "/account/statistics/statistics"
+// }, {
+//   name: "快速备忘",
+//   icon: "icon-beiwanglu",
+//   path: "/memo/add/add"
+// }
+const kjtabs = ref<KjTabs[]>([]);
 const tonext = (type) => {
   let url = "";
   switch (type) {
@@ -92,8 +106,26 @@ const tonext = (type) => {
   }
   Taro.navigateTo({ url })
 }
-const tonextPath = (path) => {
-  Taro.navigateTo({ url: path })
+const getKjTabs = () => {
+  ajax.get('/quick_actions/get', {}).then(res => {
+    if (res.code == 200) {
+      console.log(res.data);
+      kjtabs.value = res.data.filter((item) => {
+        return item.status == 1;
+      });
+    }
+  })
+}
+const tonextPath = (item) => {
+  if (item.path) {
+    Taro.navigateTo({ url: item.path })
+  } else {
+    if (item.name == "feedback") {   // 意见反馈
+      addfeedbackRef.value.open();
+    } else if (item.name == "budgetSetting") {   // 预算设置
+      reminderRef.value.open();
+    }
+  }
 }
 </script>
 

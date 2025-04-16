@@ -17,6 +17,18 @@ export default defineAppConfig({
         "index/index",
         "add/add"
       ]
+    },
+    {
+      "root": "feedback",
+      "pages": [
+        "index/index"
+      ]
+    },
+    {
+      "root": "entertainment",
+      "pages": [
+        "index/index"
+      ]
     }
   ],
   window: {
