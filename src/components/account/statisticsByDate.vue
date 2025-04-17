@@ -1,7 +1,5 @@
 <template>
-    <pageScroll :refresher_enabled="false">
-        <template #body>
-            <view class="statistics-container p-a-15">
+     <view class="statistics-container p-a-15">
                 <view class=" flex-align-center flex-justify-between">
                     <nut-popover v-model:visible="showSearchType" :list="searchlist" location="bottom-start"
                         @choose="chooseSearch" :offset="[0, -70]">
@@ -33,7 +31,7 @@
                         </nut-popup>
                     </view>
                 </view>
-                <view class="font14 tagColor flex-align-center">
+                <view class="font14 tagColor flex-align-center m-t-20">
                     <view v-for="item in types" :key="item.title" class="m-r-10" @click="checked_type = item.value">
                         <nut-button :type="item.value != checked_type ? 'default' : 'primary'" size="small">{{
         item.title }}</nut-button>
@@ -70,8 +68,6 @@
                     <emptyData></emptyData>
                 </template>
             </view>
-        </template>
-    </pageScroll>
 </template>
 
 <script setup lang="ts">
@@ -79,7 +75,6 @@
 import { ref, onMounted, watch, inject } from 'vue';
 import pieChart from './pieChart.vue';
 import date_formatter from '../../common/date_formatter'
-import pageScroll from '../../components/common/pageScroll.vue';
 import ajax from '../../common/ajax';
 import emptyData from "../common/emptyData.vue"
 import { useDidShow } from "@tarojs/taro";

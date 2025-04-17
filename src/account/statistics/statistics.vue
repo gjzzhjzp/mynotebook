@@ -22,21 +22,16 @@ import statisticsByDate from '../../components/account/statisticsByDate.vue';
 onBeforeMount(() => {
 
 })
-onMounted(() => {
-
+// 自定义分享功能
+Taro.useShareAppMessage(() => {
+    debugger;
+  return {
+    title: '我的账单统计',
+    path: '/account/statistics/statistics'
+  }
 })
-const tonext = (type) => {
-    let url = "";
-    switch (type) {
-        case 'account':
-            url = "/account/index/index"
-            break;
-        case 'memo':
-            url = "/memo/index/index"
-            break;
-    }
-    Taro.navigateTo({ url })
-}
+onMounted(() => {
+})
 
 </script>
 

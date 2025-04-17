@@ -22,8 +22,8 @@
                         <view class="iconfont icon-you font16"></view>
                     </view>
                     <nut-popup v-model:visible="showCalender" position="bottom">
-                        <nut-date-picker v-if="checkSearchType==0" :max-date="new Date()" type="year" v-model="thismonth.year" :three-dimensional="false"
-                            @confirm="chooseDate"></nut-date-picker>
+                        <year-picker v-if="checkSearchType==0" :max-date="new Date()" type="year" v-model="thismonth.year" :three-dimensional="false"
+                            @confirm="chooseDate"></year-picker>
                         <nut-date-picker v-else-if="checkSearchType==1" :max-date="new Date()" type="year-month" v-model="thismonth.month" :three-dimensional="false"
                             @confirm="chooseDate"></nut-date-picker>
                             <nut-date-picker v-else-if="checkSearchType==2" :max-date="new Date()" type="date" v-model="thismonth.day" :three-dimensional="false"
@@ -59,6 +59,7 @@ import Taro from '@tarojs/taro';
 import { formatDate } from '../../common/date_formatter'
 import actionSheet from "../../components/common/actionSheet.vue"
 import date_formatter from '../../common/date_formatter'
+import yearPicker from '../../components/account/yearPicker.vue'
 interface accountsByDayItem {
     date: string;
     items: any[];

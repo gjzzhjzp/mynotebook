@@ -122,10 +122,18 @@ const tonextPath = (item) => {
   }
 }
 useShareAppMessage(() => {
+  debugger;
   return {
-    title: '橘好记 - 简单好用的记账备忘录', // 分享标题
+    title: '橘好记1 - 简单好用的记账备忘录', // 分享标题
     path: '/pages/index/index', // 分享路径
-    // imageUrl: 'https://example.com/share.jpg' // 分享图片（可选）
+  }
+})
+// 自定义分享功能
+Taro.useShareAppMessage(() => {
+  debugger;
+  return {
+    title: '橘好记2 - 简单好用的记账备忘录', // 分享标题
+    path: '/pages/index/index', // 分享路径
   }
 })
 
