@@ -95,6 +95,7 @@ export default {
   request,
   get,
   post,
+  checkPost,
   appconfig
 };
 

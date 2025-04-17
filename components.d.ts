@@ -8,11 +8,11 @@ export {}
 declare module 'vue' {
   export interface GlobalComponents {
     ActionSheet: typeof import('./src/components/common/actionSheet.vue')['default']
-    Add: typeof import('./src/components/feedback/add.vue')['default']
+    Add: typeof import('./src/components/common/add.vue')['default']
     EmptyData: typeof import('./src/components/common/emptyData.vue')['default']
     Header: typeof import('./src/components/common/Header.vue')['default']
     Help: typeof import('./src/components/common/help.vue')['default']
-    List: typeof import('./src/components/feedback/list.vue')['default']
+    List: typeof import('./src/components/account/list.vue')['default']
     NutButton: typeof import('@nutui/nutui-taro')['Button']
     NutConfigProvider: typeof import('@nutui/nutui-taro')['ConfigProvider']
     NutDatePicker: typeof import('@nutui/nutui-taro')['DatePicker']
@@ -21,6 +21,7 @@ declare module 'vue' {
     NutForm: typeof import('@nutui/nutui-taro')['Form']
     NutFormItem: typeof import('@nutui/nutui-taro')['FormItem']
     NutInput: typeof import('@nutui/nutui-taro')['Input']
+    NutPopover: typeof import('@nutui/nutui-taro')['Popover']
     NutPopup: typeof import('@nutui/nutui-taro')['Popup']
     NutProgress: typeof import('@nutui/nutui-taro')['Progress']
     NutSwitch: typeof import('@nutui/nutui-taro')['Switch']
@@ -30,6 +31,7 @@ declare module 'vue' {
     Reminder: typeof import('./src/components/account/reminder.vue')['default']
     'Reminder copy': typeof import('./src/components/account/reminder copy.vue')['default']
     Statistics: typeof import('./src/components/account/statistics.vue')['default']
+    StatisticsByDate: typeof import('./src/components/account/statisticsByDate.vue')['default']
     StatisticsByMonth: typeof import('./src/components/account/statisticsByMonth.vue')['default']
   }
 }

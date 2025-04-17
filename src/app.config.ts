@@ -7,6 +7,7 @@ export default defineAppConfig({
       "root": "account",
       "pages": [
         "index/index",
+        "allAccount/allAccount",
         "statistics/statistics",
         "add/add"
       ]

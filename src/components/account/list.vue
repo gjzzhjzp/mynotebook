@@ -34,9 +34,10 @@
 
 <script setup lang="ts">
 // 引入需要的依赖
-import { ref, onMounted } from 'vue';
+import { ref, onMounted,inject } from 'vue';
 import Taro from '@tarojs/taro';
 import emptyData from "../common/emptyData.vue"
+import ajax from "../../common/ajax";
 
 interface AccountItem {
     id: string;
@@ -59,11 +60,13 @@ defineProps({
 });
 const categories_obj = ref<CategoriesObj>({});
 const categories_icon = ref<CategoriesObj>({});
-
+   
 const emits = defineEmits(['click'])
-onMounted(() => {
-    categories_obj.value = Taro.getStorageSync("globalData").categories_obj;
-    categories_icon.value = Taro.getStorageSync("globalData").categories_icon;
+onMounted(async () => {
+    await ajax.checkPost();
+    const globalData = Taro.getStorageSync("globalData");
+    categories_obj.value = globalData.categories_obj;
+    categories_icon.value = globalData.categories_icon;
 })
 const itemClick = (item: AccountItem) => {
     emits('click', item);

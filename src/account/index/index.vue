@@ -26,7 +26,7 @@
         <view class="whiteColorB borderRadius10 m-t-20 p-a-15">
           <view class="flex-align-center flex-justify-between">
             <view class="font16 fontWeight blackColor">近期记录</view>
-            <!-- <view class="font14 skinColor">查看全部</view> -->
+            <view class="font14 skinColor" @click="toAllAccount()">全部账单</view>
           </view>
           <view class="m-t-20">
             <accountList :list="accounts" @click="openActionSheet"></accountList>
@@ -78,6 +78,11 @@ const update_account = () => {
     url: `/account/add/add?id=${currentItem.value?.id}`
   })
   actionSheetRef.value.close();
+}
+const toAllAccount = () => {
+  Taro.navigateTo({
+    url: "/account/allAccount/allAccount"
+  })
 }
 const openActionSheet = (item) => {
   actionSheetRef.value.open();

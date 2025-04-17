@@ -6,7 +6,7 @@
         </template>
         <template #body>
             <view class="p-a-15">
-                <statisticsByMonth></statisticsByMonth>
+                <statisticsByDate></statisticsByDate>
             </view>
         </template>
     </pageScroll>
@@ -18,7 +18,7 @@ import { onBeforeMount, onMounted } from 'vue';
 import Header from '../../components/common/Header.vue';
 import pageScroll from '../../components/common/pageScroll.vue';
 import Taro from '@tarojs/taro';
-import statisticsByMonth from '../../components/account/statisticsByMonth.vue';
+import statisticsByDate from '../../components/account/statisticsByDate.vue';
 onBeforeMount(() => {
 
 })

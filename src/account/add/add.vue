@@ -176,8 +176,10 @@ const onOk = async () => {
 
 const getCategory = () => {
     const globalData = Taro.getStorageSync("globalData");
+    if(globalData.categories){
     categories.value = globalData.categories[checked_type.value == 'expense' ? 0 : 1]
     checked_category.value = categories.value[0].value;
+    }
 }
 onMounted(() => {
     const params = Taro.getCurrentInstance().router?.params;
@@ -189,7 +191,7 @@ onMounted(() => {
     formData.value.accountDate = date_formatter(new Date().getTime(), 'YYYY-MM-DD');
     console.log("formData", formData.value.accountDate);
 })
-const visible = ref(false)
+// const visible = ref(false)
 const showCalender = ref(false);
 const getAccountList = (id) => {
     ajax.get("/account/get", {
@@ -235,10 +237,12 @@ const open = (item?: AccountItem) => {
         };
         isedit.value = false;
     }
-    visible.value = true;
+    // visible.value = true;
 }
 const close = () => {
-    visible.value = false;
+    Taro.navigateBack({
+        delta: 1,
+    });
 }
 </script>
 

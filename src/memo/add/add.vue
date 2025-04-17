@@ -150,7 +150,7 @@ onMounted(() => {
     }
 
 })
-const visible = ref(false)
+// const visible = ref(false)
 const getList = (id) => {
     ajax.get("/memos/list", {
         id: id,
@@ -184,7 +184,7 @@ const open = (item) => {
             reminder_time_show: ""
         }
     }
-    visible.value = true;
+    // visible.value = true;
 }
 const close = () => {
     // visible.value = false;

@@ -141,8 +141,11 @@ const onOk = async () => {
 
 const getCategory = () => {
     const globalData = Taro.getStorageSync("globalData");
-    categories.value = globalData.categories[checked_type.value == 'expense' ? 0 : 1]
-    checked_category.value = categories.value[0].value;
+    if(globalData.categories){
+        categories.value = globalData.categories[checked_type.value == 'expense' ? 0 : 1]
+        checked_category.value = categories.value[0].value;
+    }
+   
 }
 onMounted(() => {
     getCategory();
