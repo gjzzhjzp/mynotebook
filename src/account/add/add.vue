@@ -8,7 +8,12 @@
 
                 <view class="l-account-add p-a-20">
                     <view class="flex-align-center flex-justify-between">
-                        <view @click="showCalender = true">{{ formData.accountDate_show }}</view>
+                        <view class="flex-align-center fontWeight blackColor" @click="showCalender = true">
+                            <view class="font14 ">
+                                {{ formData.accountDate_show }}
+                            </view>
+                            <view class="iconfont icon-you font16"></view>
+                        </view>
                         <nut-popup v-model:visible="showCalender" position="bottom">
                             <nut-date-picker v-model="accountDate_date" :three-dimensional="false"
                                 @confirm="chooseDate"></nut-date-picker>
@@ -174,11 +179,12 @@ const onOk = async () => {
     }
 };
 
-const getCategory = () => {
+const getCategory = async () => {
+    await ajax.checkPost();
     const globalData = Taro.getStorageSync("globalData");
-    if(globalData.categories){
-    categories.value = globalData.categories[checked_type.value == 'expense' ? 0 : 1]
-    checked_category.value = categories.value[0].value;
+    if (globalData.categories) {
+        categories.value = globalData.categories[checked_type.value == 'expense' ? 0 : 1]
+        checked_category.value = categories.value[0].value;
     }
 }
 onMounted(() => {

@@ -50,7 +50,8 @@
         </view> -->
       </view>
       <addfeedback ref="addfeedbackRef"></addfeedback>
-      <reminder ref="reminderRef"></reminder>
+      <reminder ref="reminderRef" @open_help="openHelp"></reminder>
+      <reminder_text ref="reminder_textRef"></reminder_text>
       <view class="back_icon skinColor iconfont icon-tubiaozhizuomoban- font40"></view>
     </template>
   </pageScroll>
@@ -63,6 +64,7 @@ import Header from '../../components/common/Header.vue';
 import pageScroll from '../../components/common/pageScroll.vue';
 import addfeedback from "../../components/feedback/add.vue"
 import reminder from "../../components/account/reminder.vue"
+import reminder_text from "../../components/account/reminder_text.vue"
 // import statisticsByMonth from "../../components/account/statisticsByMonth.vue"
 import Taro from '@tarojs/taro';
 import { useShareAppMessage } from "@tarojs/taro"
@@ -76,12 +78,17 @@ interface KjTabs {
 }
 const addfeedbackRef = ref();
 const reminderRef = ref();
+const reminder_textRef = ref();
 onBeforeMount(() => {
 
 })
 onMounted(() => {
   getKjTabs();
 })
+const openHelp = () => {
+  console.log("2")
+  reminder_textRef.value.open();
+}
 const kjtabs = ref<KjTabs[]>([]);
 const tonext = (type) => {
   let url = "";

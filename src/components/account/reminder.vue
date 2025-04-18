@@ -47,7 +47,7 @@
                     </nut-form-item>
                 </nut-form>
             </view>
-            <help ref="helpRef" title="订阅提醒">
+            <!-- <help ref="helpRef" title="订阅提醒">
                 <template #default>
                     <view class="font14">
                         <view class="text-left m-b-10">
@@ -65,7 +65,7 @@
                     </view>
 
                 </template>
-            </help>
+            </help> -->
         </template>
     </nut-dialog>
 </template>
@@ -95,10 +95,11 @@ const formRules = {
     yearly_limit: [{ required: true, message: '请输入每年额度' }]
 };
 const formRef = ref<FormInstance | null>(null)
-const helpRef = ref();
-const emit = defineEmits(['submit'])
+// const helpRef = ref();
+const emit = defineEmits(['submit', 'open_help'])
 const openHelp = () => {
-    helpRef.value.open();
+    console.log("1")
+    emit("open_help");
 }
 const validateField = async (prop: string) => {
     try {

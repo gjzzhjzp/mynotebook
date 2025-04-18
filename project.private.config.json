@@ -9,6 +9,20 @@
     "miniprogram": {
       "list": [
         {
+          "name": "记账",
+          "pathName": "account/add/add",
+          "query": "",
+          "launchMode": "default",
+          "scene": null
+        },
+        {
+          "name": "休闲娱乐",
+          "pathName": "entertainment/index/index",
+          "query": "",
+          "launchMode": "default",
+          "scene": null
+        },
+        {
           "name": "account/index/index",
           "pathName": "account/index/index",
           "query": "",

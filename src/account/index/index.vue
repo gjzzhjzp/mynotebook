@@ -42,7 +42,8 @@
     <template #footer>
       <add @add="add_account()"></add>
       <addAccount ref="addAccountRef" @success="successAccount()"></addAccount>
-      <reminder ref="reminderRef"></reminder>
+      <reminder ref="reminderRef" @open_help="openHelp"></reminder>
+      <reminder_text ref="reminder_textRef"></reminder_text>
       <action-sheet ref="actionSheetRef" @update="update_account" @delete="deleteAccount"></action-sheet>
     </template>
   </pageScroll>
@@ -61,6 +62,7 @@ import { useDidShow } from '@tarojs/taro';
 import Taro from '@tarojs/taro';
 import addAccount from '../../components/account/add.vue';
 import reminder from '../../components/account/reminder.vue';
+import reminder_text from '../../components/account/reminder_text.vue';
 import { formatDate } from '../../common/date_formatter'
 import actionSheet from "../../components/common/actionSheet.vue"
 interface StatisticsComponent {
@@ -71,11 +73,16 @@ const addAccountRef = ref();
 const reminderRef = ref();
 const actionSheetRef = ref();
 const currentItem = ref();
+const reminder_textRef = ref();
 const add_account = () => {
   Taro.navigateTo({
     url: "/account/add/add"
   })
   // addAccountRef.value.open();
+}
+const openHelp = () => {
+  console.log("2")
+  reminder_textRef.value.open();
 }
 const update_account = () => {
   // addAccountRef.value.open(currentItem.value);
