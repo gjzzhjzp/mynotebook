@@ -24,9 +24,14 @@
           <statistics ref="statisticsRef"></statistics>
         </view>
         <view class="whiteColorB borderRadius10 m-t-20 p-a-15">
+
+
           <view class="flex-align-center flex-justify-between">
             <view class="font16 fontWeight blackColor">近期记录</view>
-            <view class="font14 skinColor" @click="toAllAccount()">全部账单</view>
+            <view class="font14 skinColor flex-align-center" @click="toAllAccount()">
+              <view>全部账单</view>
+              <view class="iconfont icon-you font14"></view>
+            </view>
           </view>
           <view class="m-t-20">
             <accountList :list="accounts" @click="openActionSheet"></accountList>

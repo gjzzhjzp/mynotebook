@@ -28,7 +28,8 @@ export default defineAppConfig({
     {
       "root": "entertainment",
       "pages": [
-        "index/index"
+        "index/index",
+        "webview/webview"
       ]
     }
   ],
