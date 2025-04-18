@@ -51,7 +51,7 @@
       </view>
       <addfeedback ref="addfeedbackRef"></addfeedback>
       <reminder ref="reminderRef"></reminder>
-      <view class="back_icon skinColor iconfont icon-juzi2 font40"></view>
+      <view class="back_icon skinColor iconfont icon-tubiaozhizuomoban- font40"></view>
     </template>
   </pageScroll>
 </template>

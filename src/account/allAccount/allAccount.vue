@@ -4,32 +4,8 @@
             <Header title="全部账单"></Header>
         </template>
         <template #body>
-            <view class="p-a-15 flex-align-center flex-justify-between">
-                <nut-popover v-model:visible="showSearchType" :list="searchlist" location="bottom-start"
-                    @choose="chooseSearch" :offset="[0, -70]">
-                    <template #reference>
-                        <view class="flex-align-center fontWeight blackColor">
-                            <view class="font14 ">
-                                {{ searchlist[checkSearchType].name }}
-                            </view>
-                            <view class="iconfont icon-you font16"></view>
-                        </view>
-                    </template>
-                </nut-popover>
-                <view class="">
-                    <view class="font14 blackColor fontWeight flex-align-center" @click="showCalender = true">
-                        <view>{{ [thismonth.yearshow,thismonth.monthShow,thismonth.dayshow][checkSearchType] }}</view>
-                        <view class="iconfont icon-you font16"></view>
-                    </view>
-                    <nut-popup v-model:visible="showCalender" position="bottom">
-                        <year-picker v-if="checkSearchType==0" :max-date="new Date()" type="year" v-model="thismonth.year" :three-dimensional="false"
-                            @confirm="chooseDate"></year-picker>
-                        <nut-date-picker v-else-if="checkSearchType==1" :max-date="new Date()" type="year-month" v-model="thismonth.month" :three-dimensional="false"
-                            @confirm="chooseDate"></nut-date-picker>
-                            <nut-date-picker v-else-if="checkSearchType==2" :max-date="new Date()" type="date" v-model="thismonth.day" :three-dimensional="false"
-                            @confirm="chooseDate"></nut-date-picker>
-                    </nut-popup>
-                </view>
+            <view class="p-a-15">
+                <account-search @search="searchValue"></account-search>
             </view>
             <view class="p-a-15">
                 <view v-for="(item) in accountsByDay" :key="item.date" class="whiteColorB borderRadius10 p-a-15 m-b-15">
@@ -59,7 +35,7 @@ import Taro from '@tarojs/taro';
 import { formatDate } from '../../common/date_formatter'
 import actionSheet from "../../components/common/actionSheet.vue"
 import date_formatter from '../../common/date_formatter'
-import yearPicker from '../../components/account/yearPicker.vue'
+import accountSearch from "../../components/account/accountSearch.vue"
 interface accountsByDayItem {
     date: string;
     items: any[];
@@ -69,53 +45,12 @@ const actionSheetRef = ref();
 const currentItem = ref();
 const showSearchType = ref(false);
 const showCalender = ref(false);
-const thismonth = ref({
-    year:new Date(),
-    yearshow:date_formatter(new Date(),'yyyy年'),
-    month: new Date(),
-    monthShow: date_formatter(new Date(),'yyyy年MM月'),
-    day: new Date(),
-    dayshow: date_formatter(new Date(),'yyyy年MM月dd日')
+const selectedDate = ref({
+    year: new Date().getFullYear() || 0,
+    month: new Date().getMonth() + 1 || 0,
+    day: 0
 })
-// 已选中的日期
-const selectedDate=ref({
-    year:new Date().getFullYear(),
-    month:new Date().getMonth() + 1,
-    day:""
-})
-const searchlist = ref([
-    {
-        name: '按年查询',
-        value: 0
-    },
-    {
-        name: '按月查询',
-        value: 1
-    },
-    {
-        name: '按天查询',
-        value: 2
-    }
-])
 const checkSearchType = ref(1);
-const chooseSearch = (item) => {
-    console.log("chooseSearch", item);
-    checkSearchType.value = item.value;
-}
-const chooseDate = (e: any) => {
-    console.log("e", e);
-    selectedDate.value.year = e.selectedValue[0];
-    selectedDate.value.month = e.selectedValue[1];
-    selectedDate.value.day = e.selectedValue[2];
-    thismonth.value.year = new Date(e.selectedValue[0]);
-    thismonth.value.yearshow = date_formatter(new Date(e.selectedValue[0]),'yyyy年');
-    thismonth.value.month = new Date(e.selectedValue[0])
-    thismonth.value.monthShow = date_formatter(new Date(e.selectedValue[0],e.selectedValue[1]-1),'yyyy年MM月');
-    thismonth.value.day = new Date(e.selectedValue[0],e.selectedValue[1]-1,e.selectedValue[2]);
-    thismonth.value.dayshow = date_formatter(new Date(e.selectedValue[0],e.selectedValue[1]-1,e.selectedValue[2]),'yyyy年MM月dd日');
-    showCalender.value = false;
-    getAccountList();
-}
 const update_account = () => {
     Taro.navigateTo({
         url: `/account/add/add?id=${currentItem.value?.id}`
@@ -140,15 +75,20 @@ useDidShow(() => {
 onMounted(() => {
     // getAccountList();
 })
-
+const searchValue = (value: any) => {
+    console.log("searchValue", value);
+    selectedDate.value = value.selectedDate;
+    checkSearchType.value = value.checkSearchType;
+    getAccountList();
+}
 const getAccountList = () => {
     ajax.get("/account/getStatisticsByflList", {
         page: page.value,
         rows: 20,
         type: ["year","month","day"][checkSearchType.value],
-        year: selectedDate.value.year,
-        month: selectedDate.value.month,
-        day: selectedDate.value.day
+        year: selectedDate.value.year||"",
+        month: selectedDate.value.month||"",
+        day: selectedDate.value.day||""
     }).then((res: any) => {
         console.log("getStatisticsByflList", res);
         if (res.code == 200) {
