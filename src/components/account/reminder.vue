@@ -74,7 +74,7 @@ import ajax from '../../common/ajax'
 import { ref, onMounted, defineEmits, inject } from 'vue'
 import type { FormInstance } from '@nutui/nutui-taro';
 import basedll from '../../common/basedll';
-import help from '../common/help.vue'
+// import help from '../common/help.vue'
 interface FormData {
     open_daily: boolean;
     daily_limit: string;
@@ -90,9 +90,9 @@ const formData = ref<FormData>({
 });
 
 const formRules = {
-    daily_limit: [{ required: true, message: '请输入每日额度' }],
-    monthly_limit: [{ required: true, message: '请输入每月额度' }],
-    yearly_limit: [{ required: true, message: '请输入每年额度' }]
+    daily_limit: [{ required: false, message: '请输入每日额度' }],
+    monthly_limit: [{ required: false, message: '请输入每月额度' }],
+    yearly_limit: [{ required: false, message: '请输入每年额度' }]
 };
 const formRef = ref<FormInstance | null>(null)
 // const helpRef = ref();
@@ -132,7 +132,10 @@ const onOk = async () => {
     try {
         const result = await formRef.value?.validate() as any;
         if (result?.valid) {
-            let tmplIds = [globalData.value.tmplIds.overspend];
+            let tmplIds: string[] = [];
+            if (formData.value.daily_limit || formData.value.monthly_limit || formData.value.yearly_limit) {
+                tmplIds.push(globalData.value.tmplIds.overspend);
+            }
             if (formData.value.open_daily) {
                 tmplIds.push(globalData.value.tmplIds.daily);
                 basedll.requestSubscribeMessage(tmplIds);

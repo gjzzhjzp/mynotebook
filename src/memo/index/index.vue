@@ -29,11 +29,15 @@ import addmemo from '../../components/memo/add.vue';
 import { formatDate } from '../../common/date_formatter';
 import actionSheet from "../../components/common/actionSheet.vue";
 import Taro from '@tarojs/taro';
+import { useDidShow } from "@tarojs/taro";
 onBeforeMount(() => {
 
 })
-onMounted(() => {
+useDidShow(() => {
   getList();
+})
+onMounted(() => {
+  // getList();
 })
 let page = ref<number>(1);
 let total = ref<number>(0);

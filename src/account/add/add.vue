@@ -165,9 +165,12 @@ const onOk = async () => {
             });
 
             // emit('success');
-            Taro.navigateBack({
-                delta: 1,
-            });
+            // Taro.navigateBack({
+            //     delta: 1,
+            // });
+            Taro.redirectTo({
+                url: '/account/index/index'
+            })
         }
         close();
     } catch (error) {

@@ -100,8 +100,8 @@ const onOk = async () => {
         title: formData.value.title,
         content: formData.value.content
     } as FormData
-    console.log("params", params);
-    if (formData.value.reminder_time) {
+    console.log("params", params, formData.value);
+    if (formData.value.reminder_time_show) {
         params.reminder_time = date_formatter(formData.value.reminder_time as Date, 'yyyy-MM-dd hh:mm:ss');
         let tmplIds = [globalData.value.tmplIds.memo];
         const r_result = await basedll.requestSubscribeMessage(tmplIds);
@@ -138,7 +138,10 @@ const onOk = async () => {
             });
         }
         emit('success');
-        close();
+        // close();
+        Taro.redirectTo({
+            url: '/memo/index/index'
+        })
     })
 }
 
