@@ -157,6 +157,7 @@ const onOk = async () => {
     try {
         const url = isedit.value ? '/account/update' : '/account/add';
         const res = await ajax.post(url, params);
+        // debugger;
         if (res.code == 200) {
             Taro.showToast({
                 title: `${isedit.value ? '编辑' : '添加'}成功`,
@@ -168,11 +169,12 @@ const onOk = async () => {
             // Taro.navigateBack({
             //     delta: 1,
             // });
+
             Taro.redirectTo({
                 url: '/account/index/index'
             })
         }
-        close();
+        // close();
     } catch (error) {
         Taro.showToast({
             title: error.message || '操作失败',

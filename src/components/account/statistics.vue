@@ -55,11 +55,13 @@ const getStatistics = () => {
         console.log("getStatistics", res);
         if (res.code == 200) {
             res.data.forEach((item) => {
-                if (item.type == 0) {
-                    today.value.expense = item.total_amount;
-                } else {
-                    today.value.income = item.total_amount;
-                }
+                today.value.expense = item.expense;
+                today.value.income = item.income;
+                // if (item.type == 0) {
+                //     today.value.expense = item.total_amount;
+                // } else {
+                //     today.value.income = item.total_amount;
+                // }
             })
         }
     })
