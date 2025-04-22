@@ -9,6 +9,13 @@
     "miniprogram": {
       "list": [
         {
+          "name": "备忘录",
+          "pathName": "memo/index/index",
+          "query": "",
+          "launchMode": "default",
+          "scene": null
+        },
+        {
           "name": "记账",
           "pathName": "account/add/add",
           "query": "",

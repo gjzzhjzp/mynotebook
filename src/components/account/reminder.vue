@@ -138,16 +138,17 @@ const onOk = async () => {
             }
             if (formData.value.open_daily) {
                 tmplIds.push(globalData.value.tmplIds.daily);
-                basedll.requestSubscribeMessage(tmplIds);
-
-                const res = await ajax.post("/userLimit/addOrUpdate", {
-                    open_daily: formData.value.open_daily,
-                    daily_limit: parseFloat(formData.value.daily_limit),
-                    monthly_limit: parseFloat(formData.value.monthly_limit),
-                    yearly_limit: parseFloat(formData.value.yearly_limit)
-                });
-                console.log("设置成功", res);
-                emit('submit');
+                if (tmplIds.length > 0) {
+                    basedll.requestSubscribeMessage(tmplIds);
+                    const res = await ajax.post("/userLimit/addOrUpdate", {
+                        open_daily: formData.value.open_daily,
+                        daily_limit: parseFloat(formData.value.daily_limit),
+                        monthly_limit: parseFloat(formData.value.monthly_limit),
+                        yearly_limit: parseFloat(formData.value.yearly_limit)
+                    });
+                    console.log("设置成功", res);
+                    emit('submit');
+                }
                 close();
             }
         }

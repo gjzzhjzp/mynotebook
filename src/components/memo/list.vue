@@ -2,11 +2,11 @@
     <view class="memo-list">
         <template v-if="list.length > 0">
             <view v-for="(item, index) in list" :key="item.id" class="memo-item" @clicK="itemClick(item, index)">
-                <view class="memo-header">
-                    <view class="memo-title fontWeight">{{ item.title }}</view>
-                    <view class="memo-date">{{ item.created_at }}</view>
+                <view class="memo-header flex-align-center flex-justify-between">
+                    <view class="memo-title fontWeight text-line-1 flex1" style="flex: 1;">{{ item.title }}</view>
+                    <view class="memo-date" style="width: 200rpx;">{{ item.created_at }}</view>
                 </view>
-                <view class="memo-content">{{ item.content }}</view>
+                <view class="memo-content text-line-2">{{ item.content }}</view>
             </view>
         </template>
         <template v-else>
@@ -77,6 +77,7 @@ const itemClick = (item: MemoItem, index: number) => {
 .memo-date {
     font-size: 24rpx;
     color: #999;
+    text-align: right;
 }
 
 .memo-content {

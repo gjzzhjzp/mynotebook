@@ -8,14 +8,20 @@
                 <account-search @search="searchValue"></account-search>
             </view>
             <view class="p-a-15">
-                <view v-for="(item) in accountsByDay" :key="item.date" class="whiteColorB borderRadius10 p-a-15 m-b-15">
-                    <view class="flex-align-center flex-justify-between">
-                        <view class="font16 fontWeight blackColor">{{ item.date }}</view>
+                <template v-if="accountsByDay.length > 0">
+                    <view v-for="(item) in accountsByDay" :key="item.date"
+                        class="whiteColorB borderRadius10 p-a-15 m-b-15">
+                        <view class="flex-align-center flex-justify-between">
+                            <view class="font16 fontWeight blackColor">{{ item.date }}</view>
+                        </view>
+                        <view class="m-t-20">
+                            <accountList :list="item.items" @click="openActionSheet"></accountList>
+                        </view>
                     </view>
-                    <view class="m-t-20">
-                        <accountList :list="item.items" @click="openActionSheet"></accountList>
-                    </view>
-                </view>
+                </template>
+                <template v-else>
+                    <emptyData></emptyData>
+                </template>
             </view>
         </template>
         <template #footer>
@@ -34,7 +40,7 @@ import { useDidShow } from '@tarojs/taro';
 import Taro from '@tarojs/taro';
 import { formatDate } from '../../common/date_formatter'
 import actionSheet from "../../components/common/actionSheet.vue"
-import date_formatter from '../../common/date_formatter'
+import emptyData from "../../components/common/emptyData.vue"
 import accountSearch from "../../components/account/accountSearch.vue"
 interface accountsByDayItem {
     date: string;
@@ -85,10 +91,10 @@ const getAccountList = () => {
     ajax.get("/account/getStatisticsByflList", {
         page: page.value,
         rows: 20,
-        type: ["year","month","day"][checkSearchType.value],
-        year: selectedDate.value.year||"",
-        month: selectedDate.value.month||"",
-        day: selectedDate.value.day||""
+        type: ["year", "month", "day"][checkSearchType.value],
+        year: selectedDate.value.year || "",
+        month: selectedDate.value.month || "",
+        day: selectedDate.value.day || ""
     }).then((res: any) => {
         console.log("getStatisticsByflList", res);
         if (res.code == 200) {

@@ -1,7 +1,7 @@
 <template>
-  <view class="empty-tips flex-column-center m-t-20">
-    <view class="iconfont icon-wushuju font40"></view>
-    <view class="font14 grayColor m-t-20">暂无数据</view>
+  <view class="empty-tips flex-column-center m-t-40">
+    <view class="iconfont icon-wushuju font40" style="font-size: 200rpx;"></view>
+    <view class="font16 grayColor m-t-40">暂无数据</view>
   </view>
 </template>
 <script setup>
