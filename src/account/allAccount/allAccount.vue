@@ -112,12 +112,12 @@ const getAccountList = () => {
                     created_at: formatDate(new Date(item.created_at).getTime())
                 });
                 return acc;
-            }, {});
+            }, {})
 
             // 转换为数组格式
             const result = Object.keys(groupedAccounts).map(date => ({
                 date,
-                items: groupedAccounts[date]
+                items: groupedAccounts[date].reverse()
             }));
 
             if (page.value == 1) {

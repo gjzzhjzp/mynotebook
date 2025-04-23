@@ -57,9 +57,29 @@ const tonextPath = (item) => {
     const globalData = Taro.getStorageSync("globalData");
     let url = globalData.game_server + item.link;
     console.log("url", url);
-    Taro.navigateTo({
+    /*Taro.navigateTo({
       url: "/entertainment/webview/webview?url=" + url
-    })
+    })*/
+    Taro.showModal({
+      title: '打开外部链接',
+      content: `1. 点击"复制链接"按钮\n2. 打开手机浏览器\n3. 在地址栏粘贴链接并访问`, // 使用模板字符串
+      confirmText: '复制链接',
+      cancelText: '取消',
+      success: (res) => {
+        if (res.confirm) {
+          Taro.setClipboardData({
+            data:url,
+            success: () => {
+              Taro.showToast({
+                title: '链接已复制，请到浏览器中粘贴打开',
+                icon: 'none',
+                duration: 3000
+              });
+            }
+          });
+        }
+      }
+    });
   } else {
   }
 }
