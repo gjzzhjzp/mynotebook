@@ -19,7 +19,7 @@
 </template>
 
 <script setup lang="ts">
-import { withDefaults, defineProps, ref, computed,getCurrentInstance } from 'vue';
+import { withDefaults, defineProps, ref, computed, getCurrentInstance } from 'vue';
 import { useReady, useDidShow } from '@tarojs/taro';
 import Taro from '@tarojs/taro'
 // const app = Taro.getApp();
@@ -101,9 +101,9 @@ useReady(() => {
         '--navLeftAlign': props.leftAlign
     }
     // console.log("c_style",c_style.value);
-     // 使用 getCurrentInstance() 获取当前组件实例
-     const instance = getCurrentInstance();
-     if (!instance) {
+    // 使用 getCurrentInstance() 获取当前组件实例
+    const instance = getCurrentInstance();
+    if (!instance) {
         console.warn('Component instance is null');
         return;
     }
@@ -123,6 +123,9 @@ useDidShow(() => {
     } else {
         icon.value = 'home';
     }
+})
+defineExpose({
+    bindback
 })
 </script>
 

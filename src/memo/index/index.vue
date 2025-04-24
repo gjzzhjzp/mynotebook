@@ -1,19 +1,32 @@
 <template>
   <pageScroll :refresher_enabled="true" @lower="lower" @refresh="refresh" @refreshering="refreshering">
     <template #nav>
-      <Header title="备忘录"></Header>
+      <!-- :showNavBack="true" :showNavBackSlot="true" -->
+      <Header ref="HeaderRef" title="备忘录">
+        <!-- <template #left>
+          <view class="flex-align-center">
+            <view class=" flex-align-center" @click="bindback">
+              <view class="iconfont icon-icon_arrow_left font24"></view>
+            </view>
+            <view @click="tomanage()">
+              <view class="iconfont icon-guanli font24"></view>
+            </view>
+          </view>
+        </template> -->
+      </Header>
     </template>
     <template #body>
       <!-- p-a-10 m-a-10 whiteColorB borderRadius10 -->
       <view class="">
         <!-- @delete="successmemo" @update="update_memo" -->
-        <memo-list :list="memos" @click="openActionSheet"></memo-list>
+        <memo-list :isedit="isedit" :list="memos" @click="openActionSheet"></memo-list>
       </view>
     </template>
     <template #footer>
       <add @add="add_memo()"></add>
       <addmemo ref="addmemoRef" @success="successmemo()"></addmemo>
-      <action-sheet ref="actionSheetRef" @update="update_memo" @delete="deletememo" type="memo"></action-sheet>
+      <action-sheet ref="actionSheetRef" @update="update_memo" @complate="complate_memo" @delete="deletememo"
+        type="memo"></action-sheet>
     </template>
   </pageScroll>
 </template>
@@ -39,6 +52,8 @@ useDidShow(() => {
 onMounted(() => {
   // getList();
 })
+const HeaderRef = ref();
+let isedit = ref(false);
 let page = ref<number>(1);
 let total = ref<number>(0);
 let refreshering = ref<boolean>(false);
@@ -56,11 +71,20 @@ const update_memo = () => {
   Taro.navigateTo({ url: "/memo/add/add?id=" + currentItem.value.id })
   actionSheetRef.value.close();
 }
+const complate_memo = () => {
+
+}
 
 const openActionSheet = (item) => {
   actionSheetRef.value.open();
   currentItem.value = item;
 }
+// const bindback = () => {
+//   HeaderRef.value.bindback();
+// }
+// const tomanage = () => {
+//   isedit.value = !isedit.value;
+// }
 const getList = () => {
   ajax.get("/memos/list", {
     page: page.value,

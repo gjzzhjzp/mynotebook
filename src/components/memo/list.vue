@@ -1,12 +1,16 @@
 <template>
     <view class="memo-list">
         <template v-if="list.length > 0">
-            <view v-for="(item, index) in list" :key="item.id" class="memo-item" @clicK="itemClick(item, index)">
-                <view class="memo-header flex-align-center flex-justify-between">
-                    <view class="memo-title fontWeight text-line-1 flex1" style="flex: 1;">{{ item.title }}</view>
-                    <view class="memo-date" style="width: 200rpx;">{{ item.created_at }}</view>
+            <view v-for="(item, index) in list" :key="item.id" class="memo-item flex-align-center"
+                @clicK="itemClick(item, index)">
+                <nut-checkbox v-if="isedit" v-model="item.checkbox"></nut-checkbox>
+                <view>
+                    <view class="memo-header flex-align-center flex-justify-between">
+                        <view class="memo-title fontWeight text-line-1 flex1" style="flex: 1;">{{ item.title }}</view>
+                        <view class="memo-date" style="width: 200rpx;">{{ item.created_at }}</view>
+                    </view>
+                    <view class="memo-content text-line-2">{{ item.content }}</view>
                 </view>
-                <view class="memo-content text-line-2">{{ item.content }}</view>
             </view>
         </template>
         <template v-else>
@@ -25,12 +29,17 @@ interface MemoItem {
     title: string;
     created_at: string;
     content: string;
+    checkbox?: boolean;
 }
 defineProps({
     // props
     list: {
         type: Array as () => MemoItem[],
         default: () => []
+    },
+    isedit: {
+        type: Boolean,
+        default: false
     }
 });
 const categories_obj = ref({});

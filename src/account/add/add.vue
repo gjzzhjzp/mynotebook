@@ -52,6 +52,15 @@
                                 </view>
                                 <view class="m-t-10 font14 blackColor">{{ item.name }}</view>
                             </view>
+                            <!-- <view class="borderRadius20 flex-column-center flex-justify-center m-b-20"
+                                @click="add_custom_fl()">
+                                <view
+                                    :class="['account_add_item', 'flex-center-center', 'borderRadiusMax', 'p-a-10', 'tagColorB']">
+                                    <view class="iconfont  font24  lightColor icon-tianjia fontWeight">
+                                    </view>
+                                </view>
+                                <view class="m-t-10 font14 blackColor">自定义</view>
+                            </view> -->
                         </view>
                     </view>
 
@@ -136,6 +145,30 @@ watch(checked_type, () => {
     getCategory();
 })
 const emit = defineEmits(['success'])
+const add_custom_fl = () => {
+    Taro.showModal({
+        title: '添加自定义分类',
+        content: '请输入分类名称',
+        editable: true,
+        placeholderText: '分类名称',
+        success: (res) => {
+            if (res.confirm && res.content) {
+                // 调用接口添加分类
+                ajax.post('/category/add', {
+                    name: res.content,
+                    value: res.content,
+                    type: checked_type.value === 'expense' ? 0 : 1
+                }).then(response => {
+                    if (response.code === 200) {
+                        // 刷新分类列表
+                        getCategory();
+                        Taro.showToast({ title: '添加成功', icon: 'success' });
+                    }
+                });
+            }
+        }
+    } as any);
+}
 const onOk = async () => {
     if (!formData.value.amount) {
         Taro.showToast({

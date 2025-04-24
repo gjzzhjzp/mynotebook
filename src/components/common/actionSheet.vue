@@ -14,7 +14,7 @@
 
 </template>
 <script setup lang="ts">
-import { ref } from 'vue'
+import { ref, onMounted } from 'vue'
 import Taro from '@tarojs/taro'
 const show = ref(false)
 
@@ -25,7 +25,7 @@ const props = defineProps({
     }
 })
 
-const menuItems = [
+let menuItems = ref([
     {
         name: '编辑' + (props.type == "account" ? "账单" : "备忘录"),
         val: "update"
@@ -34,8 +34,16 @@ const menuItems = [
         name: '删除' + (props.type == "account" ? "账单" : "备忘录"),
         val: "delete"
     }
-]
-const emits = defineEmits(['update', 'delete'])
+])
+onMounted(() => {
+    if (props.type == "memo") {
+        menuItems.value.unshift({
+            name: "设为已办",
+            val: "complate"
+        })
+    }
+})
+const emits = defineEmits(['update', 'delete', 'complate'])
 const open = () => {
     show.value = true
 }
@@ -45,6 +53,8 @@ const close = () => {
 const choose = (item) => {
     if (item.val == "update") {
         emits('update')
+    } else if (item.val == "complate") {
+        emits('complate')
     } else if (item.val == "delete") {
         Taro.showModal({
             title: '提示',
