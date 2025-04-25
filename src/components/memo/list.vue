@@ -1,16 +1,18 @@
 <template>
     <view class="memo-list">
         <template v-if="list.length > 0">
-            <view v-for="(item, index) in list" :key="item.id" class="memo-item flex-align-center"
+            <view v-for="(item, index) in list" :key="item.id"
+                :class="['memo-item', 'flex-align-center', item.is_done ? 'is_done' : '']"
                 @clicK="itemClick(item, index)">
                 <nut-checkbox v-if="isedit" v-model="item.checkbox"></nut-checkbox>
-                <view>
+                <view style="width: 100%;">
                     <view class="memo-header flex-align-center flex-justify-between">
                         <view class="memo-title fontWeight text-line-1 flex1" style="flex: 1;">{{ item.title }}</view>
                         <view class="memo-date" style="width: 200rpx;">{{ item.created_at }}</view>
                     </view>
                     <view class="memo-content text-line-2">{{ item.content }}</view>
                 </view>
+                <view :class="item.is_done ? 'is_done' : ''"></view>
             </view>
         </template>
         <template v-else>
@@ -24,14 +26,8 @@
 import { ref, onMounted } from 'vue';
 import Taro from '@tarojs/taro';
 import emptyData from "../common/emptyData.vue"
-interface MemoItem {
-    id: number;
-    title: string;
-    created_at: string;
-    content: string;
-    checkbox?: boolean;
-}
-defineProps({
+import { MemoItem } from '../../interface/memo.ts'
+const props = defineProps({
     // props
     list: {
         type: Array as () => MemoItem[],
@@ -52,10 +48,17 @@ onMounted(() => {
 })
 const itemClick = (item: MemoItem, index: number) => {
 
+    if (!props.isedit) {
+        emits('click', item, index);
+    }
 
-    emits('click', item, index);
 }
-
+const getSelectedItems = () => {
+    return props.list.filter(item => item.checkbox);
+}
+defineExpose({
+    getSelectedItems,
+})
 </script>
 
 <style>
@@ -69,6 +72,22 @@ const itemClick = (item: MemoItem, index: number) => {
     background: #fff;
     border-radius: 12rpx;
     box-shadow: 0 2rpx 8rpx rgba(0, 0, 0, 0.05);
+}
+
+.memo-item {
+    position: relative;
+}
+
+.memo-item .is_done {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 20rpx;
+    content: "";
+    height: 100%;
+    background-color: var(--skinColor);
+    border-top-left-radius: 12rpx;
+    border-bottom-left-radius: 12rpx;
 }
 
 .memo-header {

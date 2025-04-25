@@ -43,7 +43,7 @@
                         <view class="m-t-20 grid-4">
                             <view v-for="item in categories"
                                 class="borderRadius20 flex-column-center flex-justify-center m-b-20"
-                                @click="checked_category = item.value">
+                                @click="checked_category = item.value" @longpress="handleLongPress(item)">
                                 <view
                                     :class="['account_add_item', 'flex-center-center', 'borderRadiusMax', 'p-a-10', item.value == checked_category ? 'skinColorB' : 'tagColorB']">
                                     <view
@@ -52,7 +52,7 @@
                                 </view>
                                 <view class="m-t-10 font14 blackColor">{{ item.name }}</view>
                             </view>
-                            <!-- <view class="borderRadius20 flex-column-center flex-justify-center m-b-20"
+                            <view class="borderRadius20 flex-column-center flex-justify-center m-b-20"
                                 @click="add_custom_fl()">
                                 <view
                                     :class="['account_add_item', 'flex-center-center', 'borderRadiusMax', 'p-a-10', 'tagColorB']">
@@ -60,7 +60,7 @@
                                     </view>
                                 </view>
                                 <view class="m-t-10 font14 blackColor">自定义</view>
-                            </view> -->
+                            </view>
                         </view>
                     </view>
 
@@ -69,6 +69,8 @@
             </view>
         </template>
         <template #footer>
+            <action-sheet ref="actionSheetRef" type="category" text="分类" @update="update_category"
+                @delete="deletecategory"></action-sheet>
             <view class="m-t-20 m-b-40">
                 <view class="flex-align-center flex-justify-between m-t-20 p-a-20">
                     <nut-button type="default" class="m-t-10" @click="close" style="width: 300rpx;">
@@ -92,7 +94,9 @@ import Header from '../../components/common/Header.vue';
 // import basedll from '../../common/basedll';
 import pageScroll from '../../components/common/pageScroll.vue';
 import date_formatter from '../../common/date_formatter'
+const user_dll = require('../../common/user_dll');
 import Taro from '@tarojs/taro';
+import actionSheet from "../../components/common/actionSheet.vue"
 interface categoriesData {
     name: string,
     value: string,
@@ -126,10 +130,12 @@ const themeVars = ref({
     'textarea-font': '36rpx',  // 字体大小
     'input-font-size': '40rpx'
 });
+const actionSheetRef = ref();
 const categories = ref<categoriesData[]>([]);
 const checked_category = ref("food");
 const checked_type = ref("expense");
 const accountDate_date = ref<Date>(new Date());
+const currentCategory = ref();
 const types = ref([
     {
         title: "支出",
@@ -148,7 +154,7 @@ const emit = defineEmits(['success'])
 const add_custom_fl = () => {
     Taro.showModal({
         title: '添加自定义分类',
-        content: '请输入分类名称',
+        content: '',
         editable: true,
         placeholderText: '分类名称',
         success: (res) => {
@@ -158,9 +164,10 @@ const add_custom_fl = () => {
                     name: res.content,
                     value: res.content,
                     type: checked_type.value === 'expense' ? 0 : 1
-                }).then(response => {
+                }).then(async response => {
                     if (response.code === 200) {
                         // 刷新分类列表
+                        await updateCategory();
                         getCategory();
                         Taro.showToast({ title: '添加成功', icon: 'success' });
                     }
@@ -168,6 +175,47 @@ const add_custom_fl = () => {
             }
         }
     } as any);
+}
+const update_category = () => {
+    Taro.showModal({
+        title: '编辑分类' + currentCategory.value.name,
+        content: '',
+        editable: true,
+        placeholderText: '分类名称',
+        success: (res) => {
+            if (res.confirm && res.content) {
+                // 调用接口更新分类
+                // ajax.post('/category/update', {
+                //     id: item.value, // 假设分类有唯一标识
+                //     name: res.content,
+                //     value: res.content
+                // }).then(async response => {
+                //     if (response.code === 200) {
+                //         // 刷新分类列表
+                //         await updateCategory();
+                //         getCategory();
+                //         Taro.showToast({ title: '更新成功', icon: 'success' });
+                //     }
+                // });
+            }
+        }
+    } as any);
+}
+const deletecategory = () => {
+
+}
+const handleLongPress = (item: categoriesData) => {
+    console.log("item", item);
+    currentCategory.value = item;
+    if (item.icon === "icon-fenlei") { // 仅对 icon 为 "icon-fenlei" 的分类生效
+        actionSheetRef.value.open();
+    }
+}
+const updateCategory = async () => {
+    const globalData = Taro.getStorageSync("globalData");
+    let categories = await user_dll.getCategories();
+    Object.assign(globalData, categories);
+    Taro.setStorageSync("globalData", globalData)
 }
 const onOk = async () => {
     if (!formData.value.amount) {
@@ -218,6 +266,7 @@ const onOk = async () => {
 };
 
 const getCategory = async () => {
+    // debugger
     await ajax.checkPost();
     const globalData = Taro.getStorageSync("globalData");
     if (globalData.categories) {

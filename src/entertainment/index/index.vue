@@ -68,7 +68,7 @@ const tonextPath = (item) => {
       success: (res) => {
         if (res.confirm) {
           Taro.setClipboardData({
-            data:url,
+            data: url,
             success: () => {
               Taro.showToast({
                 title: '链接已复制，请到浏览器中粘贴打开',
@@ -86,7 +86,8 @@ const tonextPath = (item) => {
 const getList = () => {
   ajax.get("/entertainment/get", {
     page: page.value,
-    rows: 20
+    rows: 20,
+    status: 1
   }).then((res) => {
     if (res.code == 200) {
       total.value = res.total as number;
@@ -116,11 +117,11 @@ const getList = () => {
   })
 }  // 上拉到最底部加载
 const lower = () => {
-  if (entertainments.value.length >= total.value) {
-    return;
-  }
-  page.value++;
-  getList();
+  // if (entertainments.value.length >= total.value) {
+  //   return;
+  // }
+  // page.value++;
+  // getList();
 }
 const refresh = () => {
   refreshering.value = true;
