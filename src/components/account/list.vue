@@ -18,7 +18,8 @@
                                     v-if="item.description">|</text> {{ item.description }}</view>
                         </view>
                     </view>
-                    <view :class="item.type == 1 ? 'skinColor' : 'errorColor'">{{ item.type == 0 ? '-' : '+' }}￥{{
+                    <view :class="item.type == 1 ? 'skinColor' : 'errorColor'">{{ item.type == 0 ? '-' : '+' }}{{
+            Taro.getStorageSync("globalData").currency }}{{
             item.amount
         }}</view>
                 </view>
@@ -34,7 +35,7 @@
 
 <script setup lang="ts">
 // 引入需要的依赖
-import { ref, onMounted,inject } from 'vue';
+import { ref, onMounted, inject } from 'vue';
 import Taro from '@tarojs/taro';
 import emptyData from "../common/emptyData.vue"
 import ajax from "../../common/ajax";
@@ -60,7 +61,7 @@ defineProps({
 });
 const categories_obj = ref<CategoriesObj>({});
 const categories_icon = ref<CategoriesObj>({});
-   
+
 const emits = defineEmits(['click'])
 onMounted(async () => {
     await ajax.checkPost();

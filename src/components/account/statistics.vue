@@ -12,11 +12,13 @@
             <view class="statistics-row2 flex-align-center flex-justify-between m-t-20">
                 <view>
                     <view class="font14">总支出</view>
-                    <view class="blackColor font24 m-t-5">￥{{ today.expense }}</view>
+                    <view class="blackColor font24 m-t-5">{{ Taro.getStorageSync("globalData").currency }}{{
+                    today.expense }}</view>
                 </view>
                 <view>
                     <view class="font14">总收入</view>
-                    <view class="blackColor font24 m-t-5">￥{{ today.income }}</view>
+                    <view class="blackColor font24 m-t-5">{{ Taro.getStorageSync("globalData").currency }}{{
+                        today.income }}</view>
                 </view>
             </view>
         </view>

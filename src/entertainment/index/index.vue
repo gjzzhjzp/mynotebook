@@ -5,14 +5,15 @@
     </template>
     <template #body>
       <view class="p-a-15">
-        <view v-for="item in entertainments" :key="item.type" class="whiteColorB borderRadius10 m-t-20 p-a-15">
+        <ad-custom unit-id="adunit-74079774285d4eb3"></ad-custom>
+        <view v-for="item in entertainments" :key="item.type" class="whiteColorB borderRadius10 m-t-20 p-a-10">
           <view class="flex-align-center flex-justify-between">
             <view class="font16 fontWeight blackColor">{{ item.type }}</view>
             <!-- <view class="font14 skinColor">查看全部</view> -->
           </view>
-          <view class="m-t-20 grid-3">
+          <view class="m-t-10 grid-3">
             <view v-for="item1 in item.items" @click="tonextPath(item1)"
-              class="borderRadius20 flex-column-center flex-justify-center m-b-20">
+              class="borderRadius20 flex-column-center flex-justify-center m-b-10">
               <view class="entertainments_item flex-center-center">
                 <image mode="aspectFill" :src="item1.image_url" class="borderRadiusMax"
                   style="width: 100%;height: 100%;"></image>

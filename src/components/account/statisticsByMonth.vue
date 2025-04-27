@@ -18,11 +18,13 @@
                 <view class="statistics-row2 flex-align-center flex-justify-between m-t-20">
                     <view v-if="checked_type == 'expense'">
                         <view class="font14">总支出</view>
-                        <view class="skinColor font30 m-t-5">￥{{ thismonth.expense }}</view>
+                        <view class="skinColor font30 m-t-5">{{ Taro.getStorageSync("globalData").currency }}{{
+            thismonth.expense }}</view>
                     </view>
                     <view v-else>
                         <view class="font14">总收入</view>
-                        <view class="skinColor font30 m-t-5">￥{{ thismonth.income }}</view>
+                        <view class="skinColor font30 m-t-5">{{ Taro.getStorageSync("globalData").currency }}{{
+            thismonth.income }}</view>
                     </view>
                 </view>
                 <view class="m-t-20">
@@ -34,7 +36,7 @@
                         <view style="flex:1;" class="m-l-5">
                             <nut-progress :percentage="Number(item.percentage)" status="icon">
                                 <template #icon-name>
-                                    ￥{{ item.value }}
+                                    {{ Taro.getStorageSync("globalData").currency }}{{ item.value }}
                                 </template>
                             </nut-progress>
                         </view>
@@ -52,11 +54,15 @@
             <view class="statistics-row2 flex-align-center flex-justify-between m-t-20 p-0-20">
                 <view class="flex-column-center">
                     <view class="font14">总支出</view>
-                    <view class="skinColor font24 m-t-5">￥{{ thismonth.expense }}</view>
+                    <view class="skinColor font24 m-t-5">{{ Taro.getStorageSync("globalData").currency }}{{
+            thismonth.expense }}
+                    </view>
                 </view>
                 <view class="flex-column-center">
                     <view class="font14">总收入</view>
-                    <view class="skinColor font24 m-t-5">￥{{ thismonth.income }}</view>
+                    <view class="skinColor font24 m-t-5">{{ Taro.getStorageSync("globalData").currency }}{{
+                        thismonth.income }}
+                    </view>
                 </view>
             </view>
             <view class="m-t-20">
@@ -74,6 +80,7 @@ import date_formatter from '../../common/date_formatter'
 import ajax from '../../common/ajax';
 import emptyData from "../common/emptyData.vue"
 import { useDidShow } from "@tarojs/taro";
+import Taro from '@tarojs/taro'
 interface StatisticsItem {
     type: number;
     category: string;

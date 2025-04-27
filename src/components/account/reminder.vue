@@ -19,7 +19,7 @@
                             <nut-input v-model="formData.daily_limit" placeholder="请输入每日额度" type="number"
                                 @blur="validateField('daily_limit')" :rules="[{ required: true, message: '请输入每日额度' }]">
                                 <template #left>
-                                    ￥
+                                    {{ Taro.getStorageSync("globalData").currency }}
                                 </template>
                             </nut-input>
                         </view>
@@ -30,7 +30,7 @@
                                 @blur="validateField('monthly_limit')"
                                 :rules="[{ required: true, message: '请输入每月额度' }]">
                                 <template #left>
-                                    ￥
+                                    {{ Taro.getStorageSync("globalData").currency }}
                                 </template>
                             </nut-input>
                         </view>
@@ -40,7 +40,7 @@
                             <nut-input v-model="formData.yearly_limit" placeholder="请输入每年额度" type="number"
                                 @blur="validateField('yearly_limit')" :rules="[{ required: true, message: '请输入每年额度' }]">
                                 <template #left>
-                                    ￥
+                                    {{ Taro.getStorageSync("globalData").currency }}
                                 </template>
                             </nut-input>
                         </view>
@@ -74,6 +74,7 @@ import ajax from '../../common/ajax'
 import { ref, onMounted, defineEmits, inject } from 'vue'
 import type { FormInstance } from '@nutui/nutui-taro';
 import basedll from '../../common/basedll';
+import Taro from '@tarojs/taro'
 // import help from '../common/help.vue'
 interface FormData {
     open_daily: boolean;

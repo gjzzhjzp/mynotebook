@@ -5,7 +5,12 @@
         </template>
         <template #body>
             <view class=" account-add-container flex-column-left flex-justify-between" style="height: 100%;">
-
+                <view class="account-index-tips flex-align-center flex-justify-between p-a-15">
+                    <view class="flex-align-center">
+                        <view class="iconfont icon-fenlei font16 "></view>
+                        <view class="m-l-5">图标表示自定义分类，长按可编辑</view>
+                    </view>
+                </view>
                 <view class="l-account-add p-a-20">
                     <view class="flex-align-center flex-justify-between">
                         <view class="flex-align-center fontWeight blackColor" @click="showCalender = true">
@@ -30,7 +35,9 @@
                         <view class="m-t-10">
                             <nut-input type="digit" v-model="formData.amount" placeholder="0.00" clearable>
                                 <template #left>
-                                    <view class="fontWeight blackColor font14">￥</view>
+                                    <view class="fontWeight blackColor font14">
+                                        {{ Taro.getStorageSync("globalData").currency }}
+                                    </view>
                                 </template>
                             </nut-input>
                         </view>
@@ -185,24 +192,37 @@ const update_category = () => {
         success: (res) => {
             if (res.confirm && res.content) {
                 // 调用接口更新分类
-                // ajax.post('/category/update', {
-                //     id: item.value, // 假设分类有唯一标识
-                //     name: res.content,
-                //     value: res.content
-                // }).then(async response => {
-                //     if (response.code === 200) {
-                //         // 刷新分类列表
-                //         await updateCategory();
-                //         getCategory();
-                //         Taro.showToast({ title: '更新成功', icon: 'success' });
-                //     }
-                // });
+                ajax.post('/category/update', {
+                    id: currentCategory.value.id, // 假设分类有唯一标识
+                    name: res.content,
+                    value: res.content
+                }).then(async response => {
+                    if (response.code === 200) {
+                        // 刷新分类列表
+                        actionSheetRef.value.close();
+                        await updateCategory();
+                        getCategory();
+
+                        Taro.showToast({ title: '更新成功', icon: 'success' });
+                    }
+                });
             }
         }
     } as any);
 }
 const deletecategory = () => {
 
+    ajax.post('/category/delete', {
+        id: currentCategory.value.id // 假设分类有唯一标识
+    }).then(async response => {
+        if (response.code === 200) {
+            // 刷新分类列表
+
+            await updateCategory();
+            getCategory();
+            Taro.showToast({ title: '删除成功', icon: 'success' });
+        }
+    });
 }
 const handleLongPress = (item: categoriesData) => {
     console.log("item", item);
@@ -343,5 +363,11 @@ const close = () => {
 .account_add_item {
     height: 60rpx;
     width: 60rpx;
+}
+
+.account-index-tips {
+    background-color: #FFF7ED;
+    color: #EA580C;
+    box-shadow: 0px 4px 6px 0px rgba(0, 0, 0, 0.05);
 }
 </style>

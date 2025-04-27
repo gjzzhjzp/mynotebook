@@ -21,7 +21,8 @@
                     <view class="m-t-10">
                         <nut-input v-model="formData.amount" placeholder="0.00" clearable>
                             <template #left>
-                                <view class="fontWeight blackColor">￥</view>
+                                <view class="fontWeight blackColor"> {{ Taro.getStorageSync("globalData").currency }}
+                                </view>
                             </template>
                         </nut-input>
                     </view>
@@ -141,11 +142,11 @@ const onOk = async () => {
 
 const getCategory = () => {
     const globalData = Taro.getStorageSync("globalData");
-    if(globalData.categories){
+    if (globalData.categories) {
         categories.value = globalData.categories[checked_type.value == 'expense' ? 0 : 1]
         checked_category.value = categories.value[0].value;
     }
-   
+
 }
 onMounted(() => {
     getCategory();

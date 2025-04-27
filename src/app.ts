@@ -17,6 +17,8 @@ const App = createApp({
     // debugger;
     Taro.setStorageSync("globalData", appconfig)
     let data = await user_dll.login();
+    data.currency = data.userinfo.currency;
+    console.log("------------data", data)
     Taro.setStorageSync("globalData", data)
     let categories = await user_dll.getCategories();
     Object.assign(data, categories);

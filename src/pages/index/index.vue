@@ -3,7 +3,7 @@
     <template #nav>
       <Header title="橘好记" :showNavBack="true" :showNavBackSlot="true">
         <template #left>
-          <!-- <view class="iconfont icon-icon_notice font20 skinColor"></view> -->
+          <view class="iconfont icon-yuyan font20 skinColor" @click="selectCurrency()"></view>
         </template>
       </Header>
     </template>
@@ -52,6 +52,9 @@
       <addfeedback ref="addfeedbackRef"></addfeedback>
       <reminder ref="reminderRef" @open_help="openHelp"></reminder>
       <reminder_text ref="reminder_textRef"></reminder_text>
+      <nut-popup v-model:visible="showcurrencyPicker" position="bottom">
+        <currency-picker ref="currencyPickerRef" @confirm="confirmCurrency"></currency-picker>
+      </nut-popup>
       <view class="back_icon skinColor iconfont icon-tubiaozhizuomoban- font40"></view>
     </template>
   </pageScroll>
@@ -64,6 +67,7 @@ import Header from '../../components/common/Header.vue';
 import pageScroll from '../../components/common/pageScroll.vue';
 import addfeedback from "../../components/feedback/add.vue"
 import reminder from "../../components/account/reminder.vue"
+import currencyPicker from "../../components/account/currencyPicker.vue"
 import reminder_text from "../../components/account/reminder_text.vue"
 // import statisticsByMonth from "../../components/account/statisticsByMonth.vue"
 import Taro from '@tarojs/taro';
@@ -79,15 +83,28 @@ interface KjTabs {
 const addfeedbackRef = ref();
 const reminderRef = ref();
 const reminder_textRef = ref();
+const showcurrencyPicker = ref(false);
 onBeforeMount(() => {
 
 })
 onMounted(() => {
   getKjTabs();
 })
+const selectCurrency = () => {
+  showcurrencyPicker.value = true;
+}
 const openHelp = () => {
   console.log("2")
   reminder_textRef.value.open();
+}
+// 确认币种
+const confirmCurrency = (e) => {
+  console.log("e", e);
+  const globalData = Taro.getStorageSync("globalData");
+  globalData.currency = e;
+  Taro.setStorageSync("globalData", globalData)
+  showcurrencyPicker.value = false;
+  Taro.showToast({ title: '切换成功', icon: 'none' });
 }
 const kjtabs = ref<KjTabs[]>([]);
 const tonext = (type) => {
