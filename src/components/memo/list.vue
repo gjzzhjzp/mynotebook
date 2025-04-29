@@ -3,7 +3,7 @@
         <template v-if="list.length > 0">
             <view v-for="(item, index) in list" :key="item.id"
                 :class="['memo-item', 'flex-align-center', item.is_done ? 'is_done' : '']"
-                @clicK="itemClick(item, index)" @longpress="itemClick(item, index)">
+                @clicK="itemClick(item, index)" @longpress="longClick(item, index)">
                 <nut-checkbox v-if="isedit" v-model="item.checkbox"></nut-checkbox>
                 <view style="width: 100%;">
                     <view class="memo-header flex-align-center flex-justify-between">
@@ -42,10 +42,13 @@ const categories_obj = ref({});
 
 
 // const emits = defineEmits(['update', 'delete'])
-const emits = defineEmits(['click'])
+const emits = defineEmits(['click', 'longClick'])
 onMounted(() => {
     categories_obj.value = Taro.getStorageSync("globalData").categories_obj;
 })
+const longClick = (item: MemoItem, index: number) => {
+    emits('longClick', item, index);
+}
 const itemClick = (item: MemoItem, index: number) => {
 
     if (!props.isedit) {

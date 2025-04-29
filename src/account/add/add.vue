@@ -170,7 +170,7 @@ const add_custom_fl = () => {
                 // 调用接口添加分类
                 ajax.post('/category/add', {
                     name: res.content,
-                    value: res.content,
+                    value: "customfl_" + Math.random().toString(36).substr(2, 9),
                     type: checked_type.value === 'expense' ? 0 : 1
                 }).then(async response => {
                     if (response.code === 200) {
@@ -195,8 +195,7 @@ const update_category = () => {
                 // 调用接口更新分类
                 ajax.post('/category/update', {
                     id: currentCategory.value.id, // 假设分类有唯一标识
-                    name: res.content,
-                    value: res.content
+                    name: res.content
                 }).then(async response => {
                     if (response.code === 200) {
                         // 刷新分类列表

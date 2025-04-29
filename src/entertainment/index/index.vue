@@ -58,19 +58,24 @@ let page = ref<number>(1);
 let total = ref<number>(0);
 let refreshering = ref<boolean>(false);
 let entertainments = ref<entertainmentsItem[]>([]);
-const generate13DigitRandom = () => {
-  let randomStr = '';
-  for (let i = 0; i < 13; i++) {
-    randomStr += Math.floor(Math.random() * 10); // 每次生成0-9的数字
+const generateRandomString = (length = 13, includeLetters = true) => {
+  let chars = '0123456789';
+  if (includeLetters) {
+    chars += 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz';
   }
-  return randomStr;
+
+  let result = '';
+  for (let i = 0; i < length; i++) {
+    result += chars.charAt(Math.floor(Math.random() * chars.length));
+  }
+  return result;
 }
 const tonextPath = (item) => {
   if (item.link) {
     const globalData = Taro.getStorageSync("globalData");
     let url = globalData.game_server + item.link;
     if (item.name == "juyuwang") {
-      const data = generate13DigitRandom() + "__" + globalData.userinfo.username + "__" + new Date().getTime() + generate13DigitRandom();
+      const data = generateRandomString() + "__" + globalData.userinfo.username + "__" + new Date().getTime() + generateRandomString();
       // const encryptedData = Taro.base64Encode(data)// 使用 Base64 加密
 
       url = url + "?une=" + data;

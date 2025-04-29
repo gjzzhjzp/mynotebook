@@ -19,7 +19,8 @@
       <!-- p-a-10 m-a-10 whiteColorB borderRadius10 -->
       <view class="">
         <!-- @delete="successmemo" @update="update_memo" -->
-        <memo-list ref="memoListRef" :isedit="isedit" :list="memos" @click="openActionSheet"></memo-list>
+        <memo-list ref="memoListRef" :isedit="isedit" :list="memos" @longClick="tomanage"
+          @click="openActionSheet"></memo-list>
       </view>
     </template>
     <template #footer>
