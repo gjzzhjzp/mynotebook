@@ -9,7 +9,7 @@
     "enhance": false,
     "postcss": false,
     "preloadBackgroundData": false,
-    "minified": false,
+    "minified": true,
     "newFeature": false,
     "coverView": true,
     "nodeModules": false,
@@ -39,7 +39,8 @@
     "disableUseStrict": false,
     "showES6CompileOption": false,
     "useCompilerPlugins": false,
-    "minifyWXML": true
+    "minifyWXML": true,
+    "ignoreUploadUnusedFiles": true
   },
   "compileType": "miniprogram",
   "libVersion": "3.7.9",

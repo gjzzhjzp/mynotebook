@@ -33,7 +33,8 @@
                     </view>
                     <nut-config-provider :theme-vars="themeVars">
                         <view class="m-t-10">
-                            <nut-input type="digit" v-model="formData.amount" placeholder="0.00" clearable>
+                            <nut-input type="digit" v-model="formData.amount" :max-length="8" placeholder="0.00"
+                                clearable>
                                 <template #left>
                                     <view class="fontWeight blackColor font14">
                                         {{ Taro.getStorageSync("globalData").currency }}

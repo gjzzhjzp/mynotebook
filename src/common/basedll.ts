@@ -47,7 +47,26 @@ const requestSubscribeMessage = (tmplIds: string[]): Promise<Boolean> => {
         });
     });
 }
+const checkSubscribe = async (tmplIds: string[]): Promise<string[]> => {
+    try {
+        const res = await Taro.getSetting({ withSubscriptions: true });
+        if (res.subscriptionsSetting?.mainSwitch) { // 用户打开了订阅消息总开关
+            if (res.subscriptionsSetting.itemSettings) { // 用户已设置订阅消息
+                // 检查所有模板ID是否都被接受
+                const acceptedIds = tmplIds.filter(id =>
+                    res.subscriptionsSetting.itemSettings[id] === 'accept'
+                );
+                return acceptedIds;
+            }
+        }
+        return []; // 用户未打开总开关或未设置订阅消息
+    } catch (error) {
+        console.error('检测订阅状态失败:', error);
+        return []; // 用户未打开总开关或未设置订阅消息
+    }
+};
 export default {
+    checkSubscribe,
     wx_getSetting,
     requestSubscribeMessage
 }

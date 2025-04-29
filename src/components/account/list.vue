@@ -1,7 +1,8 @@
 <template>
     <view class="account-list">
         <template v-if="list.length > 0">
-            <view v-for="(item) in list" :key="item.id" class=" m-t-15" @clicK="itemClick(item)">
+            <view v-for="(item) in list" :key="item.id" class=" m-t-15" @clicK="itemClick(item)"
+                @longpress="itemClick(item)">
                 <view class="flex-align-center flex-justify-between">
                     <view class="flex-align-center">
                         <view>

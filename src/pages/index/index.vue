@@ -3,11 +3,18 @@
     <template #nav>
       <Header title="橘好记" :showNavBack="true" :showNavBackSlot="true">
         <template #left>
-          <view class="iconfont icon-yuyan font20 skinColor" @click="selectCurrency()"></view>
+          <!-- <view class="iconfont icon-yuyan font20 skinColor" @click="selectCurrency()"></view> -->
         </template>
       </Header>
     </template>
     <template #body>
+      <nut-config-provider :theme-vars="{
+    'noticebar-background': '#FFF7ED',
+    'noticebar-color': '#EA580C',
+    'noticebar-box-padding': '0px 10px'
+  }">
+        <nut-noticebar v-if="!!noticeText" :text="noticeText" />
+      </nut-config-provider>
       <view class="m-a-15">
         <view class="m-t-20 mynotebook_body flex-align-center gap15 ">
           <view class="mynotebook_body_wrap" @click="tonext('account')">
@@ -52,14 +59,19 @@
       <addfeedback ref="addfeedbackRef"></addfeedback>
       <reminder ref="reminderRef" @open_help="openHelp"></reminder>
       <reminder_text ref="reminder_textRef"></reminder_text>
-      <nut-popup v-model:visible="showcurrencyPicker" position="bottom">
-        <currency-picker ref="currencyPickerRef" @confirm="confirmCurrency"></currency-picker>
-      </nut-popup>
+
       <view class="back_icon skinColor iconfont icon-tubiaozhizuomoban- font40"></view>
+    </template>
+    <template #footer>
+      <view class="footer p-a-15 m-b-20">
+        <nut-popup v-model:visible="showcurrencyPicker" position="bottom">
+          <currency-picker ref="currencyPickerRef" @confirm="confirmCurrency"></currency-picker>
+        </nut-popup>
+        <ad-custom unit-id="adunit-6998ae507394e914"></ad-custom>
+      </view>
     </template>
   </pageScroll>
 </template>
-
 <script setup lang="ts">
 import { onBeforeMount, onMounted, ref } from 'vue';
 import ajax from '../../common/ajax';
@@ -69,7 +81,7 @@ import addfeedback from "../../components/feedback/add.vue"
 import reminder from "../../components/account/reminder.vue"
 import currencyPicker from "../../components/account/currencyPicker.vue"
 import reminder_text from "../../components/account/reminder_text.vue"
-// import statisticsByMonth from "../../components/account/statisticsByMonth.vue"
+import basedll from "../../common/basedll";
 import Taro from '@tarojs/taro';
 import { useShareAppMessage } from "@tarojs/taro"
 interface KjTabs {
@@ -84,12 +96,22 @@ const addfeedbackRef = ref();
 const reminderRef = ref();
 const reminder_textRef = ref();
 const showcurrencyPicker = ref(false);
+const noticeText = ref("");
 onBeforeMount(() => {
 
 })
 onMounted(() => {
+  getOneNotice();
   getKjTabs();
 })
+const getOneNotice = () => {
+  ajax.get("/notices/getone", {}).then((res) => {
+    console.log("res", res);
+    if (res.code == 200) {
+      noticeText.value = res.data.content;
+    }
+  })
+}
 const selectCurrency = () => {
   showcurrencyPicker.value = true;
 }
@@ -120,9 +142,11 @@ const tonext = (type) => {
   Taro.navigateTo({ url })
 }
 const getKjTabs = () => {
+  Taro.showLoading({ title: '加载中...' });
   ajax.get('/quick_actions/get', {}).then(res => {
     if (res.code == 200) {
       console.log(res.data);
+      Taro.hideLoading();
       const globalData = Taro.getStorageSync("globalData");
       if (globalData.userinfo.openid == "o5DNf7Kcd5UqkNq_5pj7lb1Hc7Mw") {
         kjtabs.value = res.data;
@@ -135,6 +159,22 @@ const getKjTabs = () => {
   })
 }
 const tonextPath = (item) => {
+  // 如果点击记账相关按钮，如果已订阅通知，默认点击一次
+  const globalData = Taro.getStorageSync("globalData");
+  let tmplIds: string[] = [];
+  if (item.name == "addAccount" || item.name == "budgetSetting" || item.name == "statistics" || item.name == "accounts") {
+    tmplIds = [globalData.tmplIds.overspend, globalData.tmplIds.daily]
+  } else if (item.name == "addMemo") {
+    tmplIds = [globalData.tmplIds.memo]
+  }
+  if (tmplIds.length > 0) {
+    basedll.checkSubscribe(tmplIds).then((allAccepted) => {
+      console.log("allAccepted", allAccepted);
+      if (allAccepted.length > 0) {
+        basedll.requestSubscribeMessage(allAccepted);
+      }
+    });
+  }
   if (item.path) {
     Taro.navigateTo({ url: item.path })
   } else {
@@ -146,15 +186,15 @@ const tonextPath = (item) => {
   }
 }
 useShareAppMessage(() => {
-  debugger;
+  // debugger;
   return {
-    title: '橘好记1 - 简单好用的记账备忘录', // 分享标题
+    title: '橘好记 - 简单好用的记账备忘录', // 分享标题
     path: '/pages/index/index', // 分享路径
   }
 })
 // 自定义分享功能
 Taro.useShareAppMessage(() => {
-  debugger;
+  // debugger;
   return {
     title: '橘好记2 - 简单好用的记账备忘录', // 分享标题
     path: '/pages/index/index', // 分享路径

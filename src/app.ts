@@ -14,7 +14,7 @@ const App = createApp({
     });
   },
   async onLaunch() {
-    // debugger;
+
     Taro.setStorageSync("globalData", appconfig)
     let data = await user_dll.login();
     data.currency = data.userinfo.currency;

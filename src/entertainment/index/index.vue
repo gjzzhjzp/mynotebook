@@ -36,6 +36,11 @@ import Header from '../../components/common/Header.vue';
 import pageScroll from '../../components/common/pageScroll.vue';
 import { formatDate } from '../../common/date_formatter';
 import Taro from '@tarojs/taro';
+declare module '@tarojs/taro' {
+  interface TaroStatic {
+    base64Encode(input: string): string;
+  }
+}
 interface entertainmentsItem {
   name: string;
   cn_name: string;
@@ -53,14 +58,24 @@ let page = ref<number>(1);
 let total = ref<number>(0);
 let refreshering = ref<boolean>(false);
 let entertainments = ref<entertainmentsItem[]>([]);
+const generate13DigitRandom = () => {
+  let randomStr = '';
+  for (let i = 0; i < 13; i++) {
+    randomStr += Math.floor(Math.random() * 10); // 每次生成0-9的数字
+  }
+  return randomStr;
+}
 const tonextPath = (item) => {
   if (item.link) {
     const globalData = Taro.getStorageSync("globalData");
     let url = globalData.game_server + item.link;
+    if (item.name == "juyuwang") {
+      const data = generate13DigitRandom() + "__" + globalData.userinfo.username + "__" + new Date().getTime() + generate13DigitRandom();
+      // const encryptedData = Taro.base64Encode(data)// 使用 Base64 加密
+
+      url = url + "?une=" + data;
+    }
     console.log("url", url);
-    /*Taro.navigateTo({
-      url: "/entertainment/webview/webview?url=" + url
-    })*/
     Taro.showModal({
       title: '打开外部链接',
       content: `1. 点击"复制链接"按钮\n2. 打开手机浏览器\n3. 在地址栏粘贴链接并访问`, // 使用模板字符串
