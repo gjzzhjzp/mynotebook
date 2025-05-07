@@ -26,9 +26,9 @@
             </view>
         </template>
         <template #footer>
-            <add @add="exportExcel()">
+            <!-- <add @add="exportExcel()">
                 导出账单
-            </add>
+            </add> -->
             <action-sheet ref="actionSheetRef" @update="update_account" @delete="deleteAccount"></action-sheet>
         </template>
     </pageScroll>
