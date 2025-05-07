@@ -44,7 +44,7 @@
 
 <script setup lang="ts">
 // 引入需要的依赖
-import { ref, onMounted, watch, inject } from 'vue';
+import { ref, onMounted, watch } from 'vue';
 import pieChart from './pieChart.vue';
 import ajax from '../../common/ajax';
 import emptyData from "../common/emptyData.vue"
@@ -88,7 +88,7 @@ const types = ref([
         value: "income"
     }
 ])
-const globalData = inject('globalData') as any;
+const globalData = ref(Taro.getStorageSync("globalData"));
 let pieChartList = ref([{ value: 0, name: "", percentage: "0" }])
 useDidShow(() => {
     console.log('页面显示');
@@ -117,9 +117,10 @@ const getpieChartList = () => {
     const maxAmount = Math.max(...rows.map(item => item.total_amount));
     pieChartList.value = rows.map((item: StatisticsItem) => {
         const percentage = maxAmount > 0 ? (item.total_amount / maxAmount) * 100 : 0;
+        let name = globalData.value.categories_obj[item.category] as string
         return {
             value: item.total_amount,
-            name: globalData.value.categories_obj[item.category] as string,
+            name: name ? name : "其他",
             percentage: percentage.toFixed(2) // 保留两位小数
         }
     });
@@ -174,7 +175,7 @@ defineExpose({
 .statistics-container {
     /* 组件样式 */
     width: 630rpx;
-    height: 750rpx;
+    height: 800rpx;
     background-color: #fff;
     border-radius: 10rpx;
 }

@@ -76,7 +76,7 @@ const themeVars = ref({
     'textarea-font': '32rpx',  // 字体大小
     'input-font-size': '36rpx'
 });
-const globalData = inject('globalData') as any;
+const globalData = ref(Taro.getStorageSync("globalData"));
 const showCalender = ref(false);
 const minDate = new Date();
 const isedit = ref(false);

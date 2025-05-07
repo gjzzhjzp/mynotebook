@@ -1,5 +1,7 @@
 <template>
-    <nut-picker :columns="columns" title="选择币种" :default-value="localVal" v-model="localVal" @confirm="confirm" />
+    <view v-if="showpicker">
+        <nut-picker :columns="columns" title="选择币种" :default-value="localVal" v-model="localVal" @confirm="confirm" />
+    </view>
 </template>
 <script setup lang="ts">
 import { onMounted, ref } from 'vue';
@@ -11,7 +13,8 @@ import ajax from '../../common/ajax'
 //         default: ["￥"]
 //     }
 // })
-const localVal = ref<string[]>(["€"]);
+const showpicker=ref(false);
+const localVal = ref<string[]>([""]);
     const columns = ref()
 // 监听父组件值变化
 // watch(() => props.val, (newVal) => {
@@ -43,6 +46,9 @@ const getData = () => {
                     value: item.symbol
                 }
             })
+            setTimeout(()=>{
+                showpicker.value=true;
+            },10)
             resolve(true);
         }
     })

@@ -8,13 +8,16 @@
                         <view>
                             <view style="" class="borderRadiusMax flex-center-center account-list-leftIcon">
                                 <view v-if="item.type == 0"
-                                    :class="'iconfont  font20 skinColor ' + categories_icon[item.category]"></view>
-                                <view v-else :class="'iconfont font20 errorColor ' + categories_icon[item.category]">
+                                    :class="'iconfont  font20 skinColor ' + (categories_icon[item.category] || 'icon-fenlei')">
+                                </view>
+                                <view v-else
+                                    :class="'iconfont font20 errorColor ' + (categories_icon[item.category] || 'icon-fenlei')">
                                 </view>
                             </view>
                         </view>
                         <view class="flex-column-left m-l-10">
-                            <view class="font14 fontWeight blackColor">{{ categories_obj[item.category] }}</view>
+                            <view class="font14 fontWeight blackColor">{{ categories_obj[item.category] || (item.type ==
+            0 ? '其他支出' : '其他收入') }}</view>
                             <view class="font12 m-t-5">{{ item.created_at }} <text class="m-l-5 m-r-5"
                                     v-if="item.description">|</text> {{ item.description }}</view>
                         </view>

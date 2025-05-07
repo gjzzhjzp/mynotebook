@@ -12,13 +12,13 @@
             <view class="statistics-row2 flex-align-center flex-justify-between m-t-20">
                 <view>
                     <view class="font14">总支出</view>
-                    <view class="blackColor font24 m-t-5">{{ Taro.getStorageSync("globalData").currency }}{{
+                    <view class="blackColor font24 m-t-5">{{ cur_currency }}{{
                     today.expense }}</view>
                 </view>
                 <view>
                     <view class="font14">总收入</view>
-                    <view class="blackColor font24 m-t-5">{{ Taro.getStorageSync("globalData").currency }}{{
-                        today.income }}</view>
+                    <view class="blackColor font24 m-t-5">{{ cur_currency }}{{
+                    today.income }}</view>
                 </view>
             </view>
         </view>
@@ -31,14 +31,22 @@ import { ref, onMounted } from 'vue';
 import date_formatter from '../../common/date_formatter'
 import ajax from '../../common/ajax';
 import Taro from '@tarojs/taro'
+import { useDidShow } from '@tarojs/taro'
+const cur_currency = ref("￥");
 const today = ref({
     expense: 0,
     income: 0,
     date: date_formatter(new Date().getTime(), "yyyy-mm-dd")
 })
-onMounted(() => {
+useDidShow(() => {
+    // debugger;
+    cur_currency.value = Taro.getStorageSync("globalData").currency;
     getStatisticsByfl();
     getStatistics();
+})
+onMounted(() => {
+
+
 })
 const toStatistics = () => {
     Taro.navigateTo({

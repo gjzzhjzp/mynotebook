@@ -4,11 +4,15 @@
             <Header title="记一笔"></Header>
         </template>
         <template #body>
-            <view class=" account-add-container flex-column-left flex-justify-between" style="height: 100%;">
+            <view class=" account-add-container flex-column-left " style="height: 100%;">
                 <view class="account-index-tips flex-align-center flex-justify-between p-a-15">
                     <view class="flex-align-center">
                         <view class="iconfont icon-fenlei font16 "></view>
                         <view class="m-l-5">图标表示自定义分类，长按可编辑</view>
+                    </view>
+                    <view class="flex-align-center" @click="selectCurrency()">
+                        切换币种
+                        <view class="iconfont icon-yuyan font18 skinColor m-l-5"></view>
                     </view>
                 </view>
                 <view class="l-account-add p-a-20">
@@ -37,7 +41,8 @@
                                 clearable>
                                 <template #left>
                                     <view class="fontWeight blackColor font14">
-                                        {{ Taro.getStorageSync("globalData").currency }}
+                                        {{ cur_currency }}
+                                        <!-- {{ Taro.getStorageSync("globalData").currency }} -->
                                     </view>
                                 </template>
                             </nut-input>
@@ -79,6 +84,9 @@
         <template #footer>
             <action-sheet ref="actionSheetRef" type="category" text="分类" @update="update_category"
                 @delete="deletecategory"></action-sheet>
+            <nut-popup v-model:visible="showcurrencyPicker" position="bottom">
+                <currency-picker ref="currencyPickerRef" @confirm="confirmCurrency"></currency-picker>
+            </nut-popup>
             <view class="m-t-20 m-b-40">
                 <view class="flex-align-center flex-justify-between m-t-20 p-a-20">
                     <nut-button type="default" class="m-t-10" @click="close" style="width: 300rpx;">
@@ -101,6 +109,7 @@ import ajax from '../../common/ajax';
 import Header from '../../components/common/Header.vue';
 // import basedll from '../../common/basedll';
 import pageScroll from '../../components/common/pageScroll.vue';
+import currencyPicker from "../../components/account/currencyPicker.vue"
 import date_formatter from '../../common/date_formatter'
 const user_dll = require('../../common/user_dll');
 import Taro from '@tarojs/taro';
@@ -144,6 +153,7 @@ const checked_category = ref("food");
 const checked_type = ref("expense");
 const accountDate_date = ref<Date>(new Date());
 const currentCategory = ref();
+const cur_currency = ref("¥");
 const types = ref([
     {
         title: "支出",
@@ -159,6 +169,20 @@ watch(checked_type, () => {
     getCategory();
 })
 const emit = defineEmits(['success'])
+const showcurrencyPicker = ref(false);
+const selectCurrency = () => {
+    showcurrencyPicker.value = true;
+}
+// 确认币种
+const confirmCurrency = (e) => {
+    console.log("e", e);
+    const globalData = Taro.getStorageSync("globalData");
+    globalData.currency = e;
+    Taro.setStorageSync("globalData", globalData)
+    showcurrencyPicker.value = false;
+    cur_currency.value = e;
+    Taro.showToast({ title: '切换成功', icon: 'none' });
+}
 const add_custom_fl = () => {
     Taro.showModal({
         title: '添加自定义分类',
@@ -175,6 +199,7 @@ const add_custom_fl = () => {
                 }).then(async response => {
                     if (response.code === 200) {
                         // 刷新分类列表
+                        // debugger;
                         await updateCategory();
                         getCategory();
                         Taro.showToast({ title: '添加成功', icon: 'success' });
@@ -220,6 +245,7 @@ const deletecategory = () => {
 
             await updateCategory();
             getCategory();
+            actionSheetRef.value.close();
             Taro.showToast({ title: '删除成功', icon: 'success' });
         }
     });
@@ -235,6 +261,7 @@ const updateCategory = async () => {
     const globalData = Taro.getStorageSync("globalData");
     let categories = await user_dll.getCategories();
     Object.assign(globalData, categories);
+    console.log("globalData-------------", globalData);
     Taro.setStorageSync("globalData", globalData)
 }
 const onOk = async () => {
@@ -301,6 +328,7 @@ onMounted(() => {
         getAccountList(params.id); // 根据实际接口需求调整参数结构
     }
     getCategory();
+    cur_currency.value = Taro.getStorageSync("globalData").currency;
     formData.value.accountDate = date_formatter(new Date().getTime(), 'YYYY-MM-DD');
     console.log("formData", formData.value.accountDate);
 })

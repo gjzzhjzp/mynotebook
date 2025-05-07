@@ -61,7 +61,7 @@ let entertainments = ref<entertainmentsItem[]>([]);
 const generateRandomString = (length = 13, includeLetters = true) => {
   let chars = '0123456789';
   if (includeLetters) {
-    chars += 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz';
+    chars += 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz+';
   }
 
   let result = '';
@@ -74,16 +74,19 @@ const tonextPath = (item) => {
   if (item.link) {
     const globalData = Taro.getStorageSync("globalData");
     let url = globalData.game_server + item.link;
+    let content = `1. 点击"复制链接"按钮\n2. 打开手机浏览器\n3. 在地址栏粘贴链接并访问`; // 使用模板字符串
     if (item.name == "juyuwang") {
-      const data = generateRandomString() + "__" + globalData.userinfo.username + "__" + new Date().getTime() + generateRandomString();
+      const data = generateRandomString() + "__" + globalData.userinfo.username + "__" + generateRandomString(5, false) + new Date().getTime() + generateRandomString(5, false);
       // const encryptedData = Taro.base64Encode(data)// 使用 Base64 加密
 
       url = url + "?une=" + data;
+      content += `\n注意：为账号安全，请不要分享此链接给其他人。`;
     }
     console.log("url", url);
+
     Taro.showModal({
       title: '打开外部链接',
-      content: `1. 点击"复制链接"按钮\n2. 打开手机浏览器\n3. 在地址栏粘贴链接并访问`, // 使用模板字符串
+      content: content,
       confirmText: '复制链接',
       cancelText: '取消',
       success: (res) => {

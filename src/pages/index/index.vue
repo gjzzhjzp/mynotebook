@@ -3,7 +3,7 @@
     <template #nav>
       <Header title="橘好记" :showNavBack="true" :showNavBackSlot="true">
         <template #left>
-          <!-- <view class="iconfont icon-yuyan font20 skinColor" @click="selectCurrency()"></view> -->
+          <view class="iconfont icon-yuyan font20 skinColor" @click="selectCurrency()"></view>
         </template>
       </Header>
     </template>
@@ -107,7 +107,7 @@ onMounted(() => {
 const getOneNotice = () => {
   ajax.get("/notices/getone", {}).then((res) => {
     console.log("res", res);
-    if (res.code == 200) {
+    if (res.code == 200 && res.data) {
       noticeText.value = res.data.content;
     }
   })

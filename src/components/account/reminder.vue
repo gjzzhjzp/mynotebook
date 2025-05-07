@@ -47,31 +47,12 @@
                     </nut-form-item>
                 </nut-form>
             </view>
-            <!-- <help ref="helpRef" title="订阅提醒">
-                <template #default>
-                    <view class="font14">
-                        <view class="text-left m-b-10">
-                            记账日报：每天10点推送昨日账单
-                        </view>
-                        <view class="text-left m-b-10">
-                            每日额度：设置每日花费上限，超支提醒
-                        </view>
-                        <view class="text-left m-b-10">
-                            每月额度：设置每月花费上限，超支提醒
-                        </view>
-                        <view class="text-left m-b-10">
-                            每年额度：设置每年花费上限，超支提醒
-                        </view>
-                    </view>
-
-                </template>
-            </help> -->
         </template>
     </nut-dialog>
 </template>
 <script setup lang="ts">
 import ajax from '../../common/ajax'
-import { ref, onMounted, defineEmits, inject } from 'vue'
+import { ref, onMounted, defineEmits } from 'vue'
 import type { FormInstance } from '@nutui/nutui-taro';
 import basedll from '../../common/basedll';
 import Taro from '@tarojs/taro'
@@ -109,14 +90,15 @@ const validateField = async (prop: string) => {
         console.log(`字段 ${prop} 校验失败`, error);
     }
 };
-const globalData = inject('globalData') as any;
+const globalData = ref(Taro.getStorageSync("globalData"));
 onMounted(() => {
     // console.log("globalData-------------------", globalData.value.tmplIds.overspend);
-    get_userLimit();
+
 })
 const visible = ref(false)
 
 const open = () => {
+    get_userLimit();
     visible.value = true;
 }
 const close = () => {
