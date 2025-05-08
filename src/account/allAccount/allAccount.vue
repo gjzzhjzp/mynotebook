@@ -7,6 +7,12 @@
             <view class="p-a-15">
                 <account-search @search="searchValue"></account-search>
             </view>
+            <view class="flex-align-center flex-justify-between p-l-15 p-r-15">
+                <view>
+                    <!-- <nut-button size="small" plain type="primary" @click="openAllFl()">全部分类</nut-button> -->
+                </view>
+                <view><nut-button size="small" type="primary" @click="exportExcel()">导出账单</nut-button></view>
+            </view>
             <view class="p-a-15">
                 <template v-if="accountsByDay.length > 0">
                     <view v-for="(item) in accountsByDay" :key="item.date"
@@ -29,6 +35,8 @@
             <!-- <add @add="exportExcel()">
                 导出账单
             </add> -->
+            <accountSearchByCategory ref="accountSearchByCategoryRef" @selected="selectedCategory">
+            </accountSearchByCategory>
             <action-sheet ref="actionSheetRef" @update="update_account" @delete="deleteAccount"></action-sheet>
         </template>
     </pageScroll>
@@ -43,15 +51,16 @@ import accountList from '../../components/account/list.vue';
 import { useDidShow } from '@tarojs/taro';
 import Taro from '@tarojs/taro';
 import { formatDate } from '../../common/date_formatter'
-import add from '../../components/common/add.vue';
+// import add from '../../components/common/add.vue';
 import actionSheet from "../../components/common/actionSheet.vue"
 import emptyData from "../../components/common/emptyData.vue"
 import accountSearch from "../../components/account/accountSearch.vue"
+import accountSearchByCategory from "../../components/account/accountSearchByCategory.vue"
 interface accountsByDayItem {
     date: string;
     totalIncome: number; // 当日总收入
     totalExpense: number; // 当日总支出
-    balance: number; // 新增结余字段
+    balance: any; // 新增结余字段
     items: any[];
 }
 // const reminderRef = ref();
@@ -65,6 +74,7 @@ const selectedDate = ref({
     day: 0
 })
 const checkSearchType = ref(1);
+const accountSearchByCategoryRef = ref();
 const update_account = () => {
     Taro.navigateTo({
         url: `/account/add/add?id=${currentItem.value?.id}`
@@ -89,6 +99,10 @@ useDidShow(() => {
 onMounted(() => {
     // getAccountList();
 })
+// 展开所有分类
+const openAllFl = () => {
+    accountSearchByCategoryRef.value.open();
+}
 const exportExcel = () => {
     Taro.showModal({
         title: '提示',
@@ -106,14 +120,18 @@ const exportExcel = () => {
                         Taro.downloadFile({
                             url: globalData.goapi_server + res.data.url,
                             success: (res) => {
-                                // 保存到本地
-                                Taro.saveFile({
-                                    tempFilePath: res.tempFilePath,
-                                    success: (res) => {
-                                        Taro.showModal({
-                                            title: '保存成功',
-                                            showCancel: false,
-                                            content: '保存路径：' + res.savedFilePath
+                                console.log("res.tempFilePath", res.tempFilePath);
+                                Taro.openDocument({
+                                    filePath: res.tempFilePath,
+                                    fileType: 'xlsx',
+                                    showMenu: true, // 显示分享菜单
+                                    success: () => {
+                                        console.log('打开文档成功');
+                                    },
+                                    fail: () => {
+                                        Taro.showToast({
+                                            title: '文件打开失败',
+                                            icon: 'none'
                                         })
                                     }
                                 })
@@ -134,6 +152,10 @@ const searchValue = (value: any) => {
     selectedDate.value = value.selectedDate;
     checkSearchType.value = value.checkSearchType;
     getAccountList();
+}
+const selectedCategory = (selectedCategory) => {
+    // getAccountList(selectedCategory);
+    return;
 }
 const getAccountList = () => {
     ajax.get("/account/getStatisticsByflList", {
@@ -180,7 +202,7 @@ const getAccountList = () => {
                 items: groupedAccounts[date].items.reverse(),
                 totalIncome: groupedAccounts[date].totalIncome,
                 totalExpense: groupedAccounts[date].totalExpense,
-                balance: groupedAccounts[date].totalIncome - groupedAccounts[date].totalExpense // 计算结余
+                balance: parseInt((groupedAccounts[date].totalIncome - groupedAccounts[date].totalExpense) * 100) / 100 // 计算结余
             }));
             console.log("------", result)
             if (page.value == 1) {
@@ -218,7 +240,7 @@ const getAccountList = () => {
                 accountsByDay.value = Array.from(dateMap).map(([date, data]) => ({
                     date,
                     ...data,
-                    balance: data.totalIncome - data.totalExpense // 保持结余字段同步
+                    balance: parseInt((data.totalIncome - data.totalExpense) * 100) / 100 // 保持结余字段同步
                 }));
             }
             console.log("1111111111111", accountsByDay.value);

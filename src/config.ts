@@ -1,7 +1,7 @@
 module.exports = {
     appid: "wx979fff2cbd6c3e80",
-    // goapi_server: "http://127.0.0.1:7002",
-    goapi_server: "https://www.jzszd51129.com/api",
+    goapi_server: "http://127.0.0.1:7002",
+    // goapi_server: "https://www.jzszd51129.com/api",
     game_server: "https://www.jzszd51129.com",
     image_dns: "",
     currency: "￥",

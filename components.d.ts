@@ -8,6 +8,7 @@ export {}
 declare module 'vue' {
   export interface GlobalComponents {
     AccountSearch: typeof import('./src/components/account/accountSearch.vue')['default']
+    AccountSearchByCategory: typeof import('./src/components/account/accountSearchByCategory.vue')['default']
     ActionSheet: typeof import('./src/components/common/actionSheet.vue')['default']
     Add: typeof import('./src/components/feedback/add.vue')['default']
     CurrencyPicker: typeof import('./src/components/account/currencyPicker.vue')['default']

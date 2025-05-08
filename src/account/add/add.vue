@@ -114,11 +114,8 @@ import date_formatter from '../../common/date_formatter'
 const user_dll = require('../../common/user_dll');
 import Taro from '@tarojs/taro';
 import actionSheet from "../../components/common/actionSheet.vue"
-interface categoriesData {
-    name: string,
-    value: string,
-    icon?: string
-}
+import { categoriesData } from "../../interface/category.ts"
+
 interface AccountFormData {
     id?: string;
     amount: string;
