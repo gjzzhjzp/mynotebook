@@ -1,13 +1,13 @@
 <template>
-    <nut-popup v-model:visible="visible" position="bottom" round :style="{ height: '60%' }">
+    <nut-popup v-model:visible="visible" position="bottom" round :style="{ height: '80%' }">
         <view class="flex-column-center" style="height: 100%;">
             <view class="p-a-15 font16 fontWeight blackColor flex-center-center">请选择类型</view>
             <view class="m-t-10 m-b-30" style="flex: 1;
                 width: 100%;
                 min-height: 0;
                 overflow: auto;">
-                <view class="m-l-20"> <nut-button
-                        :type="selectedCategory == 'all' ? 'primary' : 'default'">全部类型</nut-button></view>
+                <view class="m-l-20"> <nut-button @click="selectedItem()"
+                        :type="selectedCategory == 'all' ? 'primary' : 'default'">全部分类</nut-button></view>
                 <view class="font14 blackColor m-l-20 m-t-20 fontWeight">支出</view>
                 <view class="m-t-20 grid-4">
                     <view v-for="item in categories0"
@@ -69,10 +69,16 @@ const getCategory = async () => {
         categories1.value = globalData.categories[1];
     }
 }
-const selectedItem = (item: categoriesData) => {
-    selectedCategory.value = item.value;
+const selectedItem = (item?: categoriesData) => {
+    console.log("selectedItem", item)
+    selectedCategory.value = item ? item.value : "all";
+    emit('selected', {
+        name: item ? item.name : "全部分类",
+        icon: item ? item.icon : "icon-fenlei1",
+        value: item ? item.value : ""
+    });
     close();
-    emit('selected', selectedCategory.value);
+
 }
 defineExpose({
     open,

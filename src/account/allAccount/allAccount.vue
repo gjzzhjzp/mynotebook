@@ -9,9 +9,18 @@
             </view>
             <view class="flex-align-center flex-justify-between p-l-15 p-r-15">
                 <view>
-                    <!-- <nut-button size="small" plain type="primary" @click="openAllFl()">全部分类</nut-button> -->
+                    <nut-button size="small" plain type="primary" @click="openAllFl()">
+                        <view class="flex-align-center">
+                            <text :class="'iconfont  font14 m-r-05 ' + selectedCategory.icon"></text>{{
+        selectedCategory.name }}
+                        </view>
+                    </nut-button>
                 </view>
-                <view><nut-button size="small" type="primary" @click="exportExcel()">导出账单</nut-button></view>
+                <view><nut-button class="flex-align-center" size="small" type="primary" @click="exportExcel()">
+                        <view class="flex-align-center">
+                            导出账单<text class="iconfont icon-daochu font14 m-l-05"></text>
+                        </view>
+                    </nut-button></view>
             </view>
             <view class="p-a-15">
                 <template v-if="accountsByDay.length > 0">
@@ -35,7 +44,7 @@
             <!-- <add @add="exportExcel()">
                 导出账单
             </add> -->
-            <accountSearchByCategory ref="accountSearchByCategoryRef" @selected="selectedCategory">
+            <accountSearchByCategory ref="accountSearchByCategoryRef" @selected="selectedCategoryHandle">
             </accountSearchByCategory>
             <action-sheet ref="actionSheetRef" @update="update_account" @delete="deleteAccount"></action-sheet>
         </template>
@@ -90,6 +99,11 @@ let total = ref<number>(0);
 let refreshering = ref<boolean>(false);
 let accounts = ref([]);
 let accountsByDay = ref<accountsByDayItem[]>([]);
+let selectedCategory = ref({
+    name: "全部分类",
+    value: "",
+    icon: "icon-fenlei1"
+});
 onBeforeMount(() => {
 
 })
@@ -153,14 +167,17 @@ const searchValue = (value: any) => {
     checkSearchType.value = value.checkSearchType;
     getAccountList();
 }
-const selectedCategory = (selectedCategory) => {
-    // getAccountList(selectedCategory);
+const selectedCategoryHandle = (selected) => {
+    console.log("selectedCategory", selected);
+    selectedCategory.value = selected;
+    getAccountList(selected.value);
     return;
 }
-const getAccountList = () => {
+const getAccountList = (category?: string) => {
     ajax.get("/account/getStatisticsByflList", {
         page: page.value,
         rows: 20,
+        category: category || "",
         type: ["year", "month", "day"][checkSearchType.value],
         year: selectedDate.value.year || "",
         month: selectedDate.value.month || "",

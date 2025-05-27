@@ -2,7 +2,7 @@
 
     <pageScroll :refresher_enabled="false" style="background-color: #fff">
         <template #nav>
-            <Header title="新建备忘录"></Header>
+            <Header :title="(isedit ? '编辑' : '新建') + '备忘录'"></Header>
         </template>
         <template #body>
             <nut-config-provider :theme-vars="themeVars">
@@ -17,7 +17,22 @@
         </template>
         <template #footer>
             <view class="m-t-20 p-a-20 m-b-40">
-                <view class="flex-align-center flex-justify-between m-b-40">
+                <view class="grid-3 gap10 m-b-20 bb-line-1" v-if="formData.previewImages.length > 0">
+                    <view class="memo-image" v-for="(item, index) in formData.previewImages">
+                        <image :src="item" class="borderRadius10" mode="aspectFill" style="width: 100%;height: 220rpx">
+                        </image>
+                        <view class="iconfont icon-close font20 whiteColor" @click="deleteImage(index)"></view>
+                    </view>
+                </view>
+                <view class="flex-align-center flex-justify-between p-t-15 p-b-15 bb-line-1" @click="checkImage()">
+                    <view class="flex-align-center" style="width: 200rpx;">
+                        <view class="font16 iconfont icon-shangchuantupian m-r-5 skinColor"></view>
+                        <view>添加图片</view>
+                    </view>
+                    <view class="iconfont icon-you- font16 skinColor">
+                    </view>
+                </view>
+                <view class="flex-align-center flex-justify-between p-t-15 p-b-15 bb-line-1 m-b-15">
                     <view class="flex-align-center" style="width: 200rpx;">
                         <view class="font16 iconfont icon-shijian m-r-5 skinColor"></view>
                         <view>提醒时间</view>
@@ -33,6 +48,7 @@
 
                     </view>
                 </view>
+
                 <view class="flex-align-center flex-justify-between ">
                     <nut-button type="default" class="m-t-10" @click="close" style="width: 300rpx;">
                         取消
@@ -62,14 +78,16 @@ interface FormData {
     title: string,
     content: string,
     reminder_time?: string | number | Date,
-    reminder_time_show?: string | number | Date
+    reminder_time_show?: string | number | Date,
+    previewImages: string[]
 }
 const formData = ref<FormData>({
     id: "",
     title: "",
     content: '',
     reminder_time: "",
-    reminder_time_show: ""
+    reminder_time_show: "",
+    previewImages: [],///预览图片
 })
 // 添加 ConfigProvider 主题配置
 const themeVars = ref({
@@ -87,6 +105,34 @@ const chooseDate = (e: any) => {
     formData.value.reminder_time_show = date_formatter(formData.value.reminder_time as Date, 'yyyy-MM-dd hh:mm');
     showCalender.value = false;
 }
+// 在脚本部分添加删除方法
+const deleteImage = (index: number) => {
+    formData.value.previewImages.splice(index, 1);
+}
+
+// 选择图片上传
+const checkImage = () => {
+    if (formData.value.previewImages.length >= 3) {
+        Taro.showToast({
+            title: '最多只能上传3张图片',
+            icon: 'error',
+            duration: 2000
+        });
+        return;
+    }
+    Taro.chooseImage({
+        count: 3 - formData.value.previewImages.length, // 默认3
+        sizeType: ['compressed'], // 可以指定是原图还是压缩图，默认二者都有
+        sourceType: ['album', 'camera'], // 可以指定来源是相册还是相机，默认二者都有
+        success: function (res) {
+            console.log("res", res);
+            // 返回选定照片的本地文件路径列表，tempFilePath可以作为img标签的src属性显示图片
+            var tempFilePaths = res.tempFilePaths;
+            formData.value.previewImages = formData.value.previewImages.concat(tempFilePaths);
+            console.log("tempFilePaths", tempFilePaths, formData.value);
+        }
+    })
+}
 const onOk = async () => {
     if (!formData.value.title) {
         Taro.showToast({
@@ -98,7 +144,9 @@ const onOk = async () => {
     }
     let params = {
         title: formData.value.title,
-        content: formData.value.content
+        content: formData.value.content,
+        previewImages: formData.value.previewImages,
+        image: ""
     } as FormData
     console.log("params", params, formData.value);
     if (formData.value.reminder_time_show) {
@@ -122,6 +170,26 @@ const onOk = async () => {
     } else {
         delete params.id;
     }
+    if (params.previewImages.length > 0) {
+        // 分离新旧图片
+        const oldImages = params.previewImages
+            .filter(item => item.includes(globalData.value.image_dns))
+            .map(item => item.replace(globalData.value.image_dns, ''));
+
+        const newImages = params.previewImages
+            .filter(item => !item.includes(globalData.value.image_dns));
+        // 仅上传新图片
+        const uploadTasks = newImages.map(ajax.uploadImage);
+        const uploaded = (await Promise.all(uploadTasks)).filter(url => url);
+
+        // 合并图片路径（旧路径直接取数据库存储值，新路径拼接域名）
+        params.image = [
+            ...oldImages,
+            ...uploaded.map(url => url.replace(globalData.value.image_dns, ''))
+        ].join(',');
+        console.log("params.previewImages", params.image)
+    }
+    // return;
     ajax.post(url, params).then(res => {
         console.log("res", res);
         if (res.code == 200) {
@@ -149,6 +217,7 @@ onMounted(() => {
     const params = Taro.getCurrentInstance().router?.params;
     console.log('路由参数', params);
     if (params?.id) {
+        isedit.value = true;
         getList(params.id); // 根据实际接口需求调整参数结构
     }
 
@@ -162,6 +231,11 @@ const getList = (id) => {
     }).then((res) => {
         if (res.code == 200) {
             let currentItem = res.data[0];
+            if (currentItem.image) {
+                currentItem.previewImages = currentItem.image.split(",").map(item => globalData.value.image_dns + item);
+            } else {
+                currentItem.previewImages = [];
+            }
             open(currentItem);
         }
     })
@@ -174,6 +248,8 @@ const open = (item) => {
             id: item.id,
             title: item.title,
             content: item.content,
+            image: "",
+            previewImages: item.previewImages,
             reminder_time: item.reminder_time || "",
             reminder_time_show: item.reminder_time ? date_formatter(item.reminder_time, 'yyyy-MM-dd hh:mm') : ""
         }
@@ -183,6 +259,8 @@ const open = (item) => {
             id: "",
             title: "",
             content: '',
+            image: "",
+            previewImages: [],
             reminder_time: "",
             reminder_time_show: ""
         }
@@ -204,4 +282,13 @@ const close = () => {
     padding: 20rpx;
     min-height: 400rpx;
   } */
+.memo-image {
+    position: relative;
+}
+
+.memo-image .iconfont {
+    position: absolute;
+    top: 4rpx;
+    right: 4rpx;
+}
 </style>

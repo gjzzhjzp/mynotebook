@@ -5,4 +5,5 @@ export interface MemoItem {
     content: string;
     checkbox?: boolean;
     is_done?: boolean;
+    image?: string;
 }

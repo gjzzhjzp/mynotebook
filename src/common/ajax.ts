@@ -61,7 +61,7 @@ const get = async <T = any>(url: string, data?: any): Promise<IResponse<T>> => {
 }
 
 const post = async <T = any>(url: string, data: any): Promise<IResponse<T>> => {
- 
+
   if (ignoreUrls.includes(url)) {
     return request<T>({
       method: 'POST',
@@ -90,13 +90,43 @@ const checkPost = async (): Promise<void> => {
     check();
   });
 }
+// 上传图片
+const uploadImage = async (tempPath: string) => {
+  const globalData = Taro.getStorageSync("globalData");
+  try {
+    const res = await Taro.uploadFile({
+      url: globalData.goapi_server + '/common/uploadImage', // 替换为你的上传接口
+      filePath: tempPath,
+      name: 'file',
+      formData: {
+        type: 'memo_image'
+      },
+      header: {
+        'Authorization': globalData.token ? `Bearer ${globalData.token}` : ''
+      },
+    });
+
+    if (res.statusCode === 200) {
+      const data = JSON.parse(res.data);
+      if (data.code === 200) {
+        return data.data.url; // 假设返回结构包含data.url
+      }
+    }
+    throw new Error('上传失败');
+  } catch (err) {
+    Taro.showToast({ title: '图片上传失败', icon: 'none' });
+    console.error('上传错误:', err);
+    return null;
+  }
+}
 
 export default {
   request,
   get,
   post,
   checkPost,
-  appconfig
+  appconfig,
+  uploadImage
 };
 
 // 修改后的登录方法（示例用法）
