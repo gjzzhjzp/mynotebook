@@ -87,7 +87,7 @@ const validateField = async (prop: string) => {
         console.log(`字段 ${prop} 校验失败`, error);
     }
 };
-const globalData = inject('globalData') as any;
+const globalData = ref(Taro.getStorageSync("globalData"));
 onMounted(() => {
     console.log("globalData-------------------", globalData.value.tmplIds.overspend);
     get_userLimit();

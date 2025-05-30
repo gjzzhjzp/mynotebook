@@ -14,7 +14,7 @@
 
 </template>
 <script setup lang="ts">
-import { ref } from 'vue'
+import { ref, onMounted } from 'vue'
 import Taro from '@tarojs/taro'
 const show = ref(false)
 
@@ -22,20 +22,32 @@ const props = defineProps({
     type: {
         type: String,
         default: "account"
+    },
+    text: {
+        type: String,
+        default: "账单"
     }
 })
 
-const menuItems = [
+let menuItems = ref([
     {
-        name: '编辑' + (props.type == "account" ? "账单" : "备忘录"),
+        name: '编辑' + props.text,
         val: "update"
     },
     {
-        name: '删除' + (props.type == "account" ? "账单" : "备忘录"),
+        name: '删除' + props.text,
         val: "delete"
     }
-]
-const emits = defineEmits(['update', 'delete'])
+])
+onMounted(() => {
+    if (props.type == "memo") {
+        menuItems.value.push({
+            name: "设为已办",
+            val: "complate"
+        })
+    }
+})
+const emits = defineEmits(['update', 'delete', 'complate'])
 const open = () => {
     show.value = true
 }
@@ -45,18 +57,25 @@ const close = () => {
 const choose = (item) => {
     if (item.val == "update") {
         emits('update')
+    } else if (item.val == "complate") {
+        emits('complate')
     } else if (item.val == "delete") {
-        Taro.showModal({
-            title: '提示',
-            content: '确认删除？',
-            success: function (res) {
-                if (res.confirm) {
-                    emits('delete')
-                } else if (res.cancel) {
-                    console.log('用户点击取消')
+        if (props.type == "memo") {
+            emits('delete')
+        } else {
+            Taro.showModal({
+                title: '提示',
+                content: '确认删除？',
+                success: function (res) {
+                    if (res.confirm) {
+                        emits('delete')
+                    } else if (res.cancel) {
+                        console.log('用户点击取消')
+                    }
                 }
-            }
-        })
+            })
+        }
+
     } else {
         console.log("其他");
     }

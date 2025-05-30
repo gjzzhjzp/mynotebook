@@ -1,8 +1,8 @@
 @font-face {
   font-family: "iconfont"; /* Project id 4848967 */
-  src: url('iconfont.woff2?t=1745235823988') format('woff2'),
-       url('iconfont.woff?t=1745235823988') format('woff'),
-       url('iconfont.ttf?t=1745235823988') format('truetype');
+  src: url('iconfont.woff2?t=1747311792372') format('woff2'),
+       url('iconfont.woff?t=1747311792372') format('woff'),
+       url('iconfont.ttf?t=1747311792372') format('truetype');
 }
 
 .iconfont {
@@ -11,6 +11,58 @@
   font-style: normal;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+}
+
+.icon-shangchuantupian:before {
+  content: "\e6e9";
+}
+
+.icon-close:before {
+  content: "\e610";
+}
+
+.icon-tupian:before {
+  content: "\e63e";
+}
+
+.icon-you-:before {
+  content: "\e640";
+}
+
+.icon-daochu:before {
+  content: "\e63d";
+}
+
+.icon-fenlei1:before {
+  content: "\e633";
+}
+
+.icon-yuyan:before {
+  content: "\e684";
+}
+
+.icon-lujing-19:before {
+  content: "\e60b";
+}
+
+.icon-zhoubian:before {
+  content: "\e87a";
+}
+
+.icon-shangwubao:before {
+  content: "\e7d0";
+}
+
+.icon-guanli:before {
+  content: "\e627";
+}
+
+.icon-fenlei:before {
+  content: "\e630";
+}
+
+.icon-mb:before {
+  content: "\e62f";
 }
 
 .icon-zhangdan:before {

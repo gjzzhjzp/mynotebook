@@ -19,17 +19,31 @@ import ajax from '../../common/ajax'
 import Taro from '@tarojs/taro';
 const visible1 = ref(false);
 const content = ref("");
-
+const operation = ref("");
 const open = () => {
     visible1.value = true;
 };
 const close = () => {
+    content.value = "";
     visible1.value = false;
 };
 const onCancel = () => {
+    operation.value = "cancel";
     console.log('event cancel');
 };
+
 const onOk = async () => {
+    console.log('event ok');
+    operation.value = "ok";
+    if (!content.value) {
+        Taro.showToast({
+            title: "请输入反馈内容",
+            icon: 'error',
+            duration: 2000
+        });
+        return;
+    }
+    console.log("1111111111111111111111111");
     const params = {
         content: content.value
     };

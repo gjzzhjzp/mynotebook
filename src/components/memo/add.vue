@@ -13,7 +13,8 @@
                 <view class="m-t-20 p-a-20">
                     <view class="flex-align-center flex-justify-between m-b-20">
                         <view class="flex-align-center" style="width: 200rpx;">
-                            <view class="font14 iconfont icon-shijian"></view><view>提醒时间</view>
+                            <view class="font14 iconfont icon-shijian"></view>
+                            <view>提醒时间</view>
                         </view>
                         <view>
                             <view @click="showCalender = true">{{ formData.reminder_time_show || "无提醒" }}</view>
@@ -56,7 +57,7 @@ const formData = ref<FormData>({
     reminder_time: "",
     reminder_time_show: ""
 })
-const globalData = inject('globalData') as any;
+const globalData = ref(Taro.getStorageSync("globalData"));
 const showCalender = ref(false);
 const minDate = new Date();
 const isedit = ref(false);

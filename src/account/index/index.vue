@@ -8,7 +8,7 @@
       <view class="account-index-tips flex-align-center flex-justify-between p-a-15" @click="openReminder()">
         <view class="flex-align-center">
           <view class="iconfont icon-icon_notice font16 "></view>
-          <view class="m-l-5">设置订阅提醒</view>
+          <view class="m-l-5">点击设置订阅提醒</view>
         </view>
         <view>
           <view class="iconfont icon-you font20"></view>

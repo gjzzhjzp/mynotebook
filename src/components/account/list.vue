@@ -1,24 +1,29 @@
 <template>
     <view class="account-list">
         <template v-if="list.length > 0">
-            <view v-for="(item) in list" :key="item.id" class=" m-t-15" @clicK="itemClick(item)">
+            <view v-for="(item) in list" :key="item.id" class=" m-t-15" @clicK="itemClick(item)"
+                @longpress="itemClick(item)">
                 <view class="flex-align-center flex-justify-between">
                     <view class="flex-align-center">
                         <view>
                             <view style="" class="borderRadiusMax flex-center-center account-list-leftIcon">
                                 <view v-if="item.type == 0"
-                                    :class="'iconfont  font20 skinColor ' + categories_icon[item.category]"></view>
-                                <view v-else :class="'iconfont font20 errorColor ' + categories_icon[item.category]">
+                                    :class="'iconfont  font20 skinColor ' + (categories_icon[item.category] || 'icon-fenlei')">
+                                </view>
+                                <view v-else
+                                    :class="'iconfont font20 errorColor ' + (categories_icon[item.category] || 'icon-fenlei')">
                                 </view>
                             </view>
                         </view>
                         <view class="flex-column-left m-l-10">
-                            <view class="font14 fontWeight blackColor">{{ categories_obj[item.category] }}</view>
+                            <view class="font14 fontWeight blackColor">{{ categories_obj[item.category] || (item.type ==
+            0 ? '其他支出' : '其他收入') }}</view>
                             <view class="font12 m-t-5">{{ item.created_at }} <text class="m-l-5 m-r-5"
                                     v-if="item.description">|</text> {{ item.description }}</view>
                         </view>
                     </view>
-                    <view :class="item.type == 1 ? 'skinColor' : 'errorColor'">{{ item.type == 0 ? '-' : '+' }}￥{{
+                    <view :class="item.type == 1 ? 'skinColor' : 'errorColor'">{{ item.type == 0 ? '-' : '+' }}{{
+            Taro.getStorageSync("globalData").currency }}{{
             item.amount
         }}</view>
                 </view>
@@ -34,7 +39,7 @@
 
 <script setup lang="ts">
 // 引入需要的依赖
-import { ref, onMounted,inject } from 'vue';
+import { ref, onMounted, inject } from 'vue';
 import Taro from '@tarojs/taro';
 import emptyData from "../common/emptyData.vue"
 import ajax from "../../common/ajax";
@@ -60,7 +65,7 @@ defineProps({
 });
 const categories_obj = ref<CategoriesObj>({});
 const categories_icon = ref<CategoriesObj>({});
-   
+
 const emits = defineEmits(['click'])
 onMounted(async () => {
     await ajax.checkPost();

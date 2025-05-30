@@ -2,6 +2,7 @@
   "compilerOptions": {
     "target": "es2017",
     "module": "commonjs",
+    "allowImportingTsExtensions": false,
     "removeComments": false,
     "preserveConstEnums": true,
     "moduleResolution": "node",
@@ -22,6 +23,10 @@
       "node_modules/@types"
     ]
   },
-  "include": ["./src", "./types", "components.d.ts"],
+  "include": [
+    "./src",
+    "./types",
+    "components.d.ts"
+  ],
   "compileOnSave": false
 }
