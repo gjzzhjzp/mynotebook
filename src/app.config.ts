@@ -31,6 +31,13 @@ export default defineAppConfig({
         "index/index",
         "webview/webview"
       ]
+    },
+    // 经期记录
+    {
+      "root": "menstrual",
+      "pages": [
+        "index/index"
+      ]
     }
   ],
   window: {

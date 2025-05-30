@@ -14,6 +14,11 @@
                             <nut-switch v-model="formData.open_daily"></nut-switch>
                         </view>
                     </nut-form-item>
+                    <nut-form-item label="记账提醒" prop="open_accountReminder">
+                        <view>
+                            <nut-switch v-model="formData.open_accountReminder"></nut-switch>
+                        </view>
+                    </nut-form-item>
                     <nut-form-item label="每日额度" prop="daily_limit" body-align="right">
                         <view>
                             <nut-input v-model="formData.daily_limit" placeholder="请输入每日额度" type="number"
@@ -77,12 +82,14 @@ import basedll from '../../common/basedll';
 // import help from '../common/help.vue'
 interface FormData {
     open_daily: boolean;
+    open_accountReminder: boolean;
     daily_limit: string;
     monthly_limit: string;
     yearly_limit: string;
 }
 
 const formData = ref<FormData>({
+    open_accountReminder: false,
     open_daily: false,
     daily_limit: '',
     monthly_limit: '',
@@ -136,12 +143,16 @@ const onOk = async () => {
             if (formData.value.daily_limit || formData.value.monthly_limit || formData.value.yearly_limit) {
                 tmplIds.push(globalData.value.tmplIds.overspend);
             }
+            if (formData.value.open_accountReminder) {
+                tmplIds.push(globalData.value.tmplIds.overspend);
+            }
             if (formData.value.open_daily) {
-                tmplIds.push(globalData.value.tmplIds.daily);
+                tmplIds.push(globalData.value.tmplIds.accountReminder);
                 if (tmplIds.length > 0) {
                     basedll.requestSubscribeMessage(tmplIds);
                     const res = await ajax.post("/userLimit/addOrUpdate", {
                         open_daily: formData.value.open_daily,
+                        open_accountReminder: formData.value.open_accountReminder,
                         daily_limit: parseFloat(formData.value.daily_limit),
                         monthly_limit: parseFloat(formData.value.monthly_limit),
                         yearly_limit: parseFloat(formData.value.yearly_limit)
