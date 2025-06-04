@@ -16,9 +16,9 @@
         <nut-noticebar v-if="!!noticeText" :text="noticeText" />
       </nut-config-provider>
       <view class="m-a-15">
-        <view class="m-t-20 mynotebook_body flex-align-center gap15 ">
+        <view class="m-t-20 mynotebook_body grid-2 gap15 ">
           <view class="mynotebook_body_wrap" @click="tonext('account')">
-            <view class=" borderRadius20 flex-column-center flex-justify-center">
+            <view class="p-15-0 borderRadius20 flex-column-center flex-justify-center">
               <view class="mynotebook_body_item flex-center-center">
                 <view class="iconfont icon-jizhangben font45 skinColor"></view>
               </view>
@@ -27,12 +27,23 @@
             </view>
           </view>
           <view class="mynotebook_body_wrap" @click="tonext('memo')">
-            <view class=" borderRadius20 flex-column-center flex-justify-center">
+            <view class="p-15-0 borderRadius20 flex-column-center flex-justify-center">
               <view class="mynotebook_body_item flex-center-center">
                 <view class="iconfont icon-beiwanglu font45 skinColor"></view>
               </view>
               <view class="m-t-10 font16 blackColor">备忘录</view>
               <view class="m-t-5 font14 tagColor">记录生活点滴</view>
+            </view>
+          </view>
+        </view>
+        <view class="m-t-20 mynotebook_body grid-2 gap15 ">
+          <view class="mynotebook_body_wrap" @click="tonext('menstrual')">
+            <view class="p-15-0 borderRadius20 flex-column-center flex-justify-center">
+              <view class="mynotebook_body_item flex-center-center">
+                <view class="iconfont icon-jizhangben font45 skinColor"></view>
+              </view>
+              <view class="m-t-10 font16 blackColor">经期记录</view>
+              <view class="m-t-5 font14 tagColor">记录健康数据</view>
             </view>
           </view>
         </view>
@@ -67,7 +78,7 @@
         <nut-popup v-model:visible="showcurrencyPicker" position="bottom">
           <currency-picker ref="currencyPickerRef" @confirm="confirmCurrency"></currency-picker>
         </nut-popup>
-        <ad-custom unit-id="adunit-6998ae507394e914"></ad-custom>
+        <!-- <ad-custom unit-id="adunit-6998ae507394e914"></ad-custom> -->
       </view>
     </template>
   </pageScroll>
@@ -137,6 +148,9 @@ const tonext = (type) => {
       break;
     case 'memo':
       url = "/memo/index/index"
+      break;
+      case 'menstrual':
+      url = "/menstrual/index/index"
       break;
   }
   Taro.navigateTo({ url })
@@ -230,7 +244,7 @@ Taro.useShareAppMessage(() => {
   border-radius: 20rpx;
   background: linear-gradient(0deg, rgba(0, 0, 0, 0.001), rgba(0, 0, 0, 0.001)), #FFFFFF;
   box-shadow: 0px 4px 6px 0px rgba(0, 0, 0, 0.05);
-  padding: 40rpx 0;
+  /*padding: 40rpx 0;*/
 }
 
 .mynotebook_body_item .iconfont {

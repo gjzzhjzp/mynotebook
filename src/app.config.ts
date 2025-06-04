@@ -36,7 +36,8 @@ export default defineAppConfig({
     {
       "root": "menstrual",
       "pages": [
-        "index/index"
+        "index/index",
+         "setting/setting"
       ]
     }
   ],
