@@ -4,83 +4,111 @@
             <Header title="经期设置"></Header>
         </template>
         <template #body>
-            <nut-form>
-                <nut-form-item label="月经持续天数" body-align="right">
-                    <view class="flex-align-center flex-justify-end blackColor fontWeight">
-                        {{ formData.period_length }}天<text class="iconfont icon-you- font14"></text>
-                    </view>
-                </nut-form-item>
-                <nut-form-item label="月经周期" body-align="right">
-                    <view class="flex-align-center flex-justify-end blackColor fontWeight">
-                        {{ formData.cycle_length }}天<text class="iconfont icon-you- font14"></text>
-                    </view>
-                </nut-form-item>
-                <nut-form-item label="启用提醒" body-align="right">
-                    <view class="flex-align-center flex-justify-end blackColor fontWeight">
-                        <nut-switch v-model="formData.is_reminder_active" @change="changeSwitch"></nut-switch>
-                    </view>
-                </nut-form-item>
-                <nut-form-item label="经期开始前提醒天数" label-width="200px" body-align="right" v-if="formData.is_reminder_active">
-                    <view class="flex-align-center flex-justify-end blackColor fontWeight">
-                        {{ formData.remind_before_period }}天<text class="iconfont icon-you- font14"></text>
-                    </view>
-                </nut-form-item>
-            </nut-form>
-            <nut-button type="primary" class="m-t-20 m-l-30" @click="onOk" style="width: 690rpx;">
-                        保存
-                    </nut-button>
+            <view class="p-a-10">
+                <nut-cell title="月经持续天数" @click="openperiod()">
+                    <template #desc>
+                        <view class="flex-align-center flex-justify-end blackColor fontWeight">
+                            {{ period_length }}天<text class="iconfont icon-you- font14"></text>
+                        </view>
+                    </template>
+                </nut-cell>
+                <nut-cell title="月经周期" sub-title="两次月经开始日间隔几天" @click="opencycle()">
+                    <template #desc>
+                        <view class="flex-align-center flex-justify-end blackColor fontWeight">
+                            {{ cycle_length }}天<text class="iconfont icon-you- font14"></text>
+                        </view>
+                    </template>
+                </nut-cell>
+                <nut-cell title="启用提醒">
+                    <template #desc>
+                        <view class="flex-align-center flex-justify-end blackColor fontWeight">
+                            <nut-switch v-model="is_reminder_active" @change="changeSwitch"></nut-switch>
+                        </view>
+                    </template>
+                </nut-cell>
+                <nut-cell title="经期开始前提醒天数" v-if="is_reminder_active" @click="openremind()">
+                    <template #desc>
+                        <view class="flex-align-center flex-justify-end blackColor fontWeight">
+                            {{ remind_before_period }}天<text class="iconfont icon-you- font14"></text>
+                        </view>
+                    </template>
+                </nut-cell>
+            </view>
+
+            <view class=" flex-center-center">
+                <nut-button type="primary" @click="updatemenstrualSetting" style="width: 690rpx;">
+                    保存
+                </nut-button>
+            </view>
         </template>
         <template #footer>
+            <nut-popup v-model:visible="showperiod" position="bottom">
+                <nut-picker v-model="selectedPeriod" :columns="periodcolumns" title="" @confirm="confirmperiod"
+                    @cancel="showperiod = false" />
+            </nut-popup>
+            <nut-popup v-model:visible="showcycle" position="bottom">
+                <nut-picker v-model="selectedCycle" :columns="cyclecolumns" title="" @confirm="confirmcycle"
+                    @cancel="showcycle = false" />
+            </nut-popup>
+            <nut-popup v-model:visible="showremind" position="bottom">
+                <nut-picker v-model="selectedRemind" :columns="remindcolumns" title="" @confirm="confirmremind"
+                    @cancel="showremind = false" />
+            </nut-popup>
         </template>
     </pageScroll>
 </template>
-
 <script setup lang="ts">
-import { onBeforeMount, onMounted, ref, h } from 'vue';
+import { onBeforeMount, onMounted, ref } from 'vue';
 import ajax from '../../common/ajax';
 import Header from '../../components/common/Header.vue';
 import pageScroll from '../../components/common/pageScroll.vue';
-import date_formatter from '../../common/date_formatter'
+import { usePeriod, useCycle, useRemind } from '../../hooks/usePicker';
+import Taro  from '@tarojs/taro';
 onBeforeMount(() => {
 
 })
 onMounted(() => {
-    getByDate();
+    getByuser();
 })
-let formData = ref({
-    cycle_length: 28,///周期
-    period_length: 5,///经期天数
-    is_reminder_active: false,///是否提醒
-    remind_before_period:3
-})
-const onOk = () => {
-    console.log("formData", formData.value)
-    updatemenstrual(formData.value)
-}
+const is_reminder_active = ref(false);//是否提醒
+const { period_length, showperiod, selectedPeriod, periodcolumns, confirmperiod, openperiod } = usePeriod();
+const { cycle_length, showcycle, selectedCycle, cyclecolumns, confirmcycle, opencycle } = useCycle();
+const { remind_before_period, showremind, selectedRemind, remindcolumns, confirmremind, openremind } = useRemind();
+
 const changeSwitch = (val: boolean) => {
     console.log(val)
-
-    // updatemenstrual({
-    //     is_period: val,
-    // });
+    is_reminder_active.value = val;
 }
-const updatemenstrual = (parames) => {
-    // parames={
-    //     "record_date": "2023-11-15",
-    //     "is_period": true,
-    //     "flow_level": 5,
-    //     "pain_level": 3,
-    //     "mood": "平静"
-    // }
-    console.log("parames", parames);
-    ajax.post("/menstrual/add", parames).then((res) => {
+const updatemenstrualSetting = () => {
+    let parames = {
+        "cycle_length": cycle_length.value,
+        "period_length": period_length.value,
+        "is_reminder_active": is_reminder_active.value,
+        "remind_before_period": remind_before_period.value
+    }
+    ajax.post("/menstrualSetting/add", parames).then((res) => {
         if (res.code == 200) {
             console.log("操作成功", res);
+            Taro.navigateBack();
         }
     })
 }
-// 根据日期查询
-const getByDate = () => {
+// 根据用户查询
+const getByuser = () => {
+    ajax.get("/menstrualSetting/get").then((res) => {
+        if (res.code == 200) {
+            console.log("操作成功", res);
+            if(res.data){
+                cycle_length.value = res.data.cycle_length;
+                period_length.value = res.data.period_length;
+                remind_before_period.value = res.data.remind_before_period;
+                is_reminder_active.value = !!res.data.is_reminder_active;
+                selectedPeriod.value = [period_length.value+''];
+                selectedCycle.value = [cycle_length.value+''];
+                selectedRemind.value = [remind_before_period.value+''];
+            }
+        }
+    })
 }
 
 </script>
